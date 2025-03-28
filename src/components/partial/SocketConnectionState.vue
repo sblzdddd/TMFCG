@@ -1,23 +1,28 @@
 <script lang="ts" setup>
+import { useSocket, waitForConnection } from '@/composables/useSocket';
+import { usePing } from '@/composables/usePing';
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const { isConnected } = useSocket();
+const { latency, startPing, stopPing } = usePing();
+const isMounted = ref(false);
+
 onMounted(() => {
-    console.log('mounted');
+    isMounted.value = true;
+    waitForConnection();
+    startPing();
 });
-// import { useSocketStatus } from '@/lib/socket';
-// import { ref, onMounted } from 'vue';
 
-// const socketStatus = useSocketStatus();
-// const isMounted = ref(false);
-
-// onMounted(() => {
-//     isMounted.value = true;
-// });
+onUnmounted(() => {
+    stopPing();
+});
 </script>
 
 <template>
     <div class="flex items-center justify-center gap-2">
-        <!-- <span class="text-sm text-gray-400">
+        <span class="text-sm text-gray-400">
             <template v-if="isMounted">
-                {{ socketStatus.connected ? `${socketStatus.latency}ms` : 'offline' }}
+                {{ isConnected ? `${latency}ms` : 'offline' }}
             </template>
             <template v-else>
                 connecting...
@@ -25,7 +30,7 @@ onMounted(() => {
         </span>
         <template v-if="isMounted">
             <v-badge
-                v-if="socketStatus.connected"
+                v-if="isConnected"
                 class="mb-0.5"
                 color="success"
                 inline
@@ -36,6 +41,6 @@ onMounted(() => {
                 color="error"
                 inline
                 dot />
-        </template> -->
+        </template>
     </div>
 </template>

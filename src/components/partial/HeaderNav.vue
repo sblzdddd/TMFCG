@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import SocketConnectionState from './SocketConnectionState.vue';
+// 同层导入找不到，回一层就找到了
+// ts-plugin, 你是否清醒？
+import SocketConnectionState from '../partial/SocketConnectionState.vue';
 
 </script>
 
