@@ -1,1 +1,0 @@
-import{_ as o,a as n,V as _}from"./BAfJIyOa.js";import{_ as c,aj as r,v as s,A as t,z as a}from"./DdX6Kkz_.js";import"./CAQ2CxwN.js";import"./BrggjM0y.js";const p={};function m(f,i){const e=o;return s(),r(_,null,{default:t(()=>[a(n,null,{default:t(()=>[a(e)]),_:1})]),_:1})}const V=c(p,[["render",m]]);export{V as default};
