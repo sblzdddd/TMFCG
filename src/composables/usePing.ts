@@ -1,6 +1,4 @@
-import { ref, reactive, computed, provide } from 'vue';
-import type { PingRequest, PingResponse } from "@/types/DTO/ping.dto";
-import { socket } from './useSocket';
+import {socket} from "~/composables/useSocket";
 
 // Symbol for dependency injection
 const PING_STATE_SYMBOL = 'pingState';

@@ -1,5 +1,3 @@
-import type { PingRequest, PingResponse } from "@/types/DTO";
-
 import { BaseHandler } from "../base/base.handler";
 
 export class PingHandler extends BaseHandler {

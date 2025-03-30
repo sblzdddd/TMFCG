@@ -1,11 +1,5 @@
 <script lang="ts" setup>
-import {useRoom} from '@/composables/useRoom';
 import {useGsap} from '#gsap'
-import {waitForConnection} from '@/composables/useSocket';
-import {useRouter} from 'vue-router'
-import type { ListRoomsResponse } from '@/types/DTO/room.dto'
-import type { PublicRoomInfo } from '@/types/Room'
-import {useUser} from '@/composables/useUser';
 
 const router = useRouter()
 const tab = ref(0);
@@ -14,7 +8,6 @@ const isCreatingRoom = ref(false);
 const isPrivate = ref(false);
 const showPanel = ref(1);
 const titleRef = ref(null);
-const {user, updateUserName} = useUser()
 const {currentRoom, createRoom, listRooms} = useRoom()
 const publicRooms = ref<PublicRoomInfo[]>([]);
 
@@ -42,9 +35,8 @@ onMounted(async () => {
   if (!import.meta.client) return
   await waitForConnection();
   console.log(currentRoom.value)
-  console.log(user.value)
   if (currentRoom.value) {
-    router.push(`/room/${currentRoom.value.code}`);
+    await router.push(`/room/${currentRoom.value.code}`);
     return;
   }
   showPanel.value = 0;
@@ -52,10 +44,6 @@ onMounted(async () => {
     scale: 1,
     duration: 0.25,
   });
-})
-
-watch(() => user.value.name, (newValue) => {
-  updateUserName(newValue);
 })
 
 watch(() => tab.value, (newValue) => {
@@ -74,23 +62,6 @@ watch(() => tab.value, (newValue) => {
       <!--expansion animation-->
       <v-expansion-panel elevation="0">
         <v-expansion-panel-text class="expansion-panel-text">
-          <div class="xl:w-[38%] lg:w-[48%] w-[90%] px-4">
-            <v-text-field
-                :model-value="user.name"
-                hide-details
-                density="comfortable"
-                label="昵称"
-                variant="outlined"
-                @update:model-value="(newValue) => user.name = newValue"
-            >
-              <template #append-inner>
-                <v-btn icon size="small" title="随机昵称" variant="text"
-                       @click="user.name = '哇多么好的机会啊' + Math.random().toString(36).substring(2, 8)">
-                  <Icon class="w-6 h-6" name="mingcute:random-line"/>
-                </v-btn>
-              </template>
-            </v-text-field>
-          </div>
           <v-window v-model="tab" class="xl:w-[38%] lg:w-[48%] w-[90%]">
             <v-window-item class="w-full" value="0">
               <div class="flex flex-col flex-wrap items-stretch w-full gap-2 p-4 pt-0">
@@ -114,7 +85,7 @@ watch(() => tab.value, (newValue) => {
             </v-window-item>
             <v-window-item value="1">
               <div class="p-4 pt-0">
-                <v-checkbox label="私密房间" v-model="isPrivate"></v-checkbox>
+                <v-checkbox label="私密房间" v-model="isPrivate" hide-details></v-checkbox>
                 <v-btn
                     :disabled="isCreatingRoom || currentRoomCode !== ''"
                     :loading="isCreatingRoom"
@@ -135,7 +106,7 @@ watch(() => tab.value, (newValue) => {
             <v-window-item value="2">
               <div class="p-4 pt-0">
                 <p class="w-full text-left text-2xl font-bold">公开房间列表</p>
-                <p class="w-full text-left text-sm text-gray-500 mt-2" v-if="publicRooms.length === 0">暂无房间。。。</p>
+                <p class="w-full text-left text-sm text-gray-500 mt-2" v-if="publicRooms.length === 0">暂无房间...</p>
                 <v-list>
                   <v-list-item
                     v-for="room in publicRooms"
@@ -177,7 +148,29 @@ watch(() => tab.value, (newValue) => {
     </v-expansion-panels>
   </div>
 </template>
+<style scoped lang="postcss">
+h1 {
+  @apply xl:text-[10vw] lg:text-[18vw] md:text-[20vw] text-[22vw]
+}
+
+h2 {
+  @apply text-[8vw]
+}
+
+h3 {
+  @apply text-[7vw]
+}
+
+h4 {
+  @apply xl:text-[5vw] lg:text-[8vw] text-[10vw]
+}
+
+h5 {
+  @apply text-[5vw]
+}
+</style>
 <style lang="postcss">
+/*noinspection ALL*/
 .expansion-panel-text .v-expansion-panel-text__wrapper {
   @apply flex flex-col w-full items-center justify-center gap-5;
 }

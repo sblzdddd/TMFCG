@@ -1,7 +1,6 @@
 import { BaseHandler } from '../base/base.handler';
 import { UserManager } from '@/server/managers';
 import { RoomManager } from '@/server/managers';
-import type { RoomMembersUpdateResponse } from '@/types/DTO/room.dto';
 import { RoomService } from '@/server/services/RoomService';
 
 // Leave the current room that the user is in

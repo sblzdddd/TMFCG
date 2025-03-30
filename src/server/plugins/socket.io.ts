@@ -3,7 +3,6 @@ import { Server as Engine } from "engine.io";
 import { Server } from "socket.io";
 import { defineEventHandler } from "h3";
 import registerHandlers from "../handlers";
-import "reflect-metadata";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { logger } from "../utils/logger";
 

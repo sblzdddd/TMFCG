@@ -39,35 +39,27 @@ body {
     @apply !bg-black;
 }
 
-h1, h2, h3, h4, h5, .v-btn {
+h1, h2, h3, h4, h5, .v-btn, .v-card-title {
     font-family: 'jiangxizhuokai', sans-serif;
 }
 
-h1 {
-    @apply xl:text-[10vw] lg:text-[18vw] md:text-[20vw] text-[22vw]
-}
 
-h2 {
-    @apply text-[8vw]
+.title-with-dots {
+    @apply flex items-center justify-center gap-3 w-full text-lg text-center tracking-widest;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+    
+    &::before,
+    &::after {
+      content: "";
+      @apply w-1.5 h-1.5 rounded-full bg-[currentColor];
+      box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+    }
 }
-
-h3 {
-    @apply text-[7vw]
-}
-
-h4 {
-    @apply xl:text-[5vw] lg:text-[8vw] text-[10vw]
-}
-
-h5 {
-    @apply text-[5vw]
-}
-
 
 html, body {
     @apply m-0 p-0 bg-background
     w-full min-h-screen
-    overflow-x-hidden overflow-y-auto;
+    overflow-x-hidden !overflow-y-auto;
 }
 
 .page-root {

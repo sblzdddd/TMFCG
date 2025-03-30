@@ -1,11 +1,12 @@
 import { BaseHandler } from '../base/base.handler';
 import { UserManager } from '@/server/managers/UserManager';
-import type { ChangeUserNameRequest, UserInfoResponse } from '@/types/DTO/user.dto';
+import { RoomManager } from '@/server/managers/RoomManager';
 
 export class UserHandler extends BaseHandler {
   public initialize() {
     this.on('getUser', () => this.handlerGetUser());
     this.on('changeUserName', (data: ChangeUserNameRequest) => this.handlerChangeUserName(data));
+    this.on('changeUserAvatar', (data: ChangeUserAvatarRequest) => this.handlerChangeUserAvatar(data));
   }
 
   public handlerGetUser() {
@@ -24,5 +25,32 @@ export class UserHandler extends BaseHandler {
         return;
     }
     UserManager.changeUserName(user, data.name);
+    RoomManager.updateUserInMessages(user);
+    this.emitUserUpdate(user);
+  }
+
+  public handlerChangeUserAvatar(data: ChangeUserAvatarRequest) {
+    const user = UserManager.getUser(this.socket);
+    if (!user) {
+        return;
+    }
+    UserManager.changeUserAvatar(user, data.avatar);
+    RoomManager.updateUserInMessages(user);
+    this.emitUserUpdate(user);
+  }
+
+  public emitUserUpdate(user: User) {
+    if (user.currentRoomCode) {
+      const room = RoomManager.getRoom(user.currentRoomCode);
+      if (room) {
+        this.emitToAllInRoom(room.code, 'room_member_update', {
+          members: RoomManager.getMembersFromRoom(room)
+        } as RoomMembersUpdateResponse);
+
+        this.emitToAllInRoom(room.code, 'onRoomChat', {
+          messages: room.messages
+        } as RoomChatHistoryResponse);
+      }
+    }
   }
 }

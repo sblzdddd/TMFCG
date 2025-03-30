@@ -1,7 +1,7 @@
 import { BaseHandler } from '../base/base.handler';
 import { UserManager } from '@/server/managers';
 import { RoomManager } from '@/server/managers';
-import type { CreateRoomRequest, CreateRoomResponse } from '@/types/DTO/room.dto';
+import { CreateRoomResponse } from '../../../../types/DTO';
 
 export class CreateRoomHandler extends BaseHandler {
 	public initialize() {

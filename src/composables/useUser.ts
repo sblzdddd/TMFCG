@@ -1,7 +1,5 @@
-import type { User } from '@/types/User';
-import { socket } from '@/composables/useSocket';
-import { provide, reactive, computed } from 'vue';
-import type { ChangeUserNameRequest, UserInfoResponse } from '@/types/DTO/user.dto';
+import {socket} from "~/composables/useSocket";
+import defaultAvatar from '@/assets/images/avatars/00000.png'
 
 // Symbol for dependency injection
 const USER_STATE_SYMBOL = 'userState';
@@ -13,6 +11,7 @@ const emptyUser: User = {
 	currentRoomCode: null,
 	socketId: '',
 	connected: false,
+	avatar: 0,
 }
 
 const globalUserState = reactive<{ current: User }>({
@@ -27,6 +26,7 @@ export const useUser = () => {
 			getUserFromServer: async () => ({ success: false }),
 			initializeUser: async () => ({ success: false }),
 			updateUserName: () => {},
+			updateUserAvatar: () => {},
 			resetUser: () => {},
 		};
 	}
@@ -75,6 +75,11 @@ export const useUser = () => {
 		socket.emit('changeUserName', { name: newName } as ChangeUserNameRequest);
 	};
 
+	const updateUserAvatar = (newAvatar: number) => {
+		globalUserState.current.avatar = newAvatar;
+		socket.emit('changeUserAvatar', { avatar: newAvatar } as ChangeUserAvatarRequest);
+	};
+
 	const resetUser = () => {
 		Object.assign(globalUserState.current, {
 			id: '',
@@ -83,14 +88,29 @@ export const useUser = () => {
 			currentRoomCode: null,
 			socketId: '',
 			connected: false,
+			avatar: 0,
 		});
 	};
+	
+	const UserAvatarUrl = computed(() => {
+		if (!globalUserState.current) return defaultAvatar
+		const avatarNumber = globalUserState.current.avatar;
+		const paddedNumber = avatarNumber.toString().padStart(5, '0');
+		return `/assets/images/avatars/${paddedNumber}.png`;
+	})
 
 	return {
 		user: computed(() => globalUserState.current),
+		avatarUrl: computed(() => UserAvatarUrl.value),
 		getUserFromServer,
 		initializeUser,
 		updateUserName,
+		updateUserAvatar,
 		resetUser,
 	};
 };
+
+export const getMemberAvatarUrl = (avatar: number) => {
+	const paddedNumber = avatar.toString().padStart(5, '0');
+	return `/assets/images/avatars/${paddedNumber}.png`;
+}

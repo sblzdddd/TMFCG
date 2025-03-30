@@ -1,6 +1,5 @@
 import { RoomManager } from '~/server/managers';
 import { BaseHandler } from '../base/base.handler';
-import type { ListRoomsResponse } from '@/types/DTO/room.dto';
 
 // List all public rooms
 export class ListRoomsHandler extends BaseHandler {

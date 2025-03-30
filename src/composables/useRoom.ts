@@ -1,10 +1,6 @@
-import type {Room} from '@/types/Room';
-import {computed, provide, reactive} from 'vue';
-import {socket, waitForConnection} from '@/composables/useSocket';
-import type {CreateRoomRequest, CreateRoomResponse, JoinRoomResponse, LeaveRoomResponse, ListRoomsResponse, RoomInfoResponse} from '@/types/DTO/room.dto';
-import { useSocket } from '@/composables/useSocket';
-
 // Symbol for dependency injection
+import {useSocket, waitForConnection, socket} from "@/composables/useSocket";
+
 const ROOM_STATE_SYMBOL = 'roomState';
 
 interface RoomState {
@@ -24,7 +20,7 @@ export const useRoom = () => {
 			currentRoom: computed(() => null),
 			setCurrentRoom: () => {},
 			leaveRoom: async () => ({ success: false } as LeaveRoomResponse),
-			createRoom: async ({isPrivate}: {isPrivate: boolean}) => ({ success: false, room: null, roomCode: '', isOwner: false } as unknown as CreateRoomResponse),
+			createRoom: async () => ({ success: false, room: null, roomCode: '', isOwner: false } as unknown as CreateRoomResponse),
 			joinRoom: async () => ({ success: false } as JoinRoomResponse),
 			getCurrentRoom: async () => ({ success: false, room: null } as unknown as RoomInfoResponse),
 			listRooms: async () => ({ success: false, rooms: [] } as ListRoomsResponse),

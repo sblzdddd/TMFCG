@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
-import { provide, reactive, computed } from 'vue';
-import { useRoom } from "./useRoom";
+import {useRoom} from "./useRoom";
 import { useUser } from "./useUser";
 
 // Symbol for dependency injection
@@ -57,6 +56,7 @@ export const useSocket = () => {
         return {
             isConnected: computed(() => false),
             transport: computed(() => 'N/A'),
+            socket: computed(() => null),
         };
     }
 
@@ -65,6 +65,7 @@ export const useSocket = () => {
     return {
         isConnected: computed(() => globalSocketState.connected),
         transport: computed(() => globalSocketState.transport),
+        socket: computed(() => socket),
     };
 };
 

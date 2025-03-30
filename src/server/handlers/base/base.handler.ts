@@ -24,6 +24,8 @@ export abstract class BaseHandler implements IBaseHandler {
     this.socket.emit(event, data);
   }
 
+
+
   protected broadcast<T>(event: string, data: T): void {
     this.socket.broadcast.emit(event, data);
   }
@@ -38,6 +40,12 @@ export abstract class BaseHandler implements IBaseHandler {
 
   protected emitToRoom<T>(roomId: string, event: string, data: T): void {
     this.socket.to(roomId).emit(event, data);
+  }
+
+  protected emitToAllInRoom<T>(roomId: string, event: string, data: T): void {
+    this.socket.to(roomId).emit(event, data);
+    // Emit to self
+    this.emit(event, data);
   }
 
   protected on<T>(event: string, func: (data: T) => void) {

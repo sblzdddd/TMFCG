@@ -1,5 +1,3 @@
-import type { Room } from "@/types/Room";
-import type { User } from "@/types/User";
 
 import { UserManager, RoomManager } from "@/server/managers";
 import { logger } from "@/server/utils/logger";

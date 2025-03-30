@@ -1,22 +1,25 @@
-import type { Room, PublicRoomInfo } from "@/types/Room";
-import type { RoomMember, User } from "@/types/User";
-
-import { logger } from "@/server/utils/logger";
+import {logger} from "@/server/utils/logger";
 
 export class RoomManager {
   private static rooms = new Map<string, Room>();
 
+  static addMessage(roomCode: string, message: ChatMessage) {
+    const room = this.getRoom(roomCode);
+    if (!room) {
+      throw new Error('Room not found');
+    }
+    room.messages.push(message);
+    return room.messages;
+  }
+
   static getRoom(code: string | undefined | null): Room | undefined {
-    logger.roomManager(`Getting room with code ${code}`);
     if (!code) {
       logger.roomManager(`No code provided`);
 
       return undefined;
     }
 
-    const room = this.rooms.get(code);
-
-    return room;
+    return this.rooms.get(code);
   }
 
   static getPublicRooms(): PublicRoomInfo[] {
@@ -48,6 +51,7 @@ export class RoomManager {
       isPrivate: isPrivate,
       memberIds: [user.id],
       members: [user],
+      messages: [],
     };
 
     this.rooms.set(roomCode, newRoom);
@@ -65,6 +69,18 @@ export class RoomManager {
       name: m.name || "Guest",
       isRoomOwner: m.isRoomOwner,
       connected: m.connected,
+      avatar: m.avatar,
     }));
+  }
+
+  static updateUserInMessages(user: User) {
+    // Update user info in all room messages where they are the sender
+    this.rooms.forEach(room => {
+      room.messages.forEach(message => {
+        if (message.sender.id === user.id) {
+          message.sender = user;
+        }
+      });
+    });
   }
 }

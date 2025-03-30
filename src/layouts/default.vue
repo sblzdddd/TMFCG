@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import HeaderNav from "../components/partial/HeaderNav.vue";
 defineOptions({
   name: 'DefaultLayout'
 })
 </script>
 <template>
     <v-app>
-      <HeaderNav/>
+      <Header-NavBar/>
       <div class="decorations absolute top-0 left-0 right-0 w-full h-full flex pointer-events-none">
-        <div class="decoration"/>
-        <div class="grow"/>
-        <div class="decoration"/>
+        <div class="decoration" />
+        <div class="grow" />
+        <div class="decoration" />
       </div>
       <v-main style="padding-top: 54px;">
         <NuxtPage />
