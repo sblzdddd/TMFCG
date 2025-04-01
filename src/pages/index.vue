@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import {useGsap} from '#gsap'
+import { gsap } from "gsap";
+import { LoadingState } from '@/utils/loading';
 
 const router = useRouter()
 const tab = ref(0);
@@ -9,30 +10,36 @@ const isPrivate = ref(false);
 const showPanel = ref(1);
 const titleRef = ref(null);
 const {currentRoom, createRoom, listRooms} = useRoom()
+
 const publicRooms = ref<PublicRoomInfo[]>([]);
 
 const listPublicRooms = async () => {
+  LoadingState.isLoading = true;
   const data = await listRooms();
   if (!data || !data.rooms) {
     return;
   }
   publicRooms.value = data.rooms;
+  LoadingState.isLoading = false;
 }
 
 const createRoomCallback = async () => {
-  if (!createRoom || !import.meta.client) return
   isCreatingRoom.value = true;
+  LoadingState.isLoading = true;
+  if (!createRoom || !import.meta.client) return
   const data = await createRoom({isPrivate: isPrivate.value});
-  isCreatingRoom.value = false;
   if (!data || !data.room) {
     return;
   }
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  isCreatingRoom.value = false;
   currentRoomCode.value = data.room.code;
   await router.push(`/room/${data.room.code}`);
 }
 
 onMounted(async () => {
   if (!import.meta.client) return
+  LoadingState.isLoading = true;
   await waitForConnection();
   console.log(currentRoom.value)
   if (currentRoom.value) {
@@ -40,10 +47,11 @@ onMounted(async () => {
     return;
   }
   showPanel.value = 0;
-  useGsap.to(titleRef.value, {
+  gsap.to(titleRef.value, {
     scale: 1,
     duration: 0.25,
   });
+  LoadingState.isLoading = false;
 })
 
 watch(() => tab.value, (newValue) => {
@@ -80,6 +88,10 @@ watch(() => tab.value, (newValue) => {
                 <v-btn color="primary" density="compact" size="x-large" title="前往游戏设置" to="/settings"
                        variant="flat">
                   设置
+                </v-btn>
+                <v-btn color="primary" density="compact" size="x-large" title="前往游戏设置" @click="LoadingState.isLoading = !LoadingState.isLoading"
+                       variant="flat">
+                  按钮
                 </v-btn>
               </div>
             </v-window-item>

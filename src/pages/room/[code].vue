@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { LoadingState } from '@/utils/loading';
 
 definePageMeta({
   layout: 'in-game',
@@ -11,6 +12,13 @@ const roomCode = computed(() => String(route.params.code))
 const {currentRoom, joinRoom, leaveRoom} = useRoom()
 const {user} = useUser()
 const {isConnected} = useSocket()
+
+// Add these refs for sidebar visibility
+const showSidebar = ref(true)
+
+const toggleSidebar = () => {
+  showSidebar.value = !showSidebar.value
+}
 
 const quitRoom = async () => {
   try {
@@ -40,6 +48,7 @@ const updateRoomMembers = (members: RoomMember[]) => {
 }
 
 onMounted(async () => {
+  LoadingState.isLoading = true;
   if(!isConnected.value) {
     console.log("socket not connected, waiting for connection")
     await waitForConnection()
@@ -79,32 +88,42 @@ onMounted(async () => {
     const response = message as RoomMembersUpdateResponse
     updateRoomMembers(response.members)
   })
+  LoadingState.isLoading = false;
 })
 </script>
 
 <template>
   <div class="overlay-container">
+    <div class="status-bar"
+    :class="showSidebar?'xl:w-[28%] lg:w-[35%] md:w-[42%] sm:w-[50%]':'w-screen'">
+      <v-tooltip :text="showSidebar ? '点击：关闭边栏' : '点击：打开边栏'" location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn :title="showSidebar ? '点击：关闭边栏' : '点击：打开边栏'" 
+                  :active="false" 
+                  :exact="false" 
+                  class="game-icon" 
+                  variant="text" 
+                  v-bind="props"
+                  @click="toggleSidebar">
+            <nuxt-img alt="site-icon" height="24" src="/site_icon.svg" width="24"/>
+            <h1 class="text-xl font-bold ml-3">东方夜雀五札戏</h1>
+          </v-btn>
+        </template>
+      </v-tooltip>
+      <v-spacer />
+      <Common-ConnectionStatus/>
+      <v-tooltip text="点击：退出房间" location="top">
+        <template v-slot:activator="{ props }">
+          <v-btn title="点击：退出房间" :icon="true" variant="text" @click="quitRoom" color="error" size="small" v-bind="props">
+            <Icon name="material-symbols:exit-to-app-rounded" size="22" />
+          </v-btn>
+        </template>
+      </v-tooltip>
+    </div>
     <!-- Left Overlay -->
-    <div class="overlay left-overlay">
+    <div class="overlay left-overlay" :class="{ 'hidden-left': !showSidebar }">
       <!-- Game Title -->
-      <div class="game-title">
-        <v-tooltip text="点击：关闭边栏" location="top">
-          <template v-slot:activator="{ props }">
-            <v-btn title="点击：关闭边栏" :active="false" :exact="false" class="game-icon" variant="text" v-bind="props">
-              <nuxt-img alt="site-icon" height="24" src="/site_icon.svg" width="24"/>
-              <h1 class="text-xl font-bold ml-3">东方夜雀五札戏</h1>
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <v-spacer />
-        <Common-ConnectionStatus/>
-        <v-tooltip text="点击：退出房间" location="top">
-          <template v-slot:activator="{ props }">
-            <v-btn title="点击：退出房间" :icon="true" variant="text" @click="quitRoom" color="error" size="small" v-bind="props">
-              <Icon name="material-symbols:exit-to-app-rounded" size="22" />
-            </v-btn>
-          </template>
-        </v-tooltip>
+      <div class="h-10">
       </div>
 
       <!-- Room URL Section -->
@@ -129,13 +148,13 @@ onMounted(async () => {
 
     </div>
 
-    <!-- Main Game Area - keeping it untouched -->
+    <!-- Main Game Area -->
     <div class="game-area">
       <!-- ... existing game content ... -->
     </div>
 
     <!-- Right Overlay -->
-    <div class="overlay right-overlay">
+    <div class="overlay right-overlay" :class="{ 'hidden-right': !showSidebar }">
       <!-- Members List -->
       <div class="overlay-card members-list">
         <Room-UserList/>
@@ -160,9 +179,52 @@ onMounted(async () => {
   z-index: 100;
 }
 
+.status-bar {
+  @apply fixed left-0 top-0 z-10 p-2 px-2.5 flex items-center;
+}
+
 .overlay {
   @apply bg-[#f8dcbc] shadow-xl relative;
   @apply xl:w-[28%] lg:w-[35%] md:w-[42%] sm:w-[50%] p-3 flex flex-col gap-3;
+  transition: transform 0.2s ease-out;
+}
+
+.left-overlay {
+  transform-origin: left;
+}
+
+.right-overlay {
+  transform-origin: right;
+}
+
+.hidden-left {
+  transform: translateX(-100%);
+}
+
+.hidden-right {
+  transform: translateX(100%);
+}
+
+.game-area {
+  @apply sm:grow;
+}
+
+.expanded-left {
+  margin-left: 0;
+}
+
+.expanded-right {
+  margin-right: 0;
+}
+
+.right-sidebar-toggle {
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(248, 220, 188, 0.9);
+  border-radius: 8px 0 0 8px;
+  padding: 8px 4px;
 }
 
 .overlay-card {
@@ -190,10 +252,6 @@ onMounted(async () => {
 .chat-section {
   @apply grow flex flex-col gap-3;
   overflow: hidden;
-}
-
-.game-area {
-  @apply sm:grow;
 }
 
 </style>

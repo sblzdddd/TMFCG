@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { LoadingState } from '@/utils/loading';
 defineOptions({
   name: 'DefaultLayout'
 })

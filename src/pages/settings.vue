@@ -3,7 +3,9 @@
 </script>
 
 <template>
-settings
+    <section>
+        settings
+    </section>
 </template>
 
 <style scoped lang="postcss">

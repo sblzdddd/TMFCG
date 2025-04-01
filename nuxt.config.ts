@@ -5,10 +5,10 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
 
-    app: {
-        pageTransition: {name: 'page', mode: 'out-in'},
-        layoutTransition: {name: 'page', mode: 'out-in'}
-    },
+  app: {
+      pageTransition: {name: 'page', mode: 'out-in'},
+      layoutTransition: {name: 'page', mode: 'out-in'}
+  },
   
   // enable devtools
   devtools: {
@@ -41,7 +41,6 @@ export default defineNuxtConfig({
    '@nuxt/fonts',
    '@nuxt/icon',
    '@nuxt/image',
-   '@hypernym/nuxt-gsap',
    'nuxt-build-cache'
   ],
 
@@ -62,8 +61,4 @@ export default defineNuxtConfig({
       websocket: true,
     },
   },
-
-  gsap: {
-    composables: true
-  }
 })

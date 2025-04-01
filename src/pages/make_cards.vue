@@ -3,7 +3,9 @@
 </script>
 
 <template>
-make cards
+    <secction>
+        make cards
+    </secction>
 </template>
 
 <style scoped lang="postcss">

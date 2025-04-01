@@ -582,13 +582,6 @@
   resolved "https://registry.npmmirror.com/@humanwhocodes/retry/-/retry-0.4.2.tgz#1860473de7dfa1546767448f333db80cb0ff2161"
   integrity sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==
 
-"@hypernym/nuxt-gsap@^2.4.3":
-  version "2.4.3"
-  resolved "https://registry.npmmirror.com/@hypernym/nuxt-gsap/-/nuxt-gsap-2.4.3.tgz#23aea281fd6e5f389ed741aec45d22f83526a893"
-  integrity sha512-l3m7Z6NHWqPtz5Q7o18WKW1vOu0XVHtNZurRdE+Es5zKWdIUoHd6L5mNz440drE0bzCN7jIDicRlE5fcj30rpQ==
-  dependencies:
-    gsap "^3.12.5"
-
 "@iconify/collections@^1.0.526":
   version "1.0.531"
   resolved "https://registry.npmmirror.com/@iconify/collections/-/collections-1.0.531.tgz#fb713dd655f0ad7db0064b2b31bf67e2406e0c7f"
@@ -4593,7 +4586,7 @@ graphemer@^1.4.0:
   resolved "https://registry.npmmirror.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-gsap@^3.12.5, gsap@^3.12.7:
+gsap@^3.12.7:
   version "3.12.7"
   resolved "https://registry.npmmirror.com/gsap/-/gsap-3.12.7.tgz#1b690def901ac9b21d4909f39c2b52418154463d"
   integrity sha512-V4GsyVamhmKefvcAKaoy0h6si0xX7ogwBoBSs2CTJwt7luW0oZzC0LhdkyuKV8PJAXr7Yaj8pMjCKD4GJ+eEMg==
