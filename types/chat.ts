@@ -1,4 +1,3 @@
-
 declare global {
     type ChatMessage = {
         sender: User

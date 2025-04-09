@@ -129,9 +129,9 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .loading-wrapper {
-    @apply fixed right-[-20px] sm:right-0 md:right-6 bottom-0 w-[400px] h-[250px] z-[999];
+    @apply fixed right-[-20px] sm:right-0 md:right-6 bottom-0 w-[400px] h-[250px] z-[999] pointer-events-none;
 }
 
 .particle-container {
