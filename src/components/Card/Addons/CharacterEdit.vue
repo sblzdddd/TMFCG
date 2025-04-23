@@ -2,20 +2,20 @@
   <div class="card-sub card-char-root">
     <div :style="`padding-bottom: ${currentOffsetY}%`" class="card-sub card-char-mask">
       <img
-        ref="characterImage" 
-        :src="charImageSrc" 
-        :style="`transform: translateX(${currentOffsetX}%)`" 
-        alt="character"
-        class="card-char"
-        @load="onImageLoad"
+          ref="characterImage"
+          :src="charImageSrc"
+          :style="`transform: translateX(${currentOffsetX}%)`"
+          alt="character"
+          class="card-char"
+          @load="onImageLoad"
       >
     </div>
     <div class="card-sub pt-[16%] px-[18%]">
       <svg class="w-full h-auto" viewBox="0 0 500 150">
         <path id="curve" d="M 40,126 A 420,420 0 0,1 460,126" fill="transparent"/>
         <text
-          :style="`text-anchor: middle; font-size: ${charNameSize}px; fill: #492712; stroke: #d3c3a1; stroke-width: 6px; paint-order: stroke;`"
-          class="itim"
+            :style="`text-anchor: middle; font-size: ${charNameSize}px; fill: #492712; stroke: #d3c3a1; stroke-width: 6px; paint-order: stroke;`"
+            class="itim"
         >
           <textPath href="#curve" startOffset="50%">
             {{ charEnglishName }}
@@ -26,7 +26,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {GetCharacterData} from "@/utils/character";
+
+const {GetCharacterData} = useCharacterData();
 
 const charEnglishName = ref("Unknown");
 const charImageSrc = ref("");
@@ -39,8 +40,8 @@ const charNameSize = computed(() => {
   if (!charEnglishName.value) {
     return 45;
   }
-  const unclipped_size = 73 - 2 * charEnglishName.value.length;
-  return Math.max(20, Math.min(unclipped_size, 55));
+  const unclipped_size = 80 - 2 * charEnglishName.value.length;
+  return Math.max(24, Math.min(unclipped_size, 55));
 })
 
 const props = defineProps({
@@ -108,13 +109,12 @@ watch(() => props.offsetY, (newVal) => {
 })
 
 onMounted(() => {
-  console.log("Setup")
   setup();
 })
 </script>
 <style lang="postcss" scoped>
 .card-char-mask {
-  @apply pt-[28%];
+  @apply pt-[27%];
   mask-image: url('@/assets/images/cards/Character_Mask.png');
   mask-size: contain;
 }

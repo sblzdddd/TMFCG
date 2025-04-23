@@ -1,6 +1,5 @@
-
 export const LoadingState = reactive<{
-    isLoading: boolean;
+	isLoading: boolean;
 }>({
-    isLoading: true
+	isLoading: true
 });

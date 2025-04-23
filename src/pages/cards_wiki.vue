@@ -1,11 +1,13 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>
 
 <template>
-Cards Wiki
+  <div>
+    Cards Wiki
+  </div>
 </template>
 
-<style scoped lang="postcss">
+<style lang="postcss" scoped>
 
 </style>

@@ -1,5 +1,14 @@
 // Symbol for dependency injection
-import {useSocket, waitForConnection, socket} from "@/composables/useSocket";
+import {socket, useSocket, waitForConnection} from "@/composables/useSocket";
+import type {
+	CreateRoomRequest,
+	CreateRoomResponse,
+	JoinRoomResponse,
+	LeaveRoomResponse,
+	ListRoomsResponse,
+	RoomInfoResponse
+} from "~/types/DTO/room.dto";
+import type {Room} from "~/types/room";
 
 const ROOM_STATE_SYMBOL = 'roomState';
 
@@ -18,12 +27,18 @@ export const useRoom = () => {
 	if (typeof window === 'undefined') {
 		return {
 			currentRoom: computed(() => null),
-			setCurrentRoom: () => {},
-			leaveRoom: async () => ({ success: false } as LeaveRoomResponse),
-			createRoom: async () => ({ success: false, room: null, roomCode: '', isOwner: false } as unknown as CreateRoomResponse),
-			joinRoom: async () => ({ success: false } as JoinRoomResponse),
-			getCurrentRoom: async () => ({ success: false, room: null } as unknown as RoomInfoResponse),
-			listRooms: async () => ({ success: false, rooms: [] } as ListRoomsResponse),
+			setCurrentRoom: () => {
+			},
+			leaveRoom: async () => ({success: false} as LeaveRoomResponse),
+			createRoom: async () => ({
+				success: false,
+				room: null,
+				roomCode: '',
+				isOwner: false
+			} as unknown as CreateRoomResponse),
+			joinRoom: async () => ({success: false} as JoinRoomResponse),
+			getCurrentRoom: async () => ({success: false, room: null} as unknown as RoomInfoResponse),
+			listRooms: async () => ({success: false, rooms: []} as ListRoomsResponse),
 		};
 	}
 
@@ -35,7 +50,7 @@ export const useRoom = () => {
 		console.log('setting current room', globalRoomState.current)
 	};
 
-	const createRoom = async ({isPrivate}: {isPrivate: boolean}): Promise<CreateRoomResponse> => {
+	const createRoom = async ({isPrivate}: { isPrivate: boolean }): Promise<CreateRoomResponse> => {
 		if (!useSocket().isConnected) {
 			await waitForConnection()
 		}

@@ -1,4 +1,4 @@
-import { UserManager } from "./UserManager";
-import { RoomManager } from "./RoomManager";
+import {UserManager} from "./UserManager";
+import {RoomManager} from "./RoomManager";
 
-export { UserManager, RoomManager };
+export {UserManager, RoomManager};

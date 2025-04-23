@@ -1,6 +1,6 @@
-import { BaseHandler } from '../base/base.handler';
-import { UserManager } from '@/server/managers';
-import { RoomManager } from '@/server/managers';
+import type {RoomMembersUpdateResponse} from '@/types/DTO/room.dto';
+import {BaseHandler} from '../base/base.handler';
+import {RoomManager, UserManager} from '@/server/managers';
 
 export class DisconnectRoomHandler extends BaseHandler {
 	public initialize() {

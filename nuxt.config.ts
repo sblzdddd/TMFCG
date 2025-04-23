@@ -1,58 +1,35 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-import { defineNuxtConfig } from 'nuxt/config'
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-
   app: {
       pageTransition: {name: 'page', mode: 'out-in'},
       layoutTransition: {name: 'page', mode: 'out-in'}
   },
-  
-  // enable devtools
-  devtools: {
-      enabled: true,
-      timeline: {
-          enabled: true
-      }
-  },
+  devtools: { enabled: true, timeline: { enabled: true } },
 
+  // global css
   css: ['~/styles/global.css'],
+  
+  // structure out the code
+  srcDir: 'src/',
 
   experimental: {
     asyncContext: true
   },
 
-  // structure out the code
-  srcDir: 'src/',
-
-  imports: {
-    dirs: ['types'],
-  },
-
-  build: {
-    transpile: ['vuetify'],
-  },
-
   modules: [
-   '@nuxtjs/tailwindcss',
-   '@nuxt/eslint',
-   '@nuxt/fonts',
-   '@nuxt/icon',
-   '@nuxt/image',
-   'nuxt-build-cache'
+    '@nuxt/eslint',
+    '@nuxt/fonts',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxtjs/tailwindcss',
+    'vuetify-nuxt-module'
   ],
 
-  vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
+  vuetify: {
+    moduleOptions: {
     },
-    plugins: [
-      vuetify({ autoImport: true })
-    ]
+    vuetifyOptions: './vuetify.config.ts'
   },
 
   nitro: {
@@ -60,5 +37,8 @@ export default defineNuxtConfig({
       openAPI: true,
       websocket: true,
     },
-  },
+    prerender: {
+      concurrency: 12,
+    },
+  }
 })

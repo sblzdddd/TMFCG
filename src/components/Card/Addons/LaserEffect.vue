@@ -5,7 +5,7 @@
 </template>
 <script lang="ts" setup>
 defineProps({
-  value: {
+  number: {
     type: Number,
     default: 7,
     required: false
@@ -38,7 +38,7 @@ defineProps({
 }
 
 .laser-effect {
-  @apply w-full h-full bg-repeat;
+  @apply w-full h-full bg-repeat opacity-50;
   background-image: url('@/assets/images/cards/laser.jpg');
   background-size: 60%;
 }

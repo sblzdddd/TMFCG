@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 const {user, updateUserName, updateUserAvatar, avatarUrl} = useUser()
 const userName = ref('')
@@ -25,17 +25,20 @@ watch(() => user.value.avatar, (newValue) => {
         <v-card-text>
           <v-text-field
               :model-value="userName"
-              hide-details
               density="comfortable"
+              hide-details
               label="昵称"
               variant="outlined"
               @update:model-value="(newValue) => userName = newValue"
           >
             <template #prepend>
-              <v-tooltip text="点击：更换头像" location="top">
+              <v-tooltip location="top" text="点击：更换头像">
                 <template #activator="{ props }">
-                  <v-btn variant="flat" v-bind="props" class="px-0 rounded-lg !border-2 !border-primary overflow-hidden !min-w-12 !min-h-12 !max-w-12 !max-h-12">
-                    <img :src="avatarUrl" class="w-full h-full" alt="avatar">
+                  <v-btn
+                      class="px-0 rounded-lg !border-2 !border-primary overflow-hidden !min-w-12 !min-h-12 !max-w-12 !max-h-12"
+                      v-bind="props"
+                      variant="flat">
+                    <img :src="avatarUrl" alt="avatar" class="w-full h-full">
 
                     <v-menu activator="parent" transition="scale-transition">
                       <v-card class="max-w-[440px] max-h-[46vh]">
@@ -46,8 +49,8 @@ watch(() => user.value.avatar, (newValue) => {
                                 v-for="i in 94"
                                 :key="i-1"
                                 v-ripple
-                                class="avatar-item rounded-lg"
                                 :class="{'scale-105 shadow-md !border-[var(--v-theme-on-surface)]': user.avatar === i-1}"
+                                class="avatar-item rounded-lg"
                                 @click="user.avatar = i-1">
                               <img :src="`/assets/images/avatars/${String(i-1).padStart(5, '0')}.png`" alt="avatar">
                             </button>
@@ -77,8 +80,8 @@ watch(() => user.value.avatar, (newValue) => {
           <v-btn
               class="!m-3 mt-0"
               color="primary"
-              variant="elevated"
               text="关闭"
+              variant="elevated"
               @click="isActive.value = false"
           />
         </v-card-actions>
@@ -86,7 +89,7 @@ watch(() => user.value.avatar, (newValue) => {
     </template>
   </v-dialog>
 </template>
-<style scoped lang="postcss">
+<style lang="postcss" scoped>
 .avatar-item {
   @apply w-12 h-12 m-1 overflow-hidden cursor-pointer hover:scale-105 hover:shadow-md transition-all duration-200 ease-in-out hover:border-[var(--v-theme-on-surface)];
   border: 2px solid transparent;

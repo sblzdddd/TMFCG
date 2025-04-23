@@ -1,7 +1,7 @@
-import { BaseHandler } from '../base/base.handler';
-import { UserManager } from '@/server/managers';
-import { RoomManager } from '@/server/managers';
-import { RoomService } from '@/server/services/RoomService';
+import {BaseHandler} from '../base/base.handler';
+import {RoomManager, UserManager} from '@/server/managers';
+import {RoomService} from '@/server/services/RoomService';
+import type {JoinRoomRequest, JoinRoomResponse, RoomMembersUpdateResponse} from '@/types/DTO/room.dto';
 
 // Join a room by room code
 export class JoinRoomHandler extends BaseHandler {

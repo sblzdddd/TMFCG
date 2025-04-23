@@ -1,8 +1,8 @@
 <template>
-  <NuxtLoadingIndicator color="#502e21" />
+  <NuxtLoadingIndicator color="#502e21"/>
   <NuxtLayout/>
   <Transition name="page">
-    <Common-Loading v-if="LoadingState.isLoading" />
+    <Common-Loading v-if="LoadingState.isLoading"/>
   </Transition>
 </template>
 <style>

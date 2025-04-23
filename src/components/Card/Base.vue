@@ -1,37 +1,45 @@
 <!--Card Layout-->
 <template>
-  <div class="card">
-    <div class="card-sub card-deco-stars"/>
-    <slot name="backdrop"/>
-    <div class="card-sub card-value-display">
-      <div class="card-value-container h-[16%]">
-        <span :class="{'ml-[5%]': CardValueString==='10'}"
-              :style="{fontSize: value >= 11?'35cqw':'45cqw'}"
+  <div class="card" v-bind="$attrs">
+    <div class="card-sub card-back"/>
+    <div class="card-sub card-front">
+      <div class="card-sub card-deco-stars"/>
+      <slot name="backdrop"/>
+      <div class="card-sub card-value-display">
+        <div class="card-value-container h-[16%]">
+          <span
+              :class="{'ml-[5%]': CardNumberString==='10'}"
+              :style="{fontSize: number >= 11?'35cqw':'45cqw'}"
               class="gloock card-value"
-        >
-          {{ CardValueString }}
-        </span>
-        <img :src="CardValueSuits[suit]" alt="Suit" class="card-suit">
-      </div>
-      <div class="card-value-container absolute bottom-0 right-0 m-[3.05%] h-[15.3%] rotate-180">
-        <span :class="{'ml-[5%]': CardValueString==='10'}"
-              :style="{fontSize: value >= 11?'35cqw':'45cqw'}"
+          >
+            {{ CardNumberString }}
+          </span>
+          <img v-if="CardNumberSuits[suit]" :src="CardNumberSuits[suit]" alt="Suit" class="card-suit">
+        </div>
+        <div class="card-value-container absolute bottom-0 right-0 m-[3.05%] h-[15.3%] rotate-180">
+          <span
+              :class="{'ml-[5%]': CardNumberString==='10'}"
+              :style="{fontSize: number >= 11?'35cqw':'45cqw'}"
               class="gloock card-value"
-        >
-          {{ CardValueString }}
-        </span>
-        <img :src="CardValueSuits[suit]" alt="Suit" class="card-suit">
+          >     
+            {{ CardNumberString }}
+          </span>
+          <img v-if="CardNumberSuits[suit]" :src="CardNumberSuits[suit]" alt="Suit" class="card-suit">
+        </div>
       </div>
+      <div v-show="isSpecial" class="card-sub card-special-content">
+        <img ref="specialImage" alt="JQK" class="w-full h-full pb-[12%]" src="">
+      </div>
+      <div class="card-sub px-[12%] pb-[10.3%] pt-[7.4%] flex flex-col justify-between items-center">
+        <img v-show="!isSpecial" ref="topImage" alt="top" class="w-[66%]" src="">
+        <div class="grow"/>
+        <img ref="bottomImage" alt="bottom" class="w-[98%]" src="">
+      </div>
+      <div :style="{animation: showAnimation ? 'downward 10s linear infinite' : 'none'}" class="card-sub card-bg-mask">
+        <div class="card-bg"/>
+      </div>
+      <slot name="front"/>
     </div>
-    <div class="card-sub px-[12%] pb-[10.3%] pt-[7.4%] flex flex-col justify-between items-center">
-      <img ref="topImage" alt="top" class="w-[66%]" src="">
-      <div class="grow"/>
-      <img ref="bottomImage" alt="bottom" class="w-[98%]" src="">
-    </div>
-    <div class="card-sub card-bg-mask">
-      <div class="card-bg"/>
-    </div>
-    <slot name="front"/>
   </div>
 </template>
 <!--Card Logic-->
@@ -45,21 +53,37 @@ import {onMounted} from "vue";
 const suits = ['Club', 'Diamond', 'Heart', 'Spade'];
 const topImage = ref();
 const bottomImage = ref();
-
-const CardValueSuits = [ClubValueSuit, DiamondValueSuit, HeartValueSuit, SpadeValueSuit]
+const specialImage = ref();
+const isSpecial = ref(false);
+const CardNumberSuits = [ClubValueSuit, DiamondValueSuit, HeartValueSuit, SpadeValueSuit]
 
 const props = defineProps({
-  value: {
+  number: {
     type: Number,
-    default: 1,
+    default: 0,
     required: false
   },
   suit: {
     type: Number,
-    default: 2,
+    default: 0,
     required: false
   },
   animateBackground: {
+    type: Boolean,
+    default: false,
+    required: false
+  },
+  yRotation: {
+    type: Number,
+    default: 0,
+    required: false
+  },
+  xRotation: {
+    type: Number,
+    default: 0,
+    required: false
+  },
+  showAnimation: {
     type: Boolean,
     default: false,
     required: false
@@ -67,12 +91,20 @@ const props = defineProps({
 })
 
 function setup() {
-  const top = [0, 1, 2, 3, 2, 3, 4, 3, 4, 5]
-  const bottom = [1, 1, 1, 1, 2, 2, 2, 3, 3, 3]
-  import(`@/assets/images/cards/Suits/${suits[props.suit]}/Top${top[props.value - 1]}.svg`).then((module) => {
-    if (topImage.value) topImage.value.src = module.default;
-  })
-  import(`@/assets/images/cards/Suits/${suits[props.suit]}/Bottom${bottom[props.value - 1]}.svg`).then((module) => {
+  const top = [0, 1, 2, 3, 2, 3, 4, 3, 4, 5, -1, -1, -1]
+  const bottom = [1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 0, 0, 0]
+  const special = ['J', 'Q', 'K']
+  isSpecial.value = top[props.number - 1] === -1;
+  if (isSpecial.value) {
+    import(`@/assets/images/cards/Special/${special[props.number - 11]}/OuterContent.svg`).then((module) => {
+      if (specialImage.value) specialImage.value.src = module.default;
+    })
+  } else {
+    import(`@/assets/images/cards/Suits/${suits[props.suit]}/Top${top[props.number - 1]}.svg`).then((module) => {
+      if (topImage.value) topImage.value.src = module.default;
+    })
+  }
+  import(`@/assets/images/cards/Suits/${suits[props.suit]}/Bottom${bottom[props.number - 1]}.svg`).then((module) => {
     if (bottomImage.value) bottomImage.value.src = module.default;
   })
 }
@@ -80,7 +112,7 @@ function setup() {
 watch(() => props.suit, () => {
   setup()
 }, {immediate: true})
-watch(() => props.value, () => {
+watch(() => props.number, () => {
   setup()
 }, {immediate: true})
 
@@ -90,28 +122,41 @@ onMounted(() => {
 
 const extra_values = ["J", "Q", "K", "", ""]
 
-const CardValueString = computed(() => {
-  if (2 <= props.value && props.value <= 10) return props.value.toString();
-  if (props.value == 1) return "A";
-  if (11 <= props.value && props.value <= 15) return extra_values[props.value - 11];
-  return "?"
+const CardNumberString = computed(() => {
+  if (2 <= props.number && props.number <= 10) return props.number.toString();
+  if (props.number == 1) return "A";
+  if (11 <= props.number && props.number <= 15) return extra_values[props.number - 11] || "";
+  return ""
 })
 </script>
 <!--Card's related exposed class styles-->
 <style lang="postcss">
 .card .card-sub {
   @apply w-full h-full absolute top-0 left-0 right-0 bottom-0;
+  user-select: none;
 }
 </style>
 <!--Card Local Style-->
 <style lang="postcss" scoped>
 .card {
-  @apply shadow-xl overflow-hidden rounded-[2%] relative z-[20];
+  @apply overflow-hidden rounded-[2%] relative z-[20];
   aspect-ratio: 756/1051 !important;
   height: 100%;
   width: auto;
+  user-select: none;
+  backface-visibility: hidden;
+}
+
+.card-front {
   background: url('@/assets/images/cards/CardBase.svg') no-repeat center center;
   background-size: cover;
+  backface-visibility: hidden;
+}
+
+.card-back {
+  background: url('@/assets/images/cards/CardBack2.png') no-repeat center center;
+  background-size: cover;
+  backface-visibility: hidden;
 }
 
 .card-deco-stars {
@@ -146,7 +191,6 @@ div.card-value-container {
   background-image: url('@/assets/images/cards/BG_Tile_Albedo.png');
   background-position: center 0;
   background-size: 41%;
-  animation: 10s downward infinite linear;
 }
 
 @keyframes downward {

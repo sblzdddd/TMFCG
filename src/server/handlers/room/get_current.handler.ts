@@ -1,7 +1,7 @@
-import { BaseHandler } from '../base/base.handler';
-import { UserManager } from '@/server/managers';
-import { RoomManager } from '@/server/managers';
-import { logger } from '@/server/utils/logger';
+import {BaseHandler} from '../base/base.handler';
+import {RoomManager, UserManager} from '@/server/managers';
+import {logger} from '@/server/utils/logger';
+import type {RoomInfoResponse} from '@/types/DTO/room.dto';
 
 // Get Current Room that the user is in
 export class GetCurrentRoomHandler extends BaseHandler {
@@ -19,13 +19,13 @@ export class GetCurrentRoomHandler extends BaseHandler {
 					logger.roomManager(`Joining room ${user.currentRoomCode}`);
 					this.joinRoom(user.currentRoomCode);
 				}
-				
+
 				this.emitToRoom(user.currentRoomCode, 'current_room', {
 					room: room
 				} as RoomInfoResponse);
 			}
 		}
-		
+
 		this.emit('current_room', {
 			room: undefined
 		} as RoomInfoResponse);

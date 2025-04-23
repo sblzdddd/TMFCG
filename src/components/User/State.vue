@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 const {user, avatarUrl} = useUser()
 
@@ -13,12 +13,12 @@ watch(() => user.value.avatar, (newValue) => {
 </script>
 
 <template>
-  <v-tooltip text="点击：编辑用户信息" location="bottom">
+  <v-tooltip location="bottom" text="点击：编辑用户信息">
     <template #activator="{ props }">
       <v-btn
           class="px-1"
-          variant="text"
           v-bind="props"
+          variant="text"
       >
         <ClientOnly>
           <div class="rounded-lg w-8 h-8 border-[1.5px] border-primary overflow-hidden">
@@ -29,7 +29,7 @@ watch(() => user.value.avatar, (newValue) => {
           <span class="ml-2 mb-0.5">{{ user.name }}</span>
           <span class="text-[0.45rem] text-gray-500 ml-2 mb-0.5 truncate">{{ user.id }}</span>
         </div>
-        <User-InfoEditDialog />
+        <User-InfoEditDialog/>
       </v-btn>
     </template>
   </v-tooltip>

@@ -1,10 +1,10 @@
-import type { NitroApp } from "nitropack";
-import { Server as Engine } from "engine.io";
-import { Server } from "socket.io";
-import { defineEventHandler } from "h3";
+import type {NitroApp} from "nitropack";
+import {Server as Engine} from "engine.io";
+import {Server} from "socket.io";
+import {defineEventHandler} from "h3";
 import registerHandlers from "../handlers";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { logger } from "../utils/logger";
+import {authMiddleware} from "../middlewares/auth.middleware";
+import {logger} from "../utils/logger";
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
 	const engine = new Engine();
@@ -19,7 +19,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
 	io.bind(engine);
 
-	
+
 	// register the auth middleware
 	io.use(authMiddleware);
 

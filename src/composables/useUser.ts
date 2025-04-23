@@ -1,5 +1,7 @@
 import {socket} from "~/composables/useSocket";
 import defaultAvatar from '@/assets/images/avatars/00000.png'
+import type {User} from "~/types/user";
+import type {ChangeUserAvatarRequest, ChangeUserNameRequest, UserInfoResponse} from "~/types/DTO/user.dto";
 
 // Symbol for dependency injection
 const USER_STATE_SYMBOL = 'userState';
@@ -23,11 +25,14 @@ export const useUser = () => {
 	if (typeof window === 'undefined') {
 		return {
 			user: computed(() => emptyUser),
-			getUserFromServer: async () => ({ success: false }),
-			initializeUser: async () => ({ success: false }),
-			updateUserName: () => {},
-			updateUserAvatar: () => {},
-			resetUser: () => {},
+			getUserFromServer: async () => ({success: false}),
+			initializeUser: async () => ({success: false}),
+			updateUserName: () => {
+			},
+			updateUserAvatar: () => {
+			},
+			resetUser: () => {
+			},
 		};
 	}
 
@@ -72,12 +77,12 @@ export const useUser = () => {
 
 	const updateUserName = (newName: string) => {
 		globalUserState.current.name = newName;
-		socket.emit('changeUserName', { name: newName } as ChangeUserNameRequest);
+		socket.emit('changeUserName', {name: newName} as ChangeUserNameRequest);
 	};
 
 	const updateUserAvatar = (newAvatar: number) => {
 		globalUserState.current.avatar = newAvatar;
-		socket.emit('changeUserAvatar', { avatar: newAvatar } as ChangeUserAvatarRequest);
+		socket.emit('changeUserAvatar', {avatar: newAvatar} as ChangeUserAvatarRequest);
 	};
 
 	const resetUser = () => {
@@ -91,7 +96,7 @@ export const useUser = () => {
 			avatar: 0,
 		});
 	};
-	
+
 	const UserAvatarUrl = computed(() => {
 		if (!globalUserState.current) return defaultAvatar
 		const avatarNumber = globalUserState.current.avatar;

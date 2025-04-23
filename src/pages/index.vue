@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { gsap } from "gsap";
-import { LoadingState } from '@/utils/loading';
+import type {PublicRoomInfo} from '@/types/room';
+import {LoadingState} from '@/utils/loading';
 
 const router = useRouter()
 const tab = ref(0);
@@ -31,7 +31,6 @@ const createRoomCallback = async () => {
   if (!data || !data.room) {
     return;
   }
-  await new Promise(resolve => setTimeout(resolve, 1000));
   isCreatingRoom.value = false;
   currentRoomCode.value = data.room.code;
   await router.push(`/room/${data.room.code}`);
@@ -47,10 +46,6 @@ onMounted(async () => {
     return;
   }
   showPanel.value = 0;
-  gsap.to(titleRef.value, {
-    scale: 1,
-    duration: 0.25,
-  });
   LoadingState.isLoading = false;
 })
 
@@ -65,7 +60,7 @@ watch(() => tab.value, (newValue) => {
 
 <template>
   <div class="page-root flex !flex-col gap-5 items-center justify-center pb-10">
-    <h4 ref="titleRef" class="mb-4 scale-125">东方夜雀五札戏</h4>
+    <h4 ref="titleRef" class="mb-4">东方夜雀五札戏</h4>
     <v-expansion-panels v-model="showPanel">
       <!--expansion animation-->
       <v-expansion-panel elevation="0">
@@ -85,19 +80,22 @@ watch(() => tab.value, (newValue) => {
                       @click="tab = 1">创建房间
                   </v-btn>
                 </div>
-                <v-btn color="primary" density="compact" size="x-large" title="前往游戏设置" to="/settings"
-                       variant="flat">
+                <v-btn
+                    color="primary" density="compact" size="x-large" title="前往游戏设置" to="/settings"
+                    variant="flat">
                   设置
                 </v-btn>
-                <v-btn color="primary" density="compact" size="x-large" title="前往游戏设置" @click="LoadingState.isLoading = !LoadingState.isLoading"
-                       variant="flat">
+                <v-btn
+                    color="primary" density="compact" size="x-large" title="前往游戏设置"
+                    variant="flat"
+                    @click="LoadingState.isLoading = !LoadingState.isLoading">
                   按钮
                 </v-btn>
               </div>
             </v-window-item>
             <v-window-item value="1">
               <div class="p-4 pt-0">
-                <v-checkbox label="私密房间" v-model="isPrivate" hide-details></v-checkbox>
+                <v-checkbox v-model="isPrivate" hide-details label="私密房间"/>
                 <v-btn
                     :disabled="isCreatingRoom || currentRoomCode !== ''"
                     :loading="isCreatingRoom"
@@ -118,18 +116,21 @@ watch(() => tab.value, (newValue) => {
             <v-window-item value="2">
               <div class="p-4 pt-0">
                 <p class="w-full text-left text-2xl font-bold">公开房间列表</p>
-                <p class="w-full text-left text-sm text-gray-500 mt-2" v-if="publicRooms.length === 0">暂无房间...</p>
+                <p v-if="publicRooms.length === 0" class="w-full text-left text-sm text-gray-500 mt-2">暂无房间...</p>
                 <v-list>
                   <v-list-item
-                    v-for="room in publicRooms"
-                    :key="room.code"
-                    :value="room.code"
-                    class="py-3"
-                    @click="router.push(`/room/${room.code}`);"
+                      v-for="room in publicRooms"
+                      :key="room.code"
+                      :number="room.code"
+                      class="py-3"
+                      @click="router.push(`/room/${room.code}`);"
                   >
                     <v-list-item-title>{{ room.code }}</v-list-item-title>
 
-                    <v-list-item-subtitle class="mb-1 text-high-emphasis opacity-100">房主：{{ room.owner }}</v-list-item-subtitle>
+                    <v-list-item-subtitle class="mb-1 text-high-emphasis opacity-100">房主：{{
+                        room.owner
+                      }}
+                    </v-list-item-subtitle>
 
                     <v-list-item-subtitle class="text-high-emphasis">人数：{{ room.memberCount }}</v-list-item-subtitle>
 
@@ -137,7 +138,7 @@ watch(() => tab.value, (newValue) => {
                       <v-list-item-action class="flex-column align-end">
                         <small class="mb-4 text-high-emphasis opacity-60">点击加入</small>
 
-                        <v-spacer></v-spacer>
+                        <v-spacer/>
 
                         <Icon class="w-6 h-6" name="material-symbols:arrow-right-alt-rounded"/>
                       </v-list-item-action>
@@ -160,7 +161,7 @@ watch(() => tab.value, (newValue) => {
     </v-expansion-panels>
   </div>
 </template>
-<style scoped lang="postcss">
+<style lang="postcss" scoped>
 h1 {
   @apply xl:text-[10vw] lg:text-[18vw] md:text-[20vw] text-[22vw]
 }

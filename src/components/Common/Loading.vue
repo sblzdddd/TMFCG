@@ -1,23 +1,23 @@
 <template>
-    <div class="loading-wrapper">
-        <div class="particle-container">
-            <div
-                v-for="(particle, index) in particles" 
-                :key="index" 
-                class="particle"
-                :style="getParticleStyle(particle)">
-                <img :src="particle.image" :alt="'particle-' + index" >
-            </div>
-        </div>
-        <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
-            <span class="ma-shan-zheng-regular loading-text translate-x-[-10%]">少女洗牌中...</span>
-            <span class="ma-shan-zheng-regular loading-text-sub text-secondary ">Now loading...</span>
-        </div>
+  <div class="loading-wrapper">
+    <div class="particle-container">
+      <div
+          v-for="(particle, index) in particles"
+          :key="index"
+          :style="getParticleStyle(particle)"
+          class="particle">
+        <img :alt="'particle-' + index" :src="particle.image">
+      </div>
     </div>
+    <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
+      <span class="ma-shan-zheng-regular loading-text translate-x-[-10%]">少女洗牌中...</span>
+      <span class="ma-shan-zheng-regular loading-text-sub text-secondary ">Now loading...</span>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import {onMounted, onUnmounted, ref} from 'vue'
 
 const images = [
   '/assets/images/particle1.png',
@@ -39,12 +39,12 @@ class Particle {
     this.rotationSpeedX = Math.max(0.1, Math.random()) * 0.02 // Reduced rotation speed
     this.rotationSpeedY = Math.max(0.1, Math.random()) * 0.02
     this.rotationSpeedZ = Math.max(0.1, Math.random()) * 0.02
-    this.initialRotationAccY = 0.0002 * (Math.max(0.1, Math.random())-0.5) // Reduced acceleration
-    this.initialRotationAccZ = 0.0002 * (Math.max(0.1, Math.random())-0.5)
+    this.initialRotationAccY = 0.0002 * (Math.max(0.1, Math.random()) - 0.5) // Reduced acceleration
+    this.initialRotationAccZ = 0.0002 * (Math.max(0.1, Math.random()) - 0.5)
     this.period = 60 + Math.random() * 50 // Increased period for slower oscillation
-    this.rotationAccY = 
-    this.rotationAccZ = 
-    this.frame = 0
+    this.rotationAccY =
+        this.rotationAccZ =
+            this.frame = 0
     this.opacity = 1
     this.fadeInSpeed = 0.005 + Math.random() * 0.01 // Reduced fade speed
     this.fadeOutSpeed = 0.005 + Math.random() * 0.01
@@ -60,7 +60,7 @@ class Particle {
     this.frame++
 
     const shouldNegative = Math.floor(this.frame / this.period) % 2 === 1 ? 1 : -1
-    
+
     this.rotationAccY = this.initialRotationAccY * shouldNegative
     this.rotationAccZ = this.initialRotationAccZ * shouldNegative
 
@@ -79,12 +79,12 @@ class Particle {
       this.opacity = 0
     } else {
       let distanceFromBorder = Math.min(
-        this.y,
-        100 - this.y,
-        this.x,
-        100 - this.x
+          this.y,
+          100 - this.y,
+          this.x,
+          100 - this.x
       )
-      if(distanceFromBorder < 0) {
+      if (distanceFromBorder < 0) {
         this.opacity = 0
       } else {
         let a = Math.pow(distanceFromBorder / this.maskStrength, this.maskPower)
@@ -118,7 +118,7 @@ const animate = () => {
 }
 
 onMounted(() => {
-  particles.value = Array.from({ length: 35 }, () => new Particle())
+  particles.value = Array.from({length: 35}, () => new Particle())
   animate()
 })
 
@@ -129,71 +129,71 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped lang="postcss">
+<style lang="postcss" scoped>
 .loading-wrapper {
-    @apply fixed right-[-20px] sm:right-0 md:right-6 bottom-0 w-[400px] h-[250px] z-[999] pointer-events-none;
+  @apply fixed right-[-20px] sm:right-0 md:right-6 bottom-0 w-[400px] h-[250px] z-[999] pointer-events-none;
 }
 
 .particle-container {
-    @apply w-full h-full;
-    position: relative;
-    overflow: hidden;
-    perspective: 200px;
+  @apply w-full h-full;
+  position: relative;
+  overflow: hidden;
+  perspective: 200px;
 }
 
 .particle {
-    position: absolute;
-    transform-style: preserve-3d;
-    will-change: transform, opacity;
+  position: absolute;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .particle img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-style: preserve-3d;
 }
 
 .loading-text {
-    @apply text-[40px] text-white;
-    text-shadow: 1px 1px black, 
-    -1px 1px black, 
-    1px -1px black, 
-    -1px -1px black,
-    1px 0px black,
-    0px 1px black,
-    1px 1px 5px black;
-    animation: slow-blink 1s linear infinite;
+  @apply text-[40px] text-white;
+  text-shadow: 1px 1px black,
+  -1px 1px black,
+  1px -1px black,
+  -1px -1px black,
+  1px 0px black,
+  0px 1px black,
+  1px 1px 5px black;
+  animation: slow-blink 1s linear infinite;
 }
 
 @keyframes slow-blink {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.3;
-    }
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 
 .loading-text-sub {
-    @apply absolute top-[54%] right-[14%] text-[30px];
-    text-shadow: 1px 1px black, 
-    -1px 1px black, 
-    1px -1px black, 
-    -1px -1px black,
-    1px 0px black,
-    0px 1px black,
-    1px 1px 5px black;
+  @apply absolute top-[54%] right-[14%] text-[30px];
+  text-shadow: 1px 1px black,
+  -1px 1px black,
+  1px -1px black,
+  -1px -1px black,
+  1px 0px black,
+  0px 1px black,
+  1px 1px 5px black;
 }
 
 /* Transition styles */
 .page-enter-active,
 .page-leave-active {
-    transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .page-enter-from,
 .page-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 </style>

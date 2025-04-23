@@ -15,15 +15,15 @@
       <v-btn to="/cards_wiki">
         卡牌
       </v-btn>
-      <v-btn to="/make_cards">
-        制作牌组
+      <v-btn to="/editor">
+        编辑器
       </v-btn>
 
       <v-spacer/>
 
       <!-- websocket status here -->
       <Common-ConnectionStatus/>
-      <User-State />
+      <User-State/>
     </div>
   </v-app-bar>
 </template>

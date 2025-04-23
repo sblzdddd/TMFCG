@@ -1,13 +1,13 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>
 
 <template>
-    <section>
-        settings
-    </section>
+  <section>
+    settings
+  </section>
 </template>
 
-<style scoped lang="postcss">
+<style lang="postcss" scoped>
 
 </style>

@@ -1,0 +1,525 @@
+{
+  "name": "Set B",
+  "cards": [
+    {
+      "suit": 0,
+      "number": 1,
+      "appearance": {
+        "character": "丰聪耳神子",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": -4.7
+      }
+    },
+    {
+      "suit": 0,
+      "number": 2,
+      "appearance": {
+        "character": "琪斯美",
+        "characterVariant": "微笑",
+        "characterY": 9.5,
+        "characterX": -3.3
+      }
+    },
+    {
+      "suit": 0,
+      "number": 3,
+      "appearance": {
+        "character": "宫古芳香",
+        "characterVariant": "无表情",
+        "characterY": 8.2,
+        "characterX": 0.9
+      }
+    },
+    {
+      "suit": 0,
+      "number": 4,
+      "appearance": {
+        "character": "今泉影狼",
+        "characterVariant": "微笑",
+        "characterY": 2.7,
+        "characterX": -0.7
+      }
+    },
+    {
+      "suit": 0,
+      "number": 5,
+      "appearance": {
+        "character": "哆来咪·苏伊特",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 0.4
+      }
+    },
+    {
+      "suit": 0,
+      "number": 6,
+      "appearance": {
+        "character": "河城荷取",
+        "characterVariant": "微笑",
+        "characterY": 16.7,
+        "characterX": 0.3
+      }
+    },
+    {
+      "suit": 0,
+      "number": 7,
+      "appearance": {
+        "character": "高丽野阿吽",
+        "characterVariant": "张嘴",
+        "characterY": 9.9,
+        "characterX": -0.4
+      }
+    },
+    {
+      "suit": 0,
+      "number": 8,
+      "appearance": {
+        "character": "绵月丰姬",
+        "characterVariant": "微笑",
+        "characterY": 3.5,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 0,
+      "number": 9,
+      "appearance": {
+        "character": "魂魄妖梦",
+        "characterVariant": "微笑",
+        "characterY": 1.3,
+        "characterX": -0.1
+      }
+    },
+    {
+      "suit": 0,
+      "number": 10,
+      "appearance": {
+        "character": "稀神探女",
+        "characterVariant": "无表情",
+        "characterY": 0,
+        "characterX": 1.1
+      }
+    },
+    {
+      "suit": 0,
+      "number": 11,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "睡衣",
+        "characterY": 0,
+        "characterX": 2.8
+      }
+    },
+    {
+      "suit": 0,
+      "number": 12,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "海盗",
+        "characterY": 0,
+        "characterX": 0.5
+      }
+    },
+    {
+      "suit": 0,
+      "number": 13,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "水手服·冬",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 1,
+      "appearance": {
+        "character": "宫出口瑞灵",
+        "characterVariant": "无表情",
+        "characterY": 14.4,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 2,
+      "appearance": {
+        "character": "若鹭姬",
+        "characterVariant": "微笑",
+        "characterY": 8.3,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 3,
+      "appearance": {
+        "character": "爱塔妮缇拉尔瓦",
+        "characterVariant": "微笑",
+        "characterY": 19,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 4,
+      "appearance": {
+        "character": "露易兹",
+        "characterVariant": "微笑",
+        "characterY": 5.7,
+        "characterX": 1.9
+      }
+    },
+    {
+      "suit": 1,
+      "number": 5,
+      "appearance": {
+        "character": "红美铃",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 6,
+      "appearance": {
+        "character": "犬走椛",
+        "characterVariant": "微笑",
+        "characterY": 2.4,
+        "characterX": -2.4
+      }
+    },
+    {
+      "suit": 1,
+      "number": 7,
+      "appearance": {
+        "character": "键山雏",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 1.1
+      }
+    },
+    {
+      "suit": 1,
+      "number": 8,
+      "appearance": {
+        "character": "茨木华扇",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 9,
+      "appearance": {
+        "character": "比那名居天子",
+        "characterVariant": "微笑",
+        "characterY": 13.2,
+        "characterX": 0.4
+      }
+    },
+    {
+      "suit": 1,
+      "number": 10,
+      "appearance": {
+        "character": "风见幽香",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 11,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "访问服饰",
+        "characterY": 2.2,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 12,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "乐队",
+        "characterY": 1.4,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 1,
+      "number": 13,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "仙女",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 2,
+      "number": 1,
+      "appearance": {
+        "character": "芙兰朵露·斯卡蕾特",
+        "characterVariant": "微笑",
+        "characterY": 6.3,
+        "characterX": 2.1
+      }
+    },
+    {
+      "suit": 2,
+      "number": 2,
+      "appearance": {
+        "character": "云居一轮",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": -1.5
+      }
+    },
+    {
+      "suit": 2,
+      "number": 3,
+      "appearance": {
+        "character": "萨拉",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 1.8
+      }
+    },
+    {
+      "suit": 2,
+      "number": 4,
+      "appearance": {
+        "character": "水桥帕露西",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 0.5
+      }
+    },
+    {
+      "suit": 2,
+      "number": 5,
+      "appearance": {
+        "character": "多多良小伞",
+        "characterVariant": "微笑吐舌",
+        "characterY": 0,
+        "characterX": 0.2
+      }
+    },
+    {
+      "suit": 2,
+      "number": 6,
+      "appearance": {
+        "character": "少名针妙丸",
+        "characterVariant": "微笑",
+        "characterY": 10.1,
+        "characterX": 5.3
+      }
+    },
+    {
+      "suit": 2,
+      "number": 7,
+      "appearance": {
+        "character": "爱丽丝·玛格特罗依德",
+        "characterVariant": "微笑",
+        "characterY": 8.2,
+        "characterX": -0.4
+      }
+    },
+    {
+      "suit": 2,
+      "number": 8,
+      "appearance": {
+        "character": "伊吹萃香",
+        "characterVariant": "高兴",
+        "characterY": 7.6,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 2,
+      "number": 9,
+      "appearance": {
+        "character": "博丽灵梦",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": -0.1
+      }
+    },
+    {
+      "suit": 2,
+      "number": 10,
+      "appearance": {
+        "character": "蕾米莉亚·斯卡蕾特",
+        "characterVariant": "无表情",
+        "characterY": 0,
+        "characterX": 0.4
+      }
+    },
+    {
+      "suit": 2,
+      "number": 11,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "生日礼服",
+        "characterY": 0,
+        "characterX": -1.9
+      }
+    },
+    {
+      "suit": 2,
+      "number": 12,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "承太郎装",
+        "characterY": 0,
+        "characterX": -0.7
+      }
+    },
+    {
+      "suit": 2,
+      "number": 13,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "新年服装",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 3,
+      "number": 1,
+      "appearance": {
+        "character": "饕餮尤魔",
+        "characterVariant": "微笑",
+        "characterY": 15.3,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 3,
+      "number": 2,
+      "appearance": {
+        "character": "森近霖之助",
+        "characterVariant": "微笑",
+        "characterY": 0,
+        "characterX": 1.1
+      }
+    },
+    {
+      "suit": 3,
+      "number": 3,
+      "appearance": {
+        "character": "小野塚小町",
+        "characterVariant": "微笑",
+        "characterY": 9.4,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 3,
+      "number": 4,
+      "appearance": {
+        "character": "物部布都",
+        "characterVariant": "微笑",
+        "characterY": 8.4,
+        "characterX": 1.4
+      }
+    },
+    {
+      "suit": 3,
+      "number": 5,
+      "appearance": {
+        "character": "封兽鵺",
+        "characterVariant": "无表情",
+        "characterY": 10,
+        "characterX": -4.4
+      }
+    },
+    {
+      "suit": 3,
+      "number": 6,
+      "appearance": {
+        "character": "灵乌路空",
+        "characterVariant": "无表情",
+        "characterY": 13.9,
+        "characterX": -0.2
+      }
+    },
+    {
+      "suit": 3,
+      "number": 7,
+      "appearance": {
+        "character": "神绮",
+        "characterVariant": "无表情",
+        "characterY": 0,
+        "characterX": -0.2
+      }
+    },
+    {
+      "suit": 3,
+      "number": 8,
+      "appearance": {
+        "character": "藤原妹红",
+        "characterVariant": "无表情",
+        "characterY": 7.6,
+        "characterX": -0.8
+      }
+    },
+    {
+      "suit": 3,
+      "number": 9,
+      "appearance": {
+        "character": "雾雨魔理沙",
+        "characterVariant": "无表情",
+        "characterY": 1,
+        "characterX": -0.2
+      }
+    },
+    {
+      "suit": 3,
+      "number": 10,
+      "appearance": {
+        "character": "四季映姬·夜摩仙那度",
+        "characterVariant": "微笑",
+        "characterY": 1,
+        "characterX": -0.2
+      }
+    },
+    {
+      "suit": 3,
+      "number": 11,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "魔女",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 3,
+      "number": 12,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "仪仗队",
+        "characterY": 0,
+        "characterX": 0
+      }
+    },
+    {
+      "suit": 3,
+      "number": 13,
+      "appearance": {
+        "character": "米斯蒂娅·萝蕾拉",
+        "characterVariant": "万圣节服装",
+        "characterY": 4.7,
+        "characterX": 0.2
+      }
+    }
+  ]
+}
