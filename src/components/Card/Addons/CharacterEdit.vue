@@ -11,11 +11,10 @@
       >
     </div>
     <div class="card-sub pt-[16%] px-[18%]">
-      <svg class="w-full h-auto" viewBox="0 0 500 150">
+      <svg class="w-full h-auto itim character-name" viewBox="0 0 500 150">
         <path id="curve" d="M 40,126 A 420,420 0 0,1 460,126" fill="transparent"/>
         <text
             :style="`text-anchor: middle; font-size: ${charNameSize}px; fill: #492712; stroke: #d3c3a1; stroke-width: 6px; paint-order: stroke;`"
-            class="itim"
         >
           <textPath href="#curve" startOffset="50%">
             {{ charEnglishName }}

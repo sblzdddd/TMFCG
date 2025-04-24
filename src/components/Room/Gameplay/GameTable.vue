@@ -13,7 +13,7 @@
                 left: `${windowWidth * 0.17 - index * 0.13 * 54 / deckCards.length}px`,
                 width: `${windowWidth * 0.1}px`,
                 height: `${windowWidth * 0.1 / cardRatio}px`,
-                zIndex: index
+                zIndex: index,
             }"
         class="card-in-deck"
         @click="drawCard"

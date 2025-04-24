@@ -18,6 +18,7 @@
     "@tweakpane/plugin-essentials": "^0.2.1",
     "animejs": "^4.0.1",
     "eslint": "^9.0.0",
+    "html-to-image": "^1.11.13",
     "nuxt": "^3.16.2",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",

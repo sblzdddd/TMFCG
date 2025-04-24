@@ -1,10 +1,10 @@
 <!--Card Layout-->
 <template>
   <div class="card" v-bind="$attrs">
-    <div class="card-sub card-back"/>
+    <div class="card-sub card-back" />
     <div class="card-sub card-front">
-      <div class="card-sub card-deco-stars"/>
-      <slot name="backdrop"/>
+      <div class="card-sub card-deco-stars" />
+      <slot name="backdrop" />
       <div class="card-sub card-value-display">
         <div class="card-value-container h-[16%]">
           <span
@@ -21,17 +21,17 @@
               :class="{'ml-[5%]': CardNumberString==='10'}"
               :style="{fontSize: number >= 11?'35cqw':'45cqw'}"
               class="gloock card-value"
-          >     
+          >
             {{ CardNumberString }}
           </span>
           <img v-if="CardNumberSuits[suit]" :src="CardNumberSuits[suit]" alt="Suit" class="card-suit">
         </div>
       </div>
-      <div v-show="isSpecial" class="card-sub card-special-content">
+      <div v-if="isSpecial" class="card-sub card-special-content">
         <img ref="specialImage" alt="JQK" class="w-full h-full pb-[12%]" src="">
       </div>
       <div class="card-sub px-[12%] pb-[10.3%] pt-[7.4%] flex flex-col justify-between items-center">
-        <img v-show="!isSpecial" ref="topImage" alt="top" class="w-[66%]" src="">
+        <img v-if="!isSpecial" ref="topImage" alt="top" class="w-[66%]" src="">
         <div class="grow"/>
         <img ref="bottomImage" alt="bottom" class="w-[98%]" src="">
       </div>
