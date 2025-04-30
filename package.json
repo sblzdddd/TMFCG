@@ -19,6 +19,8 @@
     "animejs": "^4.0.1",
     "eslint": "^9.0.0",
     "html-to-image": "^1.11.13",
+    "jszip": "^3.10.1",
+    "node-gyp": "^11.2.0",
     "nuxt": "^3.16.2",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
@@ -28,6 +30,7 @@
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "devDependencies": {
+    "@nuxt/content": "^3.5.1",
     "@tweakpane/core": "^2.0.5",
     "@types/debug": "^4.1.12",
     "debug": "^4.4.0",

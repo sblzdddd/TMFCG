@@ -4,7 +4,7 @@ export function waitForAllImagesToLoad(element: HTMLElement): Promise<void> {
     const images = Array.from(element.querySelectorAll('img'));
     
     // If no images or all images are already loaded, resolve immediately
-    if (images.length === 0 || images.every(img => img.complete)) {
+    if (images.every(img => img.complete)) {
       setTimeout(resolve, 50); // Small delay to ensure CSS rendering is complete
       return;
     }

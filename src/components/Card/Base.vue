@@ -8,8 +8,8 @@
       <div class="card-sub card-value-display">
         <div class="card-value-container h-[16%]">
           <span
-              :class="{'ml-[5%]': CardNumberString==='10'}"
-              :style="{fontSize: number >= 11?'35cqw':'45cqw'}"
+              :class="{'ml-[3%]': CardNumberString==='10'}"
+              :style="{fontSize: number >= 10?'35cqw':'45cqw'}"
               class="gloock card-value"
           >
             {{ CardNumberString }}
@@ -18,8 +18,8 @@
         </div>
         <div class="card-value-container absolute bottom-0 right-0 m-[3.05%] h-[15.3%] rotate-180">
           <span
-              :class="{'ml-[5%]': CardNumberString==='10'}"
-              :style="{fontSize: number >= 11?'35cqw':'45cqw'}"
+              :class="{'ml-[3%]': CardNumberString ==='10'}"
+              :style="{fontSize: number >= 10?'35cqw':'45cqw'}"
               class="gloock card-value"
           >
             {{ CardNumberString }}

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@source "../../content/**/*";
 
 .gloock {
     font-family: "Gloock", serif;
@@ -48,11 +49,36 @@ body {
 
 h1, h2, h3, h4, h5, .v-btn, .v-card-title {
     font-family: 'jiangxizhuokai', sans-serif;
+    @apply font-medium;
+}
+
+h1 {
+    @apply text-4xl mb-6 mt-12;
+}
+
+h2 {
+    @apply text-3xl mb-6 mt-12;
+}
+
+h3 {
+    @apply text-2xl mb-3 mt-8;
+}
+
+h4 {
+    @apply text-xl mb-2 mt-6;
+}
+
+h5 {
+    @apply text-lg mb-1 mt-4;
+}
+
+h6 {
+    @apply text-base mb-1 mt-2;
 }
 
 
 .title-with-dots {
-    @apply flex items-center justify-center gap-3 w-full text-lg text-center tracking-widest;
+    @apply flex items-center justify-center gap-3 w-full text-lg text-center tracking-widest m-0;
     text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
     transition: transform 0.4s cubic-bezier(0.6, 0, 0.35, 1.05) 0.1s,
     opacity 0.4s cubic-bezier(0.6, 0, 0.35, 1.05) 0.2s;

@@ -2,6 +2,7 @@
 import {nextTick, onMounted, ref, watch} from 'vue'
 import {waitForConnection} from '~/composables/useSocket'
 import {getMemberAvatarUrl} from '~/composables/useUser'
+import type { ChatMessage } from '~/types/chat'
 
 const props = defineProps({
   isOverlayOpened: {
@@ -74,7 +75,7 @@ watch(() => props.isOverlayOpened, (newValue) => {
   }
 })
 
-const isMyMessage = (message: any) => {
+const isMyMessage = (message: ChatMessage) => {
   return user.value.id === message.sender.id
 }
 </script>
@@ -84,14 +85,19 @@ const isMyMessage = (message: any) => {
     <h2 class="title-with-dots">聊天</h2>
     <div :key="animationKey" ref="chatList" class="chat-list">
       <transition-group name="popup" @after-enter="scrollToBottom">
-        <div v-for="(message, index) in displayedMessages" :key="index"
-             :class="isMyMessage(message)?'flex-row-reverse':''"
-             :style="`--index: ${index - displayedMessages.length + 16}`"
-             class="chat-message">
+        <div 
+          v-for="(message, index) in displayedMessages"
+          :key="index"
+          :class="isMyMessage(message)?'flex-row-reverse':''"
+          :style="`--index: ${index - displayedMessages.length + 16}`"
+          class="chat-message"
+        >
           <img :src="getMemberAvatarUrl(message.sender.avatar)" alt="avatar" class="w-9 h-9 rounded-lg mt-0.5">
           <div :class="isMyMessage(message)?'items-end':'items-start'" class="flex flex-col max-w-[70%]">
-            <div :class="isMyMessage(message)?'justify-between':''"
-                 class="message-info flex flex-row items-end w-full gap-2">
+            <div
+              :class="isMyMessage(message)?'justify-between':''"
+              class="message-info flex flex-row items-end w-full gap-2"
+            >
               <span class="sender">{{ !isMyMessage(message) ? message.sender.name : '' }}</span>
               <span class="message-time">{{
                   new Date(message.timestamp).toLocaleTimeString('en-GB', {
@@ -107,8 +113,14 @@ const isMyMessage = (message: any) => {
     </div>
 
     <div class="flex flex-row gap-3 w-full">
-      <v-text-field v-model="inputMessage" density="compact" hide-details label="发送消息" variant="outlined"
-                    @keyup.enter="onSendChat"/>
+      <v-text-field
+        v-model="inputMessage"
+        density="compact"
+        hide-details
+        label="发送消息"
+        variant="outlined"
+        @keyup.enter="onSendChat"
+      />
       <v-btn @click="onSendChat">发送</v-btn>
     </div>
   </div>

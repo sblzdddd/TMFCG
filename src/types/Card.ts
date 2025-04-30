@@ -32,8 +32,6 @@ export interface PlayingCard {
 	data: CardData;
 	isAnimating: boolean;
 	id: number;
-	rotateY: number;
-	rotateX: number;
 }
 
 export interface CardData {

@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-titlebar px-4 py-2 flex items-center border-b-2 border-black/20">
+  <Header-NavBar custom-content>
     <!-- Home button -->
     <NuxtLink class="mr-4" to="/">
       <v-btn elevation="0" icon>
@@ -9,7 +9,7 @@
 
     <!-- Title and profile name -->
     <div class="flex items-center flex-grow">
-      <h2 class="text-lg font-medium mr-4">卡组编辑器</h2>
+      <h2 class="text-lg font-medium m-0 mr-4">卡组编辑器</h2>
 
       <!-- Dropdown menu -->
       <v-menu>
@@ -41,7 +41,6 @@
         class="max-w-xs"
         density="compact"
         hide-details
-        label="牌组名称"
         variant="outlined"
         @update:model-value="setProfileName"
     />
@@ -52,7 +51,7 @@
         type="file"
         @change="handleFileUpload"
     >
-  </div>
+  </Header-NavBar>
 </template>
 
 <script lang="ts" setup>

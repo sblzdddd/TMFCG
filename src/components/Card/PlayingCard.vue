@@ -1,9 +1,6 @@
 <template>
-  <Card-Base
+  <Card-RenderedBase
       :number="number"
-      :rotate-x="rotateX"
-      :rotate-y="rotateY"
-      :show-back="false"
       :suit="suit"
   >
     <template #front>
@@ -14,7 +11,7 @@
           :offset-y="characterY"
       />
     </template>
-  </Card-Base>
+  </Card-RenderedBase>
 </template>
 <script lang="ts" setup>
 import {watch} from 'vue';
@@ -32,16 +29,6 @@ const props = defineProps({
   number: {
     type: Number,
     required: true,
-  },
-  rotateY: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  rotateX: {
-    type: Number,
-    required: false,
-    default: 0,
   },
 });
 

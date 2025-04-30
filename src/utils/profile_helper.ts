@@ -1,7 +1,6 @@
 import type { CardSuit, CardData, CardNumber, CardProfile} from "~/types/Card";
 
 
-
 export const createDefaultCard = (suit: CardSuit, number: CardNumber): CardData => ({
 	suit,
 	number,

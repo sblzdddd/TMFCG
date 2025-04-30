@@ -1,4 +1,3 @@
-
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   app: {
@@ -23,7 +22,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxtjs/tailwindcss',
-    'vuetify-nuxt-module'
+    'vuetify-nuxt-module',
+    '@nuxt/content'
   ],
 
   vuetify: {

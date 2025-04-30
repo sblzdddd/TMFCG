@@ -11,8 +11,8 @@
         :style="{
                 top: `${windowHeight * 0.13 - index * 0.1 * 54 / deckCards.length}px`,
                 left: `${windowWidth * 0.17 - index * 0.13 * 54 / deckCards.length}px`,
-                width: `${windowWidth * 0.1}px`,
-                height: `${windowWidth * 0.1 / cardRatio}px`,
+                width: `${windowWidth * 0.07}px`,
+                height: `${windowWidth * 0.07 / cardRatio}px`,
                 zIndex: index,
             }"
         class="card-in-deck"
@@ -25,8 +25,6 @@
         :id="`player-card-${card.id}`"
         :key="`${card.id}`"
         :number="card.data.number"
-        :rotate-x="card.rotateX"
-        :rotate-y="card.rotateY"
         :show-back="false"
         :suit="card.data.suit"
         class="player-card"
@@ -80,9 +78,9 @@
 </template>
 
 <script lang="ts" setup>
-import {nextTick, onMounted, ref, watch} from 'vue';
+import {nextTick, onMounted, ref, watch, onBeforeUnmount} from 'vue';
 import setB from '@/assets/Set B.json';
-import {createDraggable} from 'animejs';
+import {createDraggable, type Draggable, utils} from 'animejs';
 import {animateCardDraw} from '@/utils/card_animation';
 import type {CardData, CardProfile, PlayingCard} from '~/types/Card';
 
@@ -90,6 +88,8 @@ const deckCards = ref<CardData[]>([]);
 const cardPool = ref<PlayingCard[]>([]);
 
 const playerCards = ref<PlayingCard[]>([]);
+
+const draggables = ref<Draggable[]>([]);
 
 const numOfDrawCards = ref(1);
 const pointOfInsertions = ref("");
@@ -104,8 +104,8 @@ watch([windowWidth, windowHeight], () => {
       Array.from(cardsInDeck) as HTMLElement[],
       Array.from(playerCardElements) as HTMLElement[],
       [],
-      () => {
-      },
+      () => {},
+      true,
   );
 })
 
@@ -130,30 +130,13 @@ onMounted(() => {
   deckCards.value = shuffleArray(currentProfile.value.cards);
 });
 
-watch(playerCards, () => {
-  nextTick(() => {
-    document.querySelectorAll('.player-card-container').forEach(card => {
-      createDraggable(card, {
-        x: false,
-        containerPadding: 10,
-        releaseStiffness: 40,
-        releaseEase: 'out(3)',
-      });
-    });
-  });
-}, {deep: true});
-
 let newestID = 0;
 
 // Draw a card from the deck
 const drawCard = async () => {
   if (deckCards.value.length > 0) {
 
-    console.log(pointOfInsertions.value)
-
     const indexList: number[] = pointOfInsertions.value.split(" ").map(Number);
-
-    console.log(indexList)
 
     for (let i = 0; i < numOfDrawCards.value; i++) {
       newestID++;
@@ -165,8 +148,6 @@ const drawCard = async () => {
         data: drawnCard,
         isAnimating: true,
         id: newestID,
-        rotateY: 0,
-        rotateX: 0
       });
       await nextTick();
     }
@@ -176,7 +157,6 @@ const drawCard = async () => {
 
     // Get the positions for animation
     const cardsInDeck = document.querySelectorAll('.card-in-deck');
-
     const playerCardElements = document.querySelectorAll('.player-card');
 
     animateCardDraw(
@@ -184,8 +164,35 @@ const drawCard = async () => {
         Array.from(playerCardElements) as HTMLElement[],
         indexList,
         () => {
-          indexList.forEach(index => {
-            playerCards.value[index].isAnimating = false;
+          playerCards.value.forEach(card => {
+            card.isAnimating = false;
+          });
+
+          draggables.value.forEach(draggable => {
+            draggable.stop();
+            draggable.disable();
+            draggable.revert();
+            utils.remove(draggable);
+          });
+
+          playerCardElements.forEach(card => {
+            const draggable = createDraggable(card, {
+              x: true,
+              y: true,
+              releaseStiffness: 40,
+              releaseMass: 0.1,
+              container: '.game-table',
+              onRelease: (draggable) => {
+                draggable.reset();
+              },
+              onDrag: (draggable) => {
+              
+              },
+            });
+            draggables.value.push(draggable);
+            // card.addEventListener('mouseleave', () => {
+            //   draggable.reset();
+            // });
           });
         },
     );
@@ -199,6 +206,44 @@ const drawCard = async () => {
 //     cardPool.value.push(playedCard);
 //   }
 // };
+
+// Add cleanup function
+const cleanupDraggables = () => {
+  draggables.value.forEach(draggable => {
+    if (draggable) {
+      utils.remove(draggable);
+    }
+  });
+  draggables.value = [];
+};
+
+watch(playerCards, () => {
+  nextTick(() => {
+    // Clean up existing draggables before creating new ones
+    cleanupDraggables();
+    
+    document.querySelectorAll('.player-card-container').forEach(card => {
+      const draggable = createDraggable(card, {
+        x: true,
+        y: true,
+        releaseStiffness: 40,
+        releaseMass: 0.1,
+        container: '.game-table',
+        onRelease: (_draggable) => {
+          _draggable.reset();
+        },
+        onDrag: () => {
+        },
+      });
+      draggables.value.push(draggable);
+    });
+  });
+}, {deep: true});
+
+// Clean up draggables when component is unmounted
+onBeforeUnmount(() => {
+  cleanupDraggables();
+});
 </script>
 
 <style lang="postcss" scoped>
@@ -207,30 +252,11 @@ const drawCard = async () => {
   box-shadow: inset 0 0 50px 20px #5f000010;
 }
 
-.card-deck {
-  @apply absolute top-[12%] left-[20%] h-auto cursor-pointer;
-  aspect-ratio: 2.5/3.5;
-  width: 120px;
-  position: relative;
-}
-
 .card-in-deck {
   @apply absolute top-0 left-0 w-full;
   height: 100%;
   transition: all 0.3s ease;
   backface-visibility: hidden;
-}
-
-/* Card pool area */
-.card-pool-area {
-  @apply absolute top-[40%] left-[30%] w-[40%] flex justify-center items-center gap-2;
-  height: 20%;
-  transform-style: preserve-3d;
-  transform: rotateX(24deg);
-}
-
-.pool-card-container {
-  @apply w-[12%] h-full relative;
 }
 
 .pool-card {
