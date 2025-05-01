@@ -1,0 +1,7 @@
+@import '~/styles/global.css';
+
+.content-base {
+  @apply border-2 bg-primary/20 border-primary/40 rounded-md overflow-hidden;
+}
+
+

@@ -23,7 +23,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/tailwindcss',
     'vuetify-nuxt-module',
-    '@nuxt/content'
+    '@nuxt/content',
+    'nuxt-monaco-editor'
   ],
 
   vuetify: {

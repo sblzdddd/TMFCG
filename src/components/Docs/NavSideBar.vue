@@ -3,13 +3,10 @@
     <ul class="nav-list">
       <li v-for="group in navigation" :key="group.path" class="nav-group">
         <div v-ripple class="nav-group-header" @click="toggleGroup(group)">
-          <div class="flex items-center justify-center gap-2">
-            <Icon v-if="group.icon" :name="group.icon" :size="20" />
-            <span class="nav-group-title">{{ group.title }}</span>
-          </div>
-          <Icon class="nav-group-icon" :class="{ 'is-open': group.isOpen }" name="mdi:chevron-down" :size="20" />
+          <span class="nav-group-title">{{ group.title }}</span>
+          <Icon class="nav-group-icon" :class="{ 'is-open': !group.isCollapsed }" name="mdi:chevron-down" :size="20" />
         </div>
-        <ul :id="`nav-children-${group.path}`" class="nav-children overflow-hidden" style="height: 0px; opacity: 0;">
+        <ul :id="`nav-children-${group.path}`" class="nav-children overflow-hidden" style="height: auto; opacity: 1;">
           <li v-for="item in group.children" :key="item.path" class="nav-item">
             <NuxtLink v-ripple :to="`/docs${item.path}`" class="nav-link">
               <Icon v-if="item.icon" :name="item.icon" :size="20" />
@@ -24,14 +21,22 @@
 
 <script setup lang="ts">
 import { animate } from 'animejs';
+interface ContentNavigationItem {
+    title: string;
+    path: string;
+    stem?: string;
+    children?: ContentNavigationItem[];
+    page?: false;
+    [key: string]: unknown;
+}
 
 defineProps<{
-  navigation: any[]
+  navigation: ContentNavigationItem[]
 }>()
 
-const toggleGroup = (group: any) => {
-  group.isOpen = !group.isOpen;
-  if (group.isOpen) {
+const toggleGroup = (group: ContentNavigationItem) => {
+  group.isCollapsed = !group.isCollapsed;
+  if (!group.isCollapsed) {
     const el = document.getElementById(`nav-children-${group.path}`);
     if (el) {
       enter(el);
@@ -53,6 +58,8 @@ const enter = (el: Element) => {
   });
 };
 const leave = (el: Element) => {
+  const height = (el as HTMLElement).scrollHeight;
+  (el as HTMLElement).style.height = `${height}px`;
   animate(el, {
     height: 0,
     opacity: 0,

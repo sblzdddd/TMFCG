@@ -43,37 +43,13 @@
     font-style: normal;
 }
 
-body {
-    @apply !bg-black;
+.jiangxizhuokai {
+    font-family: 'jiangxizhuokai', sans-serif;
 }
 
-h1, h2, h3, h4, h5, .v-btn, .v-card-title {
+.v-btn, .v-card-title {
     font-family: 'jiangxizhuokai', sans-serif;
     @apply font-medium;
-}
-
-h1 {
-    @apply text-4xl mb-6 mt-12;
-}
-
-h2 {
-    @apply text-3xl mb-6 mt-12;
-}
-
-h3 {
-    @apply text-2xl mb-3 mt-8;
-}
-
-h4 {
-    @apply text-xl mb-2 mt-6;
-}
-
-h5 {
-    @apply text-lg mb-1 mt-4;
-}
-
-h6 {
-    @apply text-base mb-1 mt-2;
 }
 
 
@@ -125,10 +101,18 @@ h6 {
 }
 
 html, body {
-    @apply m-0 p-0 bg-background
+    @apply m-0 p-0 bg-black
     w-full min-h-screen
-    overflow-x-hidden !overflow-y-auto;
+    overflow-hidden;
 }
+
+a {
+    @apply hover:opacity-80;
+    transition: all 0.3s ease;
+}
+
+
+
 
 .page-root {
     @apply w-screen h-full xl:px-20 lg:px-16 md:px-8 px-4 flex flex-col lg:flex-row justify-between;

@@ -15,7 +15,7 @@ defineProps<{
       <v-btn to="/">
         起点
       </v-btn>
-      <v-btn to="/docs">
+      <v-btn to="/docs/getting-started">
         文档
       </v-btn>
       <v-btn to="/editor">
