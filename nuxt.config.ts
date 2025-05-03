@@ -6,6 +6,17 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true, timeline: { enabled: true } },
 
+  content: {
+    build: {
+      markdown: {
+        toc: {
+          depth: 3,
+          searchDepth: 3
+        }
+      }
+    }
+  },
+
   // global css
   css: ['~/styles/global.css'],
   

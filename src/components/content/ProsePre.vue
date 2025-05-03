@@ -1,5 +1,5 @@
 <template>
-  <div ref="preRef" :class="`${!isInCodePreview ? 'content-base my-4' : 'border-t-2 border-primary/40'} pre`">
+  <div ref="preRef" :class="`${!isInCodePreview ? 'content-base my-4' : 'border-t-2 border-primary/40 mb-1'} pre`">
     <div v-if="!isInCodePreview" class="pre-head">
       <div v-if="props.filename" class="filename">
         <Icon :size="14" class="mt-1" :name="languageIcon" />

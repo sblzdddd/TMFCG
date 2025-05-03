@@ -1,6 +1,7 @@
 <template>
   <component
-    :is="to ? 'a' : 'div'"
+    :is="to ? (target === '_self' ? NuxtLink : 'a') : 'div'"
+    :to="to"
     :href="to"
     :target="target"
     class="prose-card"
@@ -17,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components'
 import './content.css'
 
 interface Props {

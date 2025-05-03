@@ -3,14 +3,14 @@
     <ul class="nav-list">
       <li v-for="group in navigation" :key="group.path" class="nav-group">
         <div v-ripple class="nav-group-header" @click="toggleGroup(group)">
-          <span class="nav-group-title">{{ group.title }}</span>
+          <span class="nav-group-title jiangxizhuokai">{{ group.title }}</span>
           <Icon class="nav-group-icon" :class="{ 'is-open': !group.isCollapsed }" name="mdi:chevron-down" :size="20" />
         </div>
         <ul :id="`nav-children-${group.path}`" class="nav-children overflow-hidden" style="height: auto; opacity: 1;">
           <li v-for="item in group.children" :key="item.path" class="nav-item">
-            <NuxtLink v-ripple :to="`/docs${item.path}`" class="nav-link">
+            <NuxtLink v-ripple :to="`/docs${item.path}`" class="nav-link" :class="{ 'active': route.path === `/docs${item.path}` }">
               <Icon v-if="item.icon" :name="item.icon" :size="20" />
-              {{ item.title }}
+              <span>{{ item.title }}</span>
             </NuxtLink>
           </li>
         </ul>
@@ -21,6 +21,9 @@
 
 <script setup lang="ts">
 import { animate } from 'animejs';
+
+const route = useRoute();
+
 interface ContentNavigationItem {
     title: string;
     path: string;
@@ -94,14 +97,20 @@ const leave = (el: Element) => {
   will-change: height, opacity, transform;
 }
 .nav-item {
-  @apply ml-1 rounded-lg flex items-center;
-}
-.nav-item::after {
-  content: '';
-  @apply fixed left-0 h-full w-[1px] bg-white/10;
+  @apply ml-1 rounded-lg flex items-center !relative;
 }
 .nav-link {
-  @apply block flex items-center gap-2 w-full px-2 py-1 text-sm hover:bg-black/10 rounded-[5px];
-  transition: all 0.1s ease-in-out;
+  @apply flex items-center gap-2 w-full px-2 py-1 text-sm hover:bg-black/10 rounded-[5px];
+  transition: all 0.2s ease-in-out;
+  &::after {
+    @apply content-[''] absolute left-[-4px] top-[10%] h-[80%] w-[1px] bg-transparent;
+    transition: all 0.2s ease-in-out;
+  }
+  &.active {
+    @apply font-bold text-[#79500d];
+    &::after {
+      @apply bg-[#79500d];
+    }
+  }
 }
 </style>

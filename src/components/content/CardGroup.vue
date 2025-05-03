@@ -3,7 +3,3 @@
     <slot />
   </div>
 </template>
-
-<script setup lang="ts">
-// No props needed, just a grid layout wrapper
-</script> 

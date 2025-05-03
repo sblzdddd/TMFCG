@@ -14,11 +14,19 @@ provide('navigation', navigation)
 
 onMounted(() => {
   if (!page.value?.body?.toc?.links) return
+  console.log(navigation.value)
   tocLinks.value = page.value?.body?.toc?.links
 })
 
+const pageContainer = ref<HTMLElement | null>(null)
+
+watch(() => route.path, () => {
+  if (pageContainer.value) {
+    pageContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+})
+
 watch(() => page.value?.body?.toc?.links, () => {
-  console.log('tocLinks', page.value?.body?.toc?.links)
   if (!page.value?.body?.toc?.links) return
   tocLinks.value = page.value?.body?.toc?.links
 })
@@ -31,7 +39,7 @@ defineOptions({
   <v-app>
     <Header-NavBar is-wiki-page />
     <v-main style="padding-top: 56px;">
-      <div class="page-container">
+      <div ref="pageContainer" class="page-container">
         <aside class="page-navigation">
           <Docs-NavSideBar v-if="navigation" :navigation="navigation" />
         </aside>

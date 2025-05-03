@@ -1,6 +1,5 @@
 <template>
   <div class="content-base code-preview">
-    <!-- Preview Section -->
     <div class="p-4 flex items-center justify-center">
       <slot />
     </div>
@@ -17,7 +16,7 @@ import './content.css'
 
 <style scoped lang="postcss">
 .code-preview {
-  @apply w-full my-6;
+  @apply w-full;
 }
 
 .preview-section {

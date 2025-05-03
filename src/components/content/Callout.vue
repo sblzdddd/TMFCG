@@ -5,7 +5,7 @@
       colorClasses
     ]"
   >
-    <div class="flex-shrink-0 mt-1">
+    <div class="flex-shrink-0 mt-[3px]">
       <Icon :name="iconName" :size="20" />
     </div>
     <div class="flex-grow">

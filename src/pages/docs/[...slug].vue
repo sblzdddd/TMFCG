@@ -5,8 +5,20 @@ definePageMeta({
 })
 const route = useRoute()
 const { data: page } = await useAsyncData(route.path, () => queryCollection('docs').path(route.path.replace('/docs', '')).first())
+const { data: navigation } = await useAsyncData('navigation', () => queryCollectionNavigation('docs'))
+
+const currentSection = computed(() => {
+  if (!navigation.value || !route.path) return null
+  const currentPath = route.path.replace('/docs', '')
+  for (const section of navigation.value) {
+    if (section.children?.some(child => child.path === currentPath)) {
+      return section.title
+    }
+  }
+  return null
+})
+
 onMounted(() => {
-  console.log(page.value)
   LoadingState.isLoading = false
 })
 
@@ -23,10 +35,10 @@ useSeoMeta({
   <div class="flex flex-col-reverse lg:grid lg:grid-cols-10 lg:gap-10">
     <div class="lg:col-span-8 mb-40">
       <template v-if="page">
-        <div class="flex flex-col border-b-2 border-primary/40 py-4 gap-4">
-          <p class="text-sm text-gray-500">{{ page.links }}</p>
-          <h1 class="jiangxizhuokai font-medium text-4xl">{{ page.title }}</h1>
-          <p class="text-lg text-gray-500">{{ page.description }}</p>
+        <div class="flex flex-col border-b-2 border-primary/40 py-4 mb-6">
+          <p v-if="currentSection" class="text-[1.05rem] jiangxizhuokai font-medium mb-0 pl-1">{{ currentSection }}</p>
+          <h1 class="jiangxizhuokai font-medium text-5xl mt-2 mb-4">{{ page.title }}</h1>
+          <p class="text-[1.1rem] text-gray-500 pl-1">{{ page.description }}</p>
         </div>
         <ContentRenderer class="docs-content" :value="page" />
       </template>

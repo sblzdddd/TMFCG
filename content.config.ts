@@ -4,7 +4,7 @@ export default defineContentConfig({
   collections: {
     docs: defineCollection({
       type: 'page',
-      source: '**/*.md',
+      source: '**/*.{md,yml}',
       schema: z.object({
         links: z.array(z.object({
           label: z.string(),

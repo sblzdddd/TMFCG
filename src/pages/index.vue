@@ -60,7 +60,7 @@ watch(() => tab.value, (newValue) => {
 
 <template>
   <div class="page-root flex !flex-col gap-5 items-center justify-center pb-10">
-    <h4 ref="titleRef" class="mb-4">东方夜雀五札戏</h4>
+    <h4 ref="titleRef" class="text-foreground mb-4">东方夜雀五札戏</h4>
     <v-expansion-panels v-model="showPanel">
       <!--expansion animation-->
       <v-expansion-panel elevation="0">

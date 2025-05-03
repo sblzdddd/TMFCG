@@ -1,5 +1,5 @@
 <template>
-  <h5 :id="props.id" class="jiangxizhuokai font-medium text-lg mb-1 mt-4">
+  <h5 :id="props.id" class="jiangxizhuokai font-medium text-lg mb-6 mt-4">
     <a
       v-if="generate"
       :href="`#${props.id}`"

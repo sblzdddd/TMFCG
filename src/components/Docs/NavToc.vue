@@ -5,13 +5,22 @@
       <ul class="nav-list">
         <li v-for="toc in tocs" :key="toc.id" class="toc-group">
           <div class="toc-header">
-            <NuxtLink :to="`#${toc.id}`" class="toc-title">{{ toc.text }}</NuxtLink>
+            <NuxtLink :to="`#${toc.id}`" @click="(e: MouseEvent) => handleTocClick(e, toc.id)" class="toc-title">{{ toc.text }}</NuxtLink>
           </div>
           <ul class="toc-children overflow-hidden" style="height: auto; opacity: 1;">
             <li v-for="item in toc.children" :key="item.id" class="toc-item">
-              <NuxtLink :to="`#${item.id}`" class="toc-link">
-                {{ item.text }}
-              </NuxtLink>
+              <div class="">
+                <NuxtLink :to="`#${item.id}`" @click="(e: MouseEvent) => handleTocClick(e, item.id)" class="toc-link">
+                  {{ item.text }}
+                </NuxtLink>
+              </div>
+              <ul class="toc-children overflow-hidden" style="height: auto; opacity: 1;">
+                <li v-for="subItem in item.children" :key="subItem.id" class="toc-item">
+                  <NuxtLink :to="`#${subItem.id}`" @click="(e: MouseEvent) => handleTocClick(e, subItem.id)" class="toc-link">
+                    {{ subItem.text }}
+                  </NuxtLink>
+                </li>
+              </ul>
             </li>
           </ul>
         </li>
@@ -22,10 +31,61 @@
 
 <script setup lang="ts">
 import type { TocLink } from '@nuxtjs/mdc'
+import { onMounted, onUnmounted } from 'vue'
+
 defineProps<{
   tocs: TocLink[]
 }>()
 
+const handleTocClick = (event: MouseEvent, id: string) => {
+  event.preventDefault()
+  const element = document.getElementById(id)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+    // Update URL hash after scrolling
+    window.history.pushState(null, '', `#${id}`)
+  }
+}
+
+const handleAnchorClick = (event: MouseEvent) => {
+  const target = event.target as HTMLElement
+  // Check if it's an anchor element inside a heading
+  if (target.tagName === 'A' && target.closest('h1, h2, h3, h4, h5, h6')) {
+    const href = target.getAttribute('href')
+    if (href?.startsWith('#')) {
+      event.preventDefault()
+      const id = decodeURIComponent(href.slice(1))
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+        window.history.pushState(null, '', href)
+      }
+    }
+  }
+}
+
+onMounted(() => {
+  // Handle initial scroll position if URL has a hash
+  if (window.location.hash) {
+    const id = decodeURIComponent(window.location.hash.slice(1)) // Remove the # symbol and decode
+    const element = document.getElementById(id)
+    console.log(id)
+    if (element) {
+      // Use a small timeout to ensure the page is fully rendered
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }
+
+  // Add click event listener for heading anchor elements
+  document.addEventListener('click', handleAnchorClick)
+})
+
+onUnmounted(() => {
+  // Clean up event listener
+  document.removeEventListener('click', handleAnchorClick)
+})
 </script>
 <style lang="postcss">
 .nav-list {
@@ -44,7 +104,7 @@ defineProps<{
   will-change: height, opacity, transform;
 }
 .toc-item {
-  @apply ml-1 flex items-center;
+  @apply ml-1 flex flex-col justify-center;
 }
 .toc-item::after {
   content: '';

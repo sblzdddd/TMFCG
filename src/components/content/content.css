@@ -1,7 +1,27 @@
 @import '~/styles/global.css';
 
 .content-base {
-  @apply border-2 bg-primary/20 border-primary/40 rounded-md overflow-hidden;
+  @apply border bg-content1 border-default rounded-md overflow-hidden mb-6;
+}
+
+.content-base .content-base {
+  @apply bg-content2;
+}
+
+.content-base .content-base .content-base {
+  @apply bg-content3;
+}
+
+.paragraph {
+  @apply mb-6;
+}
+
+.content-base .paragraph {
+  @apply mb-0;
+}
+
+.dialog-content .paragraph {
+  @apply mb-0;
 }
 
 

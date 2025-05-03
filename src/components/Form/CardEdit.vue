@@ -135,8 +135,6 @@ const updateExistingCard = () => {
       card => card.suit === cardEditModel.suit && card.number === cardEditModel.number
   )
 
-  console.log(existingCard)
-
   // if card exists, update cardEditModel with existing card data
   if (existingCard) {
     cardEditModel.appearance.character = existingCard.appearance.character

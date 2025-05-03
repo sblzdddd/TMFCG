@@ -1637,5 +1637,18 @@
       "爽朗",
       "高兴"
     ]
+  },
+  {
+    "name": "摩多罗隐岐奈",
+    "en_name": "Modoroh Inaho",
+    "jp_name": "摩多羅　隠岐奈",
+    "nickname": "轮椅战神，秘神，乐子神",
+    "description": "究极的绝对秘神",
+    "first": "东方天空璋",
+    "image_prefix": "摩多罗",
+    "images": [
+      "微笑",
+      "微笑张嘴"
+    ]
   }
 ]
