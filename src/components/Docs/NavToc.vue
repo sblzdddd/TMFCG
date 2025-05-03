@@ -5,19 +5,19 @@
       <ul class="nav-list">
         <li v-for="toc in tocs" :key="toc.id" class="toc-group">
           <div class="toc-header">
-            <NuxtLink :to="`#${toc.id}`" @click="(e: MouseEvent) => handleTocClick(e, toc.id)" class="toc-title">{{ toc.text }}</NuxtLink>
+            <NuxtLink :to="`#${toc.id}`" class="toc-title" @click="(e: MouseEvent) => handleTocClick(e, toc.id)">{{ toc.text }}</NuxtLink>
           </div>
           <ul class="toc-children overflow-hidden" style="height: auto; opacity: 1;">
             <li v-for="item in toc.children" :key="item.id" class="toc-item">
               <div class="">
-                <NuxtLink :to="`#${item.id}`" @click="(e: MouseEvent) => handleTocClick(e, item.id)" class="toc-link">
-                  {{ item.text }}
+                <NuxtLink :to="`#${item.id}`" class="toc-link" @click="(e: MouseEvent) => handleTocClick(e, item.id)">
+                  <span class="toc-title">{{ item.text }}</span>
                 </NuxtLink>
               </div>
               <ul class="toc-children overflow-hidden" style="height: auto; opacity: 1;">
                 <li v-for="subItem in item.children" :key="subItem.id" class="toc-item">
-                  <NuxtLink :to="`#${subItem.id}`" @click="(e: MouseEvent) => handleTocClick(e, subItem.id)" class="toc-link">
-                    {{ subItem.text }}
+                  <NuxtLink :to="`#${subItem.id}`" class="toc-link" @click="(e: MouseEvent) => handleTocClick(e, subItem.id)">
+                    <span class="toc-title">{{ subItem.text }}</span>
                   </NuxtLink>
                 </li>
               </ul>
@@ -69,7 +69,6 @@ onMounted(() => {
   if (window.location.hash) {
     const id = decodeURIComponent(window.location.hash.slice(1)) // Remove the # symbol and decode
     const element = document.getElementById(id)
-    console.log(id)
     if (element) {
       // Use a small timeout to ensure the page is fully rendered
       setTimeout(() => {
@@ -110,8 +109,21 @@ onUnmounted(() => {
   content: '';
   @apply fixed left-0 h-full w-[1px] bg-white/10;
 }
+
 .toc-link {
-  @apply flex items-center gap-2 w-full text-sm hover:opacity-80 !px-2 !py-0.5;
-  transition: all 0.1s ease-in-out;
+  @apply flex items-center gap-2 w-full text-sm !px-2 !py-0.5;
+}
+
+.toc-title {
+  @apply hover:opacity-80 active:opacity-60 active:scale-95;
+  background-image: linear-gradient(to right, currentColor, currentColor);
+  background-size: 0 2px;
+  background-position: center 100%;
+  background-repeat: no-repeat;
+  transition: all 0.3s ease-in-out;
+}
+
+.toc-title:hover {
+  background-size: 100% 2px !important;
 }
 </style>

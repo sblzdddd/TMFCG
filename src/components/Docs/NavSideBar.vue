@@ -6,7 +6,7 @@
           <span class="nav-group-title jiangxizhuokai">{{ group.title }}</span>
           <Icon class="nav-group-icon" :class="{ 'is-open': !group.isCollapsed }" name="mdi:chevron-down" :size="20" />
         </div>
-        <ul :id="`nav-children-${group.path}`" class="nav-children overflow-hidden" style="height: auto; opacity: 1;">
+        <ul :id="`nav-children-${group.path.replace('/', '')}`" class="nav-children overflow-hidden">
           <li v-for="item in group.children" :key="item.path" class="nav-item">
             <NuxtLink v-ripple :to="`/docs${item.path}`" class="nav-link" :class="{ 'active': route.path === `/docs${item.path}` }">
               <Icon v-if="item.icon" :name="item.icon" :size="20" />
@@ -40,34 +40,29 @@ defineProps<{
 const toggleGroup = (group: ContentNavigationItem) => {
   group.isCollapsed = !group.isCollapsed;
   if (!group.isCollapsed) {
-    const el = document.getElementById(`nav-children-${group.path}`);
+    const el = document.getElementById(`nav-children-${group.path.replace('/', '')}`);
     if (el) {
-      enter(el);
+      const height = el.scrollHeight;
+      animate(`#nav-children-${group.path.replace('/', '')}`, {
+        height: `${height}px`,
+        opacity: 1,
+        duration: 200,
+      });
     }
   } else {
-    const el = document.getElementById(`nav-children-${group.path}`);
+    const el = document.getElementById(`nav-children-${group.path.replace('/', '')}`);
     if (el) {
-      leave(el);
+      const height = el.scrollHeight;
+      el.style.height = `${height}px`;
+      nextTick(() => {
+        animate(`#nav-children-${group.path.replace('/', '')}`, {
+          height: 0,
+          opacity: 0,
+          duration: 200,
+        });
+      })
     }
   }
-};
-
-const enter = (el: Element) => {
-  const height = (el as HTMLElement).scrollHeight;
-  animate(el, {
-    height: `${height}px`,
-    opacity: 1,
-    duration: 200,
-  });
-};
-const leave = (el: Element) => {
-  const height = (el as HTMLElement).scrollHeight;
-  (el as HTMLElement).style.height = `${height}px`;
-  animate(el, {
-    height: 0,
-    opacity: 0,
-    duration: 200,
-  });
 };
 
 </script>

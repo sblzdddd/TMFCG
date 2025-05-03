@@ -42,10 +42,6 @@ export const useCardLoader = () => {
 			profile.cards.map(card => [`${card.suit}-${card.number}`, card])
 		)
 
-		console.log(profile)
-
-		console.log(loadedCards)
-
 		// merge loaded cards into initialized profile cards
 		currentProfile.value.cards = currentProfile.value.cards.map((card: CardData) => {
 			const key = `${card.suit}-${card.number}`
@@ -56,7 +52,7 @@ export const useCardLoader = () => {
 		editorStatus.lastSavedState = JSON.stringify(currentProfile.value, null, 2)
 		editorStatus.hasChanges = false
 
-		console.log(currentProfile.value)
+		console.log("currentProfile: ", currentProfile.value)
 	}
 	const loadProfileFromFile = (file: File): Promise<void> => {
 		return new Promise((resolve, reject) => {

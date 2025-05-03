@@ -1,10 +1,24 @@
 <template>
-  <div class="dialog-root relative" :class="`${props.rightAlign ? 'justify-end' : 'justify-start'}`">
+  <div 
+    class="dialog-root" 
+    :class="`${props.rightAlign ? 'justify-end' : 'justify-start'}`"
+    :style="`
+      --char-width-max: ${props.sizes[0][0]}rem;
+      --char-width-lg: ${props.sizes[0][1]}vw;
+      --char-width-md: ${props.sizes[0][2]}vw;
+      --char-width-sm: ${props.sizes[0][3]}vw;
+      --char-width-default: ${props.sizes[0][4]}vw;
+      --char-height-max: ${props.sizes[1][0]}rem;
+      --char-height-lg: ${props.sizes[1][1]}vw;
+      --char-height-md: ${props.sizes[1][2]}vw;
+      --char-height-sm: ${props.sizes[1][3]}vw;
+      --char-height-default: ${props.sizes[1][4]}vw;
+    `"
+  >
     <!-- Character Portrait Section -->
     <div
       class="character-section"
-      :class="`${props.rightAlign ? 'rounded-br-[18px]' : 'rounded-bl-[18px]'}`"
-      :style="`width: ${props.size}; transform: translateX(${props.offsetX}%);`"
+      :class="`${props.rightAlign ? 'rounded-br-[18px]' : 'rounded-bl-[18px]'} ${props.characterClass}`"
     >
       <img
         ref="characterImage"
@@ -17,10 +31,10 @@
     </div>
     
     <!-- Dialog Box Section -->
-    <div class="dialog-box absolute bottom-0" :class="`${props.rightAlign ? '!pr-52' : '!pl-52'}`">
+    <div class="dialog-box absolute bottom-0" :class="`${props.rightAlign ? 'isRight' : 'isLeft'}`">
       <!-- Character Name -->
       <div class="character-name-section border-b-2 border-primary/20 pb-1 mb-1">
-        <span class="character-name jiangxizhuokai text-2xl text-foreground">{{ charDisplayName || character }}</span>
+        <span class="character-name jiangxizhuokai">{{ charDisplayName || character }}</span>
       </div>
       
       <!-- Dialog Content -->
@@ -37,7 +51,6 @@ const {GetCharacterData} = useCharacterData();
 const charImageSrc = ref("");
 const characterImage = ref();
 const isImageLoaded = ref(false);
-const currentOffsetX = ref(0);
 
 const props = defineProps({
   character: {
@@ -60,14 +73,14 @@ const props = defineProps({
     default: false,
     required: false
   },
-  size: {
-    type: String,
-    default: "12rem",
+  sizes: {
+    type: Array<Array<number>>,
+    default: () => [[12, 16, 20, 27, 35], [12, 16, 20, 27, 35]],
     required: false
   },
-  offsetX: {
-    type: Number,
-    default: 0,
+  characterClass: {
+    type: String,
+    default: "",
     required: false
   },
   blackMask: {
@@ -94,7 +107,6 @@ function setup() {
     return;
   }
   isImageLoaded.value = false;
-  console.log(charData.image_prefix, props.variant)
   import(`@/assets/images/characters/${charData.image_prefix} ${props.variant}.png`).then((module) => {
     if (characterImage.value) charImageSrc.value = module.default;
     else {
@@ -107,7 +119,6 @@ function setup() {
 
 function onImageLoad() {
   isImageLoaded.value = true;
-  currentOffsetX.value = props.offsetX;
 }
 
 watch(() => props.character, () => {
@@ -118,11 +129,6 @@ watch(() => props.variant, () => {
   setup();
 })
 
-watch(() => props.offsetX, (newVal) => {
-  if (isImageLoaded.value) {
-    currentOffsetX.value = newVal;
-  }
-})
 
 onMounted(() => {
   setup();
@@ -131,11 +137,16 @@ onMounted(() => {
 
 <style lang="postcss" scoped>
 .dialog-root {
-  @apply min-h-[120px] flex items-center mb-1;
+  @apply relative min-h-[120px] flex items-center mb-1;
 }
 
 .character-section {
-  @apply h-52 mb-[5.9px] mx-[6px] overflow-hidden z-10;
+  @apply mb-[5.9px] mx-[6px] overflow-hidden z-10
+  max-w-[var(--char-width-max)] max-h-[var(--char-height-max)]
+  lg:w-[var(--char-width-lg)] lg:h-[var(--char-height-lg)]
+  md:w-[var(--char-width-md)] md:h-[var(--char-height-md)]
+  sm:w-[var(--char-width-sm)] sm:h-[var(--char-height-sm)]
+  w-[var(--char-width-default)] h-[var(--char-height-default)];
 }
 
 .character-image {
@@ -149,16 +160,28 @@ onMounted(() => {
 }
 
 .dialog-box {
-  @apply bg-[#8f6547] border-[6px] border-primary rounded-3xl p-2 px-4 min-h-[120px] w-full;
+  @apply bg-[#8f6547] border-[6px] border-primary rounded-3xl py-1 md:py-2 min-h-[120px] w-full
+  px-[calc(var(--char-width-default)+12px)]
+  sm:px-[calc(var(--char-width-sm)+12px)]
+  md:px-[calc(var(--char-width-md)+12px)]
+  lg:px-[calc(var(--char-width-lg)+12px)]
+  xl:px-[calc(var(--char-width-max)+12px)];
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  &.isRight {
+    @apply !pl-4;
+  }
+  &.isLeft {
+    @apply !pr-4;
+  }
 }
 
 .character-name {
+  @apply text-lg md:text-xl lg:text-2xl text-foreground;
   text-shadow: 1px 0 #d3c3a1, -1px 0 #d3c3a1, 0 1px #d3c3a1, 0 -1px #d3c3a1;
 }
 
 .dialog-content {
-  @apply text-white text-lg;
+  @apply text-white text-xs sm:text-sm md:text-base lg:text-lg;
   text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000;
 }
 </style>

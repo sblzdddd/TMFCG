@@ -3,6 +3,8 @@ defineProps<{
   isWikiPage?: boolean,
   customContent?: boolean
 }>()
+
+const { toggle } = useDocsNavDrawer()
 </script>
 
 <template>
@@ -33,8 +35,8 @@ defineProps<{
         <v-btn size="small" icon class="rounded-lg">
           <Icon name="mdi:search" :size="24" />
         </v-btn>
-        <v-btn size="small" icon class="rounded-lg">
-          <Icon name="mdi:github" :size="24" />
+        <v-btn size="small" icon class="rounded-lg lg:!hidden" @click="toggle">
+          <Icon name="mdi:menu" :size="24" />
         </v-btn>
       </div>
     </div>
@@ -46,7 +48,7 @@ defineProps<{
 
 <style lang="postcss" scoped>
 .app-bar {
-  @apply w-full h-full flex items-center px-4 md:px-8 lg:px-10 xl:px-16 gap-2;
+  @apply w-full h-full flex items-center px-2 sm:px-4 md:px-8 lg:px-10 xl:px-16 gap-2;
 }
 
 .right-content {

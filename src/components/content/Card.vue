@@ -1,8 +1,9 @@
 <template>
   <component
     :is="to ? (target === '_self' ? NuxtLink : 'a') : 'div'"
+    v-ripple
     :to="to"
-    :href="to"
+    :href="target === '_self' ? undefined : to"
     :target="target"
     class="prose-card"
   >
@@ -33,7 +34,7 @@ defineProps<Props>();
 
 <style lang="postcss">
 .prose-card {
-  @apply relative block rounded-lg p-4 border bg-primary/10 border-primary/20 hover:bg-primary/40 hover:border-primary;
+  @apply overflow-hidden relative block rounded-lg p-4 border-2 border-foreground/20 hover:bg-primary/40 hover:border-primary;
   transition: all 0.3s ease;
 }
 </style>

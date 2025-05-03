@@ -31,12 +31,32 @@ watch(() => page.value?.body?.toc?.links, () => {
   tocLinks.value = page.value?.body?.toc?.links
 })
 
+const { isOpen } = useDocsNavDrawer()
+
+const {windowHeight} = useViewport()
+
 defineOptions({
   name: "DocsLayout",
 });
 </script>
 <template>
   <v-app>
+    
+    <v-navigation-drawer
+      v-model="isOpen"
+      :width="windowHeight"
+      location="top"
+      class="nav-drawer"
+      temporary
+    >
+      <div class="h-full">
+        <div class="flex justify-center items-center p-2">
+          <h3 class="text-xl">页面导航</h3>
+          <v-btn class="fixed top-1 right-2" size="small" variant="text" icon="mdi-close" @click="isOpen = false" />
+        </div>
+        <Docs-NavSideBar v-if="navigation" :navigation="navigation" />
+      </div>
+    </v-navigation-drawer>
     <Header-NavBar is-wiki-page />
     <v-main style="padding-top: 56px;">
       <div ref="pageContainer" class="page-container">
@@ -61,10 +81,16 @@ defineOptions({
   opacity: 0;
 }
 .page-container {
-  @apply w-full px-4 md:px-8 lg:px-10 xl:px-12 gap-2
+  @apply w-full px-2 md:px-4 lg:px-6 xl:px-12 gap-2
    flex flex-col lg:grid lg:grid-cols-10 lg:gap-10 h-[calc(100vh-54px)] overflow-y-auto;
 }
 .page-navigation {
-  @apply hidden lg:block lg:col-span-2 sticky top-0 h-screen overflow-y-auto p-4;
+  @apply hidden lg:block lg:col-span-2 sticky top-0 h-screen overflow-y-auto py-4 px-0 lg:pl-2;
+}
+.nav-drawer {
+  @apply !bg-background/70 !backdrop-blur-sm;
+  &~.v-navigation-drawer__scrim {
+    @apply !opacity-0;
+  }
 }
 </style>

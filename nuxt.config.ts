@@ -9,6 +9,12 @@ export default defineNuxtConfig({
   content: {
     build: {
       markdown: {
+        remarkPlugins: {
+          'remark-math': {},
+        },
+        rehypePlugins: {
+          'rehype-mathjax': {},
+        },
         toc: {
           depth: 3,
           searchDepth: 3
