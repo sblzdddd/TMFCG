@@ -17,7 +17,6 @@
 </template>
 
 <script setup>
-import {onMounted, onUnmounted, ref} from 'vue'
 
 const images = [
   '/assets/images/particle1.png',
@@ -78,7 +77,7 @@ class Particle {
       this.image = images[Math.floor(Math.random() * images.length)]
       this.opacity = 0
     } else {
-      let distanceFromBorder = Math.min(
+      const distanceFromBorder = Math.min(
           this.y,
           100 - this.y,
           this.x,
@@ -87,7 +86,7 @@ class Particle {
       if (distanceFromBorder < 0) {
         this.opacity = 0
       } else {
-        let a = Math.pow(distanceFromBorder / this.maskStrength, this.maskPower)
+        const a = Math.pow(distanceFromBorder / this.maskStrength, this.maskPower)
         this.opacity = Math.min(a, 1) / this.weakness
       }
     }

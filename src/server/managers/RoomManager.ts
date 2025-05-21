@@ -1,4 +1,11 @@
-import {logger} from "@/server/utils/logger";
+// eslint-disable no-unused-vars
+import type { PublicRoomInfo, Room } from "~/types/room";
+import type { RoomMember, User } from "~/types/user";
+import type { ChatMessage } from "~/types/chat";
+import { useLogger } from "~/composables/useLogger";
+
+
+const { debug, warn } = useLogger("roomManager");
 
 export class RoomManager {
 	private static rooms = new Map<string, Room>();
@@ -14,7 +21,7 @@ export class RoomManager {
 
 	static getRoom(code: string | undefined | null): Room | undefined {
 		if (!code) {
-			logger.roomManager(`No code provided`);
+			warn(`No code provided`);
 
 			return undefined;
 		}
@@ -24,16 +31,16 @@ export class RoomManager {
 
 	static getPublicRooms(): PublicRoomInfo[] {
 		// Log the actual size of the rooms Map
-		logger.roomManager(`Total rooms in Map: ${this.rooms.size}`);
+		debug(`Total rooms in Map: ${this.rooms.size}`);
 
 		const publicRooms = Array.from(this.rooms.values()).filter((room) => !room.isPrivate);
 
 		// Add more detailed logging
-		logger.roomManager(`Found ${publicRooms.length} public rooms out of ${this.rooms.size} total rooms`);
+		debug(`Found ${publicRooms.length} public rooms out of ${this.rooms.size} total rooms`);
 
 		// Log each public room for debugging
 		publicRooms.forEach(room => {
-			logger.roomManager(`Public room: ${room.code}, Owner: ${room.owner}, Members: ${room.members}`);
+			debug(`Public room: ${room.code}, Owner: ${room.owner}, Members: ${room.members}`);
 		});
 
 		return publicRooms.map((room) => ({

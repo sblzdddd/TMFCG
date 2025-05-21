@@ -2,9 +2,9 @@ import {socket} from "~/composables/useSocket";
 import defaultAvatar from '@/assets/images/avatars/00000.png'
 import type {User} from "~/types/user";
 import type {ChangeUserAvatarRequest, ChangeUserNameRequest, UserInfoResponse} from "~/types/DTO/user.dto";
+import {useLogger} from "@/composables/useLogger";
 
-// Symbol for dependency injection
-const USER_STATE_SYMBOL = 'userState';
+const {debug} = useLogger('user');
 
 const emptyUser: User = {
 	id: '',
@@ -19,7 +19,6 @@ const emptyUser: User = {
 const globalUserState = reactive<{ current: User }>({
 	current: emptyUser,
 });
-
 
 export const useUser = () => {
 	if (typeof window === 'undefined') {
@@ -36,9 +35,6 @@ export const useUser = () => {
 		};
 	}
 
-	// dependency injection
-	provide(USER_STATE_SYMBOL, globalUserState);
-
 	const getUserFromServer = async (): Promise<UserInfoResponse> => {
 		return new Promise((resolve, reject) => {
 			const timeout = setTimeout(() => {
@@ -47,13 +43,13 @@ export const useUser = () => {
 			}, 10000);
 
 			socket.once('userInfo', (message) => {
-				console.log('userInfo', message)
+				debug(`userInfo: ${message}`)
 				const data = message as UserInfoResponse;
 				clearTimeout(timeout);
 				if (data) {
 					// Update the global state
 					Object.assign(globalUserState.current, data.user);
-					console.log('saved user from server', globalUserState.current);
+					debug(`saved user from server: ${globalUserState.current.name}`)
 					resolve(data);
 				} else {
 					reject(new Error('No user data received'));
@@ -61,7 +57,7 @@ export const useUser = () => {
 			});
 
 			socket.emit('getUser');
-			console.log('emitted getUser')
+			debug('emitted getUser')
 		});
 	};
 
@@ -69,7 +65,7 @@ export const useUser = () => {
 		if (!globalUserState.current.id || globalUserState.current.id === '') {
 			return getUserFromServer();
 		}
-		console.log('saved user locally', globalUserState.current);
+		debug(`saved user locally: ${globalUserState.current.name}`)
 		return Promise.resolve({
 			user: globalUserState.current,
 		});

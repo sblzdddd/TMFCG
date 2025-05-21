@@ -2,8 +2,6 @@ import {socket, useSocket, waitForConnection} from "~/composables/useSocket";
 import type {ChatMessage} from "~/types/chat";
 import type {RoomChatHistoryResponse} from "~/types/DTO/chat.dto";
 
-// Symbol for dependency injection
-const CHAT_STATE_SYMBOL = 'chatState';
 
 const globalChatState = reactive<{
 	messages: ChatMessage[];
@@ -21,8 +19,6 @@ export const useChat = () => {
 			},
 		};
 	}
-
-	provide(CHAT_STATE_SYMBOL, globalChatState);
 
 	const sendChat = async (message: string) => {
 		if (!useSocket().isConnected) {

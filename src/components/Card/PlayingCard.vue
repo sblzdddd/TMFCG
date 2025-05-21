@@ -4,22 +4,14 @@
       :suit="suit"
   >
     <template #front>
-      <Card-Addons-CharacterEdit
-          :char-name="character"
-          :char-variant="characterVariant"
-          :offset-x="characterX"
-          :offset-y="characterY"
-      />
+      <Card-Addons-CardCharacter :character="character" />
     </template>
   </Card-RenderedBase>
 </template>
 <script lang="ts" setup>
-import {watch} from 'vue';
+import { CardCharacter } from "~/lib/CardCharacter/CardCharacter";
 
-const character = ref('');
-const characterVariant = ref('');
-const characterX = ref(0);
-const characterY = ref(0);
+const character = ref<CardCharacter>(new CardCharacter("【无角色】", "0", 0, 0));
 
 const props = defineProps({
   suit: {
@@ -37,10 +29,7 @@ const {getCardProfile} = useCardProfile();
 watch(props, () => {
   const profile = getCardProfile(props.suit, props.number);
   if (profile) {
-    character.value = profile.appearance.character;
-    characterVariant.value = profile.appearance.characterVariant;
-    characterX.value = profile.appearance.characterX;
-    characterY.value = profile.appearance.characterY;
+    character.value = profile.character;
   }
 }, {immediate: true});
 

@@ -5,26 +5,25 @@
       class="!w-full !max-w-[200px]"
   >
     <template #front>
-      <Card-Addons-CharacterEdit
-          :char-name="character"
-          :char-variant="characterVariant"
-          :offset-x="characterX"
-          :offset-y="characterY"
+      <Card-Addons-CardCharacter
+          :character="character"
       />
     </template>
   </Card-RenderedBase>
 </template>
 <script lang="ts" setup>
-import {watch} from 'vue';
-import type {CardProfile, CardData, CardSuit, CardNumber} from '~/types/Card';
-import {initializeProfile} from '~/utils/profile_helper';
-
+import type {CardSuit, CardNumber} from '~/types/Card';
+import type { ICardProfile } from '~/lib/CardProfile/CardProfile';
+import type { ICardCharacter } from '~/lib/CardCharacter/CardCharacter';
+import { CardCharacterFactory } from '~/lib/CardCharacter/CardCharacterFactory';
 import SetB from '~/assets/Set B.json';
+import type { IBaseCard } from '~/lib/Card/BaseCard';
+import { CardProfileFactory } from '~/lib/CardProfile/CardProfileFactory';
+import { ProfileLoader } from '~/lib/CardProfile';
 
-const character = ref('');
-const characterVariant = ref('');
-const characterX = ref(0);
-const characterY = ref(0);
+
+const character = ref<ICardCharacter>(CardCharacterFactory.createDefaultCardCharacter());
+
 
 const props = defineProps({
   cardSet: {
@@ -43,27 +42,14 @@ const props = defineProps({
 });
 
 
-const currentProfile = ref<CardProfile>(initializeProfile());
+const currentProfile = ref<ICardProfile>(CardProfileFactory.createInitialCardProfile());
 
-const loadProfile = (profile: CardProfile) => {
-
-  // initialize profile
-  currentProfile.value = initializeProfile();
-
-  const loadedCards = new Map(
-    profile.cards.map(card => [`${card.suit}-${card.number}`, card])
-  )
-
-  // merge loaded cards into initialized profile cards
-  currentProfile.value.cards = currentProfile.value.cards.map((card: CardData) => {
-    const key = `${card.suit}-${card.number}`
-    return loadedCards.get(key) || card
-  })
-
-  currentProfile.value.name = profile.name
+const loadProfile = (profile: ICardProfile) => {
+    const loadedProfile = ProfileLoader.fromObject(profile);
+    currentProfile.value = loadedProfile;
 }
 
-const getCardProfile = (suit: CardSuit, number: CardNumber): CardData | undefined => {
+const getCardProfile = (suit: CardSuit, number: CardNumber): IBaseCard | undefined => {
   const card = currentProfile.value.cards.find(card => card.suit === suit && card.number === number)
   return card
 }
@@ -71,16 +57,13 @@ const getCardProfile = (suit: CardSuit, number: CardNumber): CardData | undefine
 watch([() => props.cardSet, () => props.suit, () => props.number], () => {
   const map = {"B": SetB};
   if (Object.prototype.hasOwnProperty.call(map, props.cardSet)) {
-    loadProfile(map[props.cardSet as keyof typeof map] as CardProfile);
+    loadProfile(map[props.cardSet as keyof typeof map] as ICardProfile);
   } else {
-    loadProfile(SetB as CardProfile);
+    loadProfile(SetB as ICardProfile);
   }
   const profile = getCardProfile(props.suit, props.number);
   if (profile) {
-    character.value = profile.appearance.character;
-    characterVariant.value = profile.appearance.characterVariant;
-    characterX.value = profile.appearance.characterX;
-    characterY.value = profile.appearance.characterY;
+    character.value = profile.character;
   }
 }, {immediate: true});
 

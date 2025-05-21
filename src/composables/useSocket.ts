@@ -2,9 +2,6 @@ import {io} from "socket.io-client";
 import {useRoom} from "./useRoom";
 import {useUser} from "./useUser";
 
-// Symbol for dependency injection
-const SOCKET_STATE_SYMBOL = 'socketState';
-
 const globalSocketState = reactive({
 	connected: false,
 	transport: "N/A",
@@ -68,8 +65,6 @@ export const useSocket = () => {
 			socket: computed(() => null),
 		};
 	}
-
-	provide(SOCKET_STATE_SYMBOL, globalSocketState);
 
 	return {
 		isConnected: computed(() => globalSocketState.connected),

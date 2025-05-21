@@ -12,6 +12,13 @@ module.exports = {
   ],
   "theme": {
     "extend": {
+      "rendering": {
+        'auto': { imageRendering: 'auto' },
+        'smooth': { imageRendering: 'smooth' },
+        'high-quality': { imageRendering: 'high-quality' },
+        'crisp-edges': { imageRendering: 'crisp-edges' },
+        'pixelated': { imageRendering: 'pixelated' },
+      },
       "colors": {
         "default": {
           "50": "rgba(var(--default-50))",

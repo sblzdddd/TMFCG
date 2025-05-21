@@ -40,7 +40,6 @@ onMounted(async () => {
   if (!import.meta.client) return
   LoadingState.isLoading = true;
   await waitForConnection();
-  console.log(currentRoom.value)
   if (currentRoom.value) {
     await router.push(`/room/${currentRoom.value.code}`);
     return;

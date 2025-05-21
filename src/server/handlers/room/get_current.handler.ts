@@ -1,7 +1,9 @@
 import {BaseHandler} from '../base/base.handler';
 import {RoomManager, UserManager} from '@/server/managers';
-import {logger} from '@/server/utils/logger';
 import type {RoomInfoResponse} from '@/types/DTO/room.dto';
+import { useLogger } from '~/composables/useLogger';
+
+const { debug, info, warn, error } = useLogger("handler:get_current_room");
 
 // Get Current Room that the user is in
 export class GetCurrentRoomHandler extends BaseHandler {
@@ -16,7 +18,7 @@ export class GetCurrentRoomHandler extends BaseHandler {
 			if (room) {
 				// Join the socket room if not already joined
 				if (!this.socket.rooms.has(user.currentRoomCode)) {
-					logger.roomManager(`Joining room ${user.currentRoomCode}`);
+					debug(`Joining room ${user.currentRoomCode}`);
 					this.joinRoom(user.currentRoomCode);
 				}
 

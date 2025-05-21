@@ -4,7 +4,9 @@ import {Server} from "socket.io";
 import {defineEventHandler} from "h3";
 import registerHandlers from "../handlers";
 import {authMiddleware} from "../middlewares/auth.middleware";
-import {logger} from "../utils/logger";
+import { useLogger } from "~/composables/useLogger";
+
+const { debug } = useLogger("socket");
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
 	const engine = new Engine();
@@ -28,11 +30,12 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 	});
 
 	io.on("disconnect", (socket) => {
-		logger.socket(`socket.io disconnect`, socket.id);
+		debug(`socket.io disconnect: ${socket.id}`);
 	});
 
 	nitroApp.router.use("/socket.io/", defineEventHandler({
 		handler(event) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			engine.handleRequest(event.node.req as any, event.node.res);
 			event._handled = true;
 		},

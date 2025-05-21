@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {nextTick, onMounted, ref, watch} from 'vue'
 import {waitForConnection} from '~/composables/useSocket'
 import {getMemberAvatarUrl} from '~/composables/useUser'
 import type { ChatMessage } from '~/types/chat'

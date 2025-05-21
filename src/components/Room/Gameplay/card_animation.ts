@@ -1,19 +1,16 @@
 import {createSpring, createTimeline} from 'animejs';
+import { CARD_CONST } from '~/constants/card';
 
-// const {windowWidth, windowHeight} = useViewport();
-const getWindowSize = () => {
-	const devicePixelRatio = 1;
-	const windowWidth = window.innerWidth * devicePixelRatio;
-	const windowHeight = window.innerHeight * devicePixelRatio;
-	return {windowWidth, windowHeight};
-};
+const {windowWidth: width, windowHeight: height} = useViewport();
+
+const {debug} = useLogger('animation:card');
 
 const calculateCardPositions = (numOfCards: number) => {
-	const {windowWidth, windowHeight} = getWindowSize();
-	const cardHeight = windowHeight * ANIM_CONST.playerCard.height;
-	const cardWidth = cardHeight * ANIM_CONST.cardRatio;
+	const {windowWidth, windowHeight} = {windowWidth: width.value, windowHeight: height.value};
+	const cardHeight = windowHeight * CARD_CONST.playerCard.height;
+	const cardWidth = cardHeight * CARD_CONST.cardRatio;
 	const gap = Math.min(
-								cardWidth * ANIM_CONST.maxGap,
+								cardWidth * CARD_CONST.maxGap,
 								windowWidth * 0.08 / numOfCards * 11,
 								(windowWidth - cardWidth) / Math.max(numOfCards - 1, 1) // cards fill the screen
 							);
@@ -21,7 +18,9 @@ const calculateCardPositions = (numOfCards: number) => {
 	const totalCardsWidth = cardWidth + (numOfCards - 1) * gap;
 	const startX = (windowWidth - totalCardsWidth) / 2;
 
-	const targetY = windowHeight - cardHeight - ANIM_CONST.playerCard.bottom;
+	const targetY = windowHeight - cardHeight - CARD_CONST.playerCard.bottom;
+
+	debug(`${numOfCards} cards width=${cardWidth} gap=${gap} startX=${startX} targetY=${targetY}`);
 
 	return {startX, targetY, cardWidth, cardHeight, gap};
 }
@@ -70,7 +69,7 @@ export const animateCardDraw = (
 			element.style.top = `${lastCardRect.top}px`;
 			element.style.left = `${lastCardRect.left}px`;
 			element.style.width = `${lastCardRect.width}px`;
-			element.style.height = `${lastCardRect.width / ANIM_CONST.cardRatio}px`;
+			element.style.height = `${lastCardRect.width / CARD_CONST.cardRatio}px`;
 			cardFronts[index].style.transform = `rotateY(-180deg)`;
 			cardBacks[index].style.transform = `rotateY(0deg)`;
 		} else {
@@ -83,7 +82,7 @@ export const animateCardDraw = (
 	});
 
 	// Create timeline animation
-	let timeline = createTimeline({
+	let _timeline = createTimeline({
 		onComplete: () => {
 			cardElements.forEach((element, index) => {
 				element.style.position = 'absolute';
@@ -103,6 +102,9 @@ export const animateCardDraw = (
 		spring.damping = 20;
 	}
 
+	debug(`cardElements.length=${cardElements.length} targetIndexes.length=${targetIndexes.length}`);
+	const oldCardTime = Math.min(300, 500 / (Math.abs(cardElements.length - targetIndexes.length + 1)));
+	debug(`old card time=${oldCardTime}`);
 	for (let i = 0; i < cardElements.length; i++) {
 		if (targetIndexes.includes(i)) continue;
 		let closestTargetIndex = 0;
@@ -114,9 +116,7 @@ export const animateCardDraw = (
 			}, targetIndexes[0]);
 		}
 
-		const time = Math.min(300, 500 / (Math.abs(cardElements.length - targetIndexes.length + 1)));
-		console.log(time, cardElements.length, targetIndexes.length);
-		timeline = timeline.add(cardElements[i], {
+		_timeline = _timeline.add(cardElements[i], {
 			ease: spring,
 			position: 'absolute',
 			top: `${targetY}px`,
@@ -126,14 +126,14 @@ export const animateCardDraw = (
 			x: 0,
 			y: 0,
 			zIndex: `${52 + i}`,
-		}, Math.abs(closestTargetIndex - i) * time * (isResizing ? 0.1 : 1))
+		}, Math.abs(closestTargetIndex - i) * oldCardTime * (isResizing ? 0.1 : 1))
 	}
 
+	const newCardTime = Math.min(600, 1000 / drawCardElements.length);
+	debug(`new card time=${newCardTime}`);
 	drawCardElements.reverse().forEach((element, index) => {
-		const time = Math.min(600, 1000 / drawCardElements.length);
-		console.log(time);
 		// Add animations to timeline
-		timeline = timeline.add(element, {
+		_timeline = _timeline.add(element, {
 			top: `${targetY}px`,
 			left: `${startX + targetIndexes[drawCardElements.length - index - 1] * gap}px`,
 			width: `${cardWidth}px`,
@@ -142,16 +142,16 @@ export const animateCardDraw = (
 			y: 0,
 			zIndex: `${52 + targetIndexes[drawCardElements.length - index - 1]}`,
 			ease: spring,
-		}, (index * time))
+		}, (index * newCardTime))
 			.add(cardFronts[targetIndexes[drawCardElements.length - index - 1]], {
 				rotateY: 0,
 				rotateX: 0,
 				ease: spring,
-			}, (index * time))
+			}, (index * newCardTime))
 			.add(cardBacks[targetIndexes[drawCardElements.length - index - 1]], {
 				rotateY: 180,
 				rotateX: 0,
 				ease: spring,
-			}, (index * time))
+			}, (index * newCardTime))
 	});
 }; 
