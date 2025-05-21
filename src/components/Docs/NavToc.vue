@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import type { TocLink } from '@nuxtjs/mdc'
-import { onMounted, onUnmounted } from 'vue'
 
 defineProps<{
   tocs: TocLink[]

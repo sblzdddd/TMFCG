@@ -1,6 +1,6 @@
 <template>
   <div class="w-screen h-screen">
-    <Room-Gameplay-GameTable/>
+    <Room-Gameplay-GameTableLayout/>
     <Room-Overlays-RoomOverlay/>
   </div>
 </template>
@@ -24,30 +24,32 @@ const updateRoomMembers = (members: RoomMember[]) => {
   user.value.isRoomOwner = members.find(m => m.id === user.value.id)?.isRoomOwner || false
 }
 
+const {debug, info, error} = useLogger('room')
+
 onMounted(async () => {
   LoadingState.isLoading = true;
   if (!isConnected.value) {
-    console.log("socket not connected, waiting for connection")
+    info("socket not connected, waiting for connection")
     await waitForConnection()
   }
   if (user.value.currentRoomCode && currentRoom.value) {
+    debug(`user.value.currentRoomCode: ${user.value.currentRoomCode}, roomCode.value: ${roomCode.value}`)
     if (user.value.currentRoomCode !== roomCode.value) {
-      console.log(user.value.currentRoomCode, roomCode.value)
-      console.log("already in room, redirecting")
+      info("already in room, redirecting")
       await router.push(`/room/${user.value.currentRoomCode}`)
       return
     } else {
-      console.log('already in room')
+      info('already in room')
     }
   } else {
-    console.log('not in any room')
+    info('not in any room')
     const response = await joinRoom(roomCode.value)
     if (response.room) {
       updateRoomMembers(response.room.members)
     }
   }
   if (!currentRoom.value) {
-    console.log('room not found')
+    error('room not found')
     alert('房间不存在或已关闭')
     await router.push('/')
     return

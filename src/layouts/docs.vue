@@ -14,7 +14,6 @@ provide('navigation', navigation)
 
 onMounted(() => {
   if (!page.value?.body?.toc?.links) return
-  console.log(navigation.value)
   tocLinks.value = page.value?.body?.toc?.links
 })
 

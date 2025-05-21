@@ -6,7 +6,7 @@
       <div class="card-sub card-deco-stars" />
       <slot name="backdrop" />
       <div class="card-sub card-value-display">
-        <div class="card-value-container h-[16%]">
+        <div class="card-value-display-container h-[16%]">
           <span
               :class="{'ml-[3%]': CardNumberString==='10'}"
               :style="{fontSize: number >= 10?'35cqw':'45cqw'}"
@@ -16,7 +16,7 @@
           </span>
           <img v-if="CardNumberSuits[suit]" :src="CardNumberSuits[suit]" alt="Suit" class="card-suit">
         </div>
-        <div class="card-value-container absolute bottom-0 right-0 m-[3.05%] h-[15.3%] rotate-180">
+        <div class="card-value-display-container absolute bottom-0 right-0 m-[3.05%] h-[15.3%] rotate-180">
           <span
               :class="{'ml-[3%]': CardNumberString ==='10'}"
               :style="{fontSize: number >= 10?'35cqw':'45cqw'}"
@@ -145,52 +145,44 @@ const CardNumberString = computed(() => {
   width: auto;
   user-select: none;
   backface-visibility: hidden;
-}
-
-.card-front {
-  background: url('@/assets/images/cards/CardBase.svg') no-repeat center center;
-  background-size: cover;
-  backface-visibility: hidden;
-}
-
-.card-back {
-  background: url('@/assets/images/cards/CardBack2.png') no-repeat center center;
-  background-size: cover;
-  backface-visibility: hidden;
-}
-
-.card-deco-stars {
-  background: url('@/assets/images/cards/SideStars_Normal_Albedo.png') no-repeat center center;
-  background-size: contain;
-}
-
-.card-value-display {
-  @apply p-[3%] relative;
-}
-
-div.card-value-container {
-  @apply flex flex-col justify-center items-center aspect-square gap-[10%];
-  container-type: inline-size;
-}
-
-.card-suit {
-  @apply text-[300%] w-[25%] h-[25%];
-}
-
-.card-value {
-  @apply text-[calc(300%+1px)] leading-[55%] mt-[5%] tracking-wide;
-}
-
-.card-bg-mask {
-  mask-image: url('@/assets/images/cards/BG_Mask.png');
-  mask-size: contain;
-}
-
-.card-bg {
-  @apply absolute top-0 left-0 w-full h-full rotate-[-15deg] bg-repeat;
-  background-image: url('@/assets/images/cards/BG_Tile_Albedo.png');
-  background-position: center 0;
-  background-size: 41%;
+  &-front {
+    background: url('@/assets/images/cards/CardBase.svg') no-repeat center center;
+    background-size: cover;
+    backface-visibility: hidden;
+  }
+  &-back {
+    background: url('@/assets/images/cards/CardBack2.png') no-repeat center center;
+    background-size: cover;
+    backface-visibility: hidden;
+  }
+  &-deco-stars {
+    background: url('@/assets/images/cards/SideStars_Normal_Albedo.png') no-repeat center center;
+    background-size: contain;
+  }
+  &-value-display {
+    @apply p-[3%] relative;
+    &-container {
+      @apply flex flex-col justify-center items-center aspect-square gap-[10%];
+      container-type: inline-size;
+    }
+  }
+  &-suit {
+    @apply text-[300%] w-[25%] h-[25%];
+  }
+  &-value {
+    @apply text-[calc(300%+1px)] leading-[55%] mt-[5%] tracking-wide;
+  }
+  &-bg-mask {
+    mask-image: url('@/assets/images/cards/BG_Mask.png');
+    mask-size: contain;
+  }
+  &-bg {
+    @apply absolute top-0 left-0 w-full h-full rotate-[-15deg] bg-repeat;
+    background-image: url('@/assets/images/cards/BG_Tile_Albedo.png');
+    background-position: center 0;
+    background-size: 41%;
+    animation: downward 10s linear infinite;
+  }
 }
 
 @keyframes downward {

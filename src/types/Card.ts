@@ -1,3 +1,19 @@
+export interface PlayingCard {
+	data: CardData;
+	isAnimating: boolean;
+	id: number;
+}
+
+export interface CardProfile {
+	name: string;
+	cards: CardData[];
+}
+
+export enum CardType {
+	STANDARD = 'standard',
+	EFFECT = 'effect',
+}
+
 export enum CardSuit {
 	CLUBS = 0,
 	DIAMONDS = 1,
@@ -19,28 +35,4 @@ export enum CardNumber {
 	JACK = 11,
 	QUEEN = 12,
 	KING = 13,
-}
-
-export interface CardAppearance {
-	character: string;
-	characterVariant: string;
-	characterY: number;
-	characterX: number;
-}
-
-export interface PlayingCard {
-	data: CardData;
-	isAnimating: boolean;
-	id: number;
-}
-
-export interface CardData {
-	suit: CardSuit;
-	number: CardNumber;
-	appearance: CardAppearance;
-}
-
-export interface CardProfile {
-	name: string;
-	cards: CardData[];
 }

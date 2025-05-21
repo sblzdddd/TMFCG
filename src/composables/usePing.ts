@@ -1,9 +1,6 @@
 import {socket} from "~/composables/useSocket";
 import type {PingRequest, PingResponse} from "~/types/DTO/ping.dto";
 
-// Symbol for dependency injection
-const PING_STATE_SYMBOL = 'pingState';
-
 const globalPingState = reactive({
 	latency: -1,
 	isStarted: false,
@@ -16,7 +13,7 @@ const ping = () => {
 }
 
 socket.on("connect", () => {
-	pingInterval.value = setInterval(ping, 2000);
+	pingInterval.value = setInterval(ping, 200);
 });
 
 socket.on("disconnect", () => {
@@ -40,10 +37,8 @@ export const usePing = () => {
 		};
 	}
 
-	provide(PING_STATE_SYMBOL, globalPingState);
-
 	const startPing = () => {
-		pingInterval.value = setInterval(ping, 2000);
+		pingInterval.value = setInterval(ping, 200);
 		globalPingState.isStarted = true;
 	};
 

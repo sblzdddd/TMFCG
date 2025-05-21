@@ -13,7 +13,7 @@
 
       <!-- Dropdown menu -->
       <v-menu>
-        <template v-slot:activator="{ props }">
+        <template #activator="{ props }">
           <v-btn elevation="0" v-bind="props">
             文件
             <v-icon right>mdi-menu-down</v-icon>
@@ -55,17 +55,13 @@
 </template>
 
 <script lang="ts" setup>
-const {cardEditModel} = useCardEditor();
 const {currentProfile} = useCardProfile();
-const {loadProfileFromFile, downloadProfile} = useCardLoader();
-const {addCard, setProfileName} = useCardEditor();
+const {loadProfileFromFile} = useCardProfileLoader();
+const {downloadProfile} = useCardProfileExporter();
+const {saveCurrentCard, setProfileName} = useCardEditor();
 
 const profileName = ref(currentProfile.value.name);
 const fileInput = ref<HTMLInputElement | null>(null);
-
-const saveCurrentCard = () => {
-  addCard({...cardEditModel});
-};
 
 const exportProfile = () => {
   downloadProfile();

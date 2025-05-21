@@ -1,7 +1,8 @@
-import {Socket} from "socket.io";
-
-import {logger} from "@/server/utils/logger";
+import type { Socket } from "socket.io";
 import {UserManager} from "@/server/managers";
+import { useLogger } from "~/composables/useLogger";
+
+const { debug } = useLogger("auth");
 
 export const authMiddleware = (socket: Socket, next: (err?: Error) => void) => {
 
@@ -10,7 +11,7 @@ export const authMiddleware = (socket: Socket, next: (err?: Error) => void) => {
 	if (!token) {
 		return next(new Error("Authentication error"));
 	}
-	logger.auth(`User attempting authentication with token ${token}`);
+	debug(`User attempting authentication with token ${token}`);
 
 	// Store the token with the socket
 	socket.data.token = token;
@@ -19,17 +20,17 @@ export const authMiddleware = (socket: Socket, next: (err?: Error) => void) => {
 	const user = UserManager.getUserFromToken(token);
 
 	if (socket.recovered) {
-		logger.auth(`Client recovered: ${socket.data.user.id}(${socket.id})`);
+		debug(`Client recovered: ${socket.data.user.id}(${socket.id})`);
 	}
 
 	if (user) {
 		socket.data.user = user;
 		UserManager.updateUserSocketId(user.id, socket.id);
-		logger.auth(`Existing user session restored for ${user.name}`);
+		debug(`Existing user session restored for ${user.name}`);
 	} else {
-		logger.auth(`Creating new user from token for ${token}`);
+		debug(`Creating new user from token for ${token}`);
 		socket.data.user = UserManager.createUserFromToken(token, socket.id);
-		logger.auth(`New user created: ${socket.data.user.name}`);
+		debug(`New user created: ${socket.data.user.name}`);
 	}
 
 

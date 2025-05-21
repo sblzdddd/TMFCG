@@ -9,8 +9,9 @@ import type {
 	RoomInfoResponse
 } from "~/types/DTO/room.dto";
 import type {Room} from "~/types/room";
+import {useLogger} from "@/composables/useLogger";
 
-const ROOM_STATE_SYMBOL = 'roomState';
+const {debug, error} = useLogger('room');
 
 interface RoomState {
 	current: Room | null;
@@ -42,12 +43,11 @@ export const useRoom = () => {
 		};
 	}
 
-	// dependency injection
-	provide(ROOM_STATE_SYMBOL, globalRoomState);
 
 	const setCurrentRoom = (room: Room | null) => {
 		globalRoomState.current = room;
-		console.log('setting current room', globalRoomState.current)
+		debug(`setting current room ${globalRoomState.current?.code}`)
+		console.log('room data: ', globalRoomState.current)
 	};
 
 	const createRoom = async ({isPrivate}: { isPrivate: boolean }): Promise<CreateRoomResponse> => {
@@ -145,7 +145,7 @@ export const useRoom = () => {
 				if (response.room) {
 					setCurrentRoom(response.room);
 				} else {
-					console.log('no room found')
+					error('no room found')
 				}
 				resolve(response);
 			});

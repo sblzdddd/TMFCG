@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, inject, useSlots } from 'vue'
 
 interface Props {
   label: string

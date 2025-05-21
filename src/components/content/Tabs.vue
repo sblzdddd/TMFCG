@@ -33,7 +33,6 @@
 
 <script setup lang="ts">
 import './content.css'
-import { ref, provide } from 'vue'
 
 interface Tab {
   label: string

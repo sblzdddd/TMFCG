@@ -72,8 +72,7 @@ onMounted(() => {
 }
 
 .card-back {
-  background: url('@/assets/images/cards/CardBack2.png') no-repeat center center;
-  background-size: cover;
+  @apply bg-[url('@/assets/images/cards/CardBack2.png')] bg-no-repeat bg-center bg-cover;
   backface-visibility: hidden;
   transform: rotateY(180deg);
 }

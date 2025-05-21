@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@source "../../content/**/*"
+@source "../../content/**/*";
 
 .gloock {
     font-family: "Gloock", serif;
@@ -77,36 +77,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-:root {
-    --tp-base-background-color: hsla(38, 17%, 31%, 0.90);
-    --tp-base-shadow-color: hsla(0, 0%, 0%, 0.2);
-    --tp-button-background-color: hsla(38, 28%, 53%, 1.00);
-    --tp-button-background-color-active: hsla(40, 100%, 86%, 1.00);
-    --tp-button-background-color-focus: hsla(40, 42%, 77%, 1.00);
-    --tp-button-background-color-hover: hsla(40, 42%, 77%, 1.00);
-    --tp-button-foreground-color: hsla(230, 20%, 11%, 1.00);
-    --tp-container-background-color: hsla(0, 0%, 0%, 0.20);
-    --tp-container-background-color-active: hsla(0, 0%, 0%, 0.35);
-    --tp-container-background-color-focus: hsla(0, 0%, 0%, 0.30);
-    --tp-container-background-color-hover: hsla(0, 0%, 0%, 0.25);
-    --tp-container-foreground-color: hsla(0, 0%, 100%, 0.90);
-    --tp-groove-foreground-color: hsla(0, 0%, 0%, 0.50);
-    --tp-input-background-color: hsla(0, 0%, 0%, 0.50);
-    --tp-input-background-color-active: hsla(0, 0%, 0%, 0.65);
-    --tp-input-background-color-focus: hsla(0, 0%, 0%, 0.60);
-    --tp-input-background-color-hover: hsla(0, 0%, 0%, 0.55);
-    --tp-input-foreground-color: hsla(0, 0%, 100%, 0.90);
-    --tp-label-foreground-color: hsla(0, 0%, 100%, 0.90);
-    --tp-monitor-background-color: hsla(0, 0%, 0%, 0.50);
-    --tp-monitor-foreground-color: hsla(0, 0%, 100%, 0.50);
-}
-
-.tp-dfwv {
-    z-index: 50;
-    right: unset !important;
-    left: 8px !important;
-    top: 4rem !important;
-}
 
 html, body {
     @apply m-0 p-0 bg-background

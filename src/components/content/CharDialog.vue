@@ -48,6 +48,8 @@
 <script lang="ts" setup>
 const {GetCharacterData} = useCharacterData();
 
+const { warn, debug } = useLogger('CharDialog');
+
 const charImageSrc = ref("");
 const characterImage = ref();
 const isImageLoaded = ref(false);
@@ -91,16 +93,17 @@ const props = defineProps({
 })
 
 function setup() {
+  debug(`loading character: ${props.character} ${props.variant}`);
   const charData = GetCharacterData(props.character);
   if (!charData) {
-    console.log("charData not found:", props.character)
+    warn(`charData not found: ${props.character}`);
     import(`@/assets/images/characters/Fallback 0.png`).then((module) => {
       charImageSrc.value = module.default;
     })
     return;
   }
   if (!charData.images.includes(props.variant)) {
-    console.log("variant not found:", props.variant)
+    warn(`variant not found: ${props.variant}`);
     import(`@/assets/images/characters/Fallback 0.png`).then((module) => {
       charImageSrc.value = module.default;
     })

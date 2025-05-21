@@ -1,4 +1,5 @@
-import type {Socket} from "socket.io";
+import type { Socket } from "socket.io";
+import type { User } from "~/types/user";
 
 export class UserManager {
 	private static users: User[] = [];

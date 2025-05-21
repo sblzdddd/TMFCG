@@ -1,9 +1,13 @@
 import {RoomManager, UserManager} from "@/server/managers";
-import {logger} from "@/server/utils/logger";
+import type { Room } from "~/types/room";
+import type { User } from "~/types/user";
+import { useLogger } from "~/composables/useLogger";
+
+const { debug, info, warn, error } = useLogger("roomService");
 
 export class RoomService {
 	static joinRoom(room: Room, user: User) {
-		logger.roomService(`${user.name} Joining room ${room.code}`);
+		debug(`${user.name} Joining room ${room.code}`);
 		user.currentRoomCode = room.code;
 		user.isRoomOwner = room.owner === user.id;
 
@@ -18,7 +22,7 @@ export class RoomService {
 	}
 
 	static leaveRoom(room: Room, user: User): User | undefined {
-		logger.roomService(`${user.name} Leaving room ${room.code}`);
+		debug(`${user.name} Leaving room ${room.code}`);
 		user.currentRoomCode = null;
 		user.isRoomOwner = false;
 
