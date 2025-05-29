@@ -46,7 +46,6 @@ const props = defineProps({
 })
 
 function loadCharacterImage(character: ICardCharacter) {
-
   if (!character.englishName || !character.characterImageName) return;
   charEnglishName.value = character.englishName;
   isImageLoaded.value = false;

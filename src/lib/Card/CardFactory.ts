@@ -8,7 +8,7 @@ import type {IStandardCard} from "~/lib/Card/StandardCard";
 export const CardFactory = {
 	createStandardCard(card: IStandardCard): StandardCard {
 		return new StandardCard(
-			card.cardId,
+			card.id,
 			card.suit,
 			card.number,
 			card.name || `${CardNumber[card.number]} of ${CardSuit[card.suit]}`,
@@ -19,7 +19,7 @@ export const CardFactory = {
 
 	createEffectCard(card: IEffectCard): EffectCard {
 		return new EffectCard(
-			card.cardId,
+			card.id,
 			card.suit,
 			card.number,
 			card.name,

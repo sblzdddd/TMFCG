@@ -45,9 +45,14 @@ export const useRoom = () => {
 
 
 	const setCurrentRoom = (room: Room | null) => {
-		globalRoomState.current = room;
 		debug(`setting current room ${globalRoomState.current?.code}`)
 		console.log('room data: ', globalRoomState.current)
+		globalRoomState.current = room;
+		debug(`setting current room profile...`)
+		const { setCardProfile } = useCardProfile();
+		if (room?.cardProfile) {
+			setCardProfile(room.cardProfile);
+		}
 	};
 
 	const createRoom = async ({isPrivate}: { isPrivate: boolean }): Promise<CreateRoomResponse> => {

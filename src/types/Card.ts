@@ -1,14 +1,3 @@
-export interface PlayingCard {
-	data: CardData;
-	isAnimating: boolean;
-	id: number;
-}
-
-export interface CardProfile {
-	name: string;
-	cards: CardData[];
-}
-
 export enum CardType {
 	STANDARD = 'standard',
 	EFFECT = 'effect',

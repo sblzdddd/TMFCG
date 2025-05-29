@@ -29,7 +29,7 @@ export interface IEffectCard extends IBaseCard {
 // Effect card class
 export class EffectCard extends BaseCard {
   constructor(
-    cardId: string,
+    id: string,
     suit: CardSuit,
     number: CardNumber,
     name: string,
@@ -42,7 +42,7 @@ export class EffectCard extends BaseCard {
       requirements?: Record<string, unknown>;
     }
   ) {
-    super(cardId, suit, number, name, character, description);
+    super(id, suit, number, name, character, description);
   }
 
   public get type(): CardType {

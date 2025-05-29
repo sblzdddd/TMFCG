@@ -205,4 +205,9 @@ html.replaying-chat .popup-enter-active {
   opacity: 0;
   transform: translateY(20px);
 }
+
+.chat-section {
+  @apply grow flex flex-col gap-3;
+  overflow: hidden;
+}
 </style>

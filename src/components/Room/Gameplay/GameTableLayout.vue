@@ -3,31 +3,55 @@
 
     <!-- Card Deck -->
     <Card-Back
-        v-for="(_, index) in deckCards.length"
+        v-for="(_, index) in deckCardsCount"
         :key="index"
         :class="[
-                deckCards.length <= 5 ? 'shadow-md' : 'shadow-sm',
-            ]"
+          deckCardsCount <= 5 ? 'shadow-md' : 'shadow-sm',
+        ]"
         :style="{
-                top: `${windowHeight * 0.13 - index * 0.1 * 54 / deckCards.length}px`,
-                left: `${windowWidth * 0.17 - index * 0.13 * 54 / deckCards.length}px`,
-                width: `${windowWidth * 0.07}px`,
-                height: `${windowWidth * 0.07 / CARD_CONST.cardRatio}px`,
-                zIndex: index,
-            }"
+          top: `${windowHeight * 0.20 - index * 0.1 * 54 / deckCardsCount}px`,
+          left: `${windowWidth * 0.80 - index * 0.13 * 54 / deckCardsCount}px`,
+          width: `${windowWidth * 0.07}px`,
+          height: `${windowWidth * 0.07 / CARD_CONST.cardRatio}px`,
+          zIndex: index,
+        }"
         class="card-in-deck"
-        @click="drawCard"
+        @click="requestDrawCard(5)"
     />
 
     <!-- Player's card zone -->
     <Card-PlayingCard
-        v-for="(card) in playerCards"
-        :id="`player-card-${card.id}`"
-        :key="`${card.id}`"
-        :number="card.data.number"
-        :show-back="false"
-        :suit="card.data.suit"
-        class="player-card"
+      v-for="(card) in playerCards"
+      :id="`player-card-${card.id}`"
+      :key="`${card.id}`"
+      :number="card.data.number"
+      :show-back="false"
+      :suit="card.data.suit"
+      class="player-card"
+    />
+
+    <!-- Opponent 0 (Top) -->
+    <Card-Back
+      v-for="index in opponentCardsCounts[0]"
+      :id="`opponent-0-${index}`"
+      :key="`opponent-0-${index}`"
+      class="opponent-0-card"
+    />
+
+    <!-- Opponent 1 (Left) -->
+    <Card-Back
+      v-for="index in opponentCardsCounts[1]"
+      :id="`opponent-1-${index}`"
+      :key="`opponent-1-${index}`"
+      class="opponent-1-card"
+    />
+
+    <!-- Opponent 2 (Right) -->
+    <Card-Back
+      v-for="index in opponentCardsCounts[2]"
+      :id="`opponent-2-${index}`"
+      :key="`opponent-2-${index}`"
+      class="opponent-2-card"
     />
 
     <!-- Card pool area -->
@@ -44,12 +68,7 @@
             class="pool-card"
         >
           <template #front>
-            <Card-Addons-CardCharacter
-                :char-name="card.data.appearance.character"
-                :char-variant="card.data.appearance.variant"
-                :offset-x="card.data.appearance.offsetX"
-                :offset-y="card.data.appearance.offsetY"
-            />
+            <Card-Addons-CardCharacter :character="card.data.character" />
           </template>
         </Card-Base>
       </div>
@@ -61,12 +80,14 @@
 
 <script lang="ts" setup>
 import { CARD_CONST } from '~/constants/card';
-import { animateCardDraw } from './card_animation';
+import { animateCardDraw } from './player_card_animation';
+import { animateOpponentCardDraw } from './opponent_card_animation';
 const { windowWidth, windowHeight } = useViewport();
 
-watch([windowWidth, windowHeight], () => {
+watch([windowWidth, windowHeight], async () => {
   const cardsInDeck = document.querySelectorAll('.card-in-deck');
   const playerCardElements = document.querySelectorAll('.player-card');
+  // Resize player cards
   animateCardDraw(
       Array.from(cardsInDeck) as HTMLElement[],
       Array.from(playerCardElements) as HTMLElement[],
@@ -74,16 +95,31 @@ watch([windowWidth, windowHeight], () => {
       () => {},
       true,
   );
-})
 
+  // Resize opponent cards
+  for (let i = 0; i < 3; i++) {
+    const opponentCardElements = document.querySelectorAll(`.opponent-${i}-card`);
+    if (opponentCardElements.length > 0) {
+      animateOpponentCardDraw(
+        i,
+        Array.from(cardsInDeck) as HTMLElement[],
+        Array.from(opponentCardElements) as HTMLElement[],
+        0,
+        () => {},
+        true,
+      );
+    }
+  }
+});
 
 const {
-  deckCards,
+  deckCardsCount,
   cardPool,
   playerCards,
-  drawCard,
+  opponentCardsCounts,
+  requestDrawCard,
   initializeGame,
-} = useGameTable();
+} = await useGameTable();
 
 onMounted(() => {
   initializeGame();
@@ -111,5 +147,10 @@ onMounted(() => {
 .play-card-btn {
   @apply absolute left-1/2 bottom-[35px] transform -translate-x-1/2 opacity-0 transition-opacity;
   z-index: 200;
+}
+
+.opponent-0-card, .opponent-1-card, .opponent-2-card {
+  @apply rounded-lg shadow-md;
+  border: 1px solid #36140899;
 }
 </style>

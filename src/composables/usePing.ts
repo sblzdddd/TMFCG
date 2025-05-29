@@ -13,7 +13,7 @@ const ping = () => {
 }
 
 socket.on("connect", () => {
-	pingInterval.value = setInterval(ping, 200);
+	pingInterval.value = setInterval(ping, 1000);
 });
 
 socket.on("disconnect", () => {
@@ -38,8 +38,8 @@ export const usePing = () => {
 	}
 
 	const startPing = () => {
-		pingInterval.value = setInterval(ping, 200);
-		globalPingState.isStarted = true;
+		// pingInterval.value = setInterval(ping, 1000);
+		// globalPingState.isStarted = true;
 	};
 
 	const stopPing = () => {

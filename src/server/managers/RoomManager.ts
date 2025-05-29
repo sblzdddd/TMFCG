@@ -3,42 +3,52 @@ import type { PublicRoomInfo, Room } from "~/types/room";
 import type { RoomMember, User } from "~/types/user";
 import type { ChatMessage } from "~/types/chat";
 import { useLogger } from "~/composables/useLogger";
+import type { ICardProfile } from "~/lib/CardProfile/CardProfile";
+import setB from "@/assets/Set B.json";
+import { PlayingCardFactory } from "~/lib/PlayingCard/PlayingCardFactory";
+import type { IBaseCard } from "~/lib/Card/BaseCard";
 
+const rooms = new Map<string, Room>();
+
+const shuffleArray = (array: IBaseCard[]): IBaseCard[] => {
+	const shuffled = [...array];
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	return shuffled;
+};
 
 const { debug, warn } = useLogger("roomManager");
 
-export class RoomManager {
-	private static rooms = new Map<string, Room>();
+export const RoomManager = {
 
-	static addMessage(roomCode: string, message: ChatMessage) {
+	addMessage(roomCode: string, message: ChatMessage) {
 		const room = this.getRoom(roomCode);
 		if (!room) {
 			throw new Error('Room not found');
 		}
 		room.messages.push(message);
 		return room.messages;
-	}
+	},
 
-	static getRoom(code: string | undefined | null): Room | undefined {
+	getRoom(code: string | undefined | null): Room | undefined {
 		if (!code) {
 			warn(`No code provided`);
 
 			return undefined;
 		}
 
-		return this.rooms.get(code);
-	}
+		return rooms.get(code);
+	},
 
-	static getPublicRooms(): PublicRoomInfo[] {
-		// Log the actual size of the rooms Map
-		debug(`Total rooms in Map: ${this.rooms.size}`);
+	getPublicRooms(): PublicRoomInfo[] {
+		debug(`Total rooms in Map: ${rooms.size}`);
 
-		const publicRooms = Array.from(this.rooms.values()).filter((room) => !room.isPrivate);
+		const publicRooms = Array.from(rooms.values()).filter((room) => !room.isPrivate);
 
-		// Add more detailed logging
-		debug(`Found ${publicRooms.length} public rooms out of ${this.rooms.size} total rooms`);
+		debug(`Found ${publicRooms.length} public rooms out of ${rooms.size} total rooms`);
 
-		// Log each public room for debugging
 		publicRooms.forEach(room => {
 			debug(`Public room: ${room.code}, Owner: ${room.owner}, Members: ${room.members}`);
 		});
@@ -48,10 +58,14 @@ export class RoomManager {
 			owner: room.members.find((m) => m.id === room.owner)?.name || "Unknown",
 			memberCount: room.members.length,
 		}));
-	}
+	},
 
-	static createRoom(user: User, isPrivate: boolean): Room {
+	createRoom(user: User, isPrivate: boolean): Room {
 		const roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+		const cardProfileData = setB as ICardProfile;
+		const initialDeck = shuffleArray(cardProfileData.cards.map(cardData => PlayingCardFactory.createPlayingCard(cardData, 0).data));
+
 		const newRoom: Room = {
 			code: roomCode,
 			owner: user.id,
@@ -59,18 +73,22 @@ export class RoomManager {
 			memberIds: [user.id],
 			members: [user],
 			messages: [],
+			deck: initialDeck,
+			cardProfile: cardProfileData,
+			playerHands: {},
+			playHistory: [],
 		};
 
-		this.rooms.set(roomCode, newRoom);
+		rooms.set(roomCode, newRoom);
 
 		return newRoom;
-	}
+	},
 
-	static deleteRoom(code: string) {
-		this.rooms.delete(code);
-	}
+	deleteRoom(code: string) {
+		rooms.delete(code);
+	},
 
-	static getMembersFromRoom(room: Room): RoomMember[] {
+	getMembersFromRoom(room: Room): RoomMember[] {
 		return room.members.map((m) => ({
 			id: m.id,
 			name: m.name || "Guest",
@@ -78,16 +96,15 @@ export class RoomManager {
 			connected: m.connected,
 			avatar: m.avatar,
 		}));
-	}
+	},
 
-	static updateUserInMessages(user: User) {
-		// Update user info in all room messages where they are the sender
-		this.rooms.forEach(room => {
+	updateUserInMessages(user: User) {
+		rooms.forEach(room => {
 			room.messages.forEach(message => {
 				if (message.sender.id === user.id) {
 					message.sender = user;
 				}
 			});
 		});
-	}
+	},
 }

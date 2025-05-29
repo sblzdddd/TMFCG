@@ -1,29 +1,18 @@
 import { ref, computed } from 'vue'
 import type { CardNumber, CardSuit } from '~/types/Card'
 import type { BaseCard, IBaseCard } from '@/lib/Card'
-import { isStandardCard } from '@/lib/Card'
-import { CardProfile, type ICardProfile } from '@/lib/CardProfile'
+import { type CardProfile, CardProfileFactory, type ICardProfile } from '@/lib/CardProfile'
 
-function initializeProfile(): ICardProfile {
-	return new CardProfile(
-		'Unnamed',
-		'Unknown',
-		'1.0.0',
-		'1.0.0',
-		'Default card profile',
-		[]
-	)
-}
-
-const defaultProfile = initializeProfile()
-const globalCardProfile = ref<ICardProfile>(defaultProfile)
+const defaultProfile = CardProfileFactory.createInitialCardProfile()
+const globalCardProfile = ref<CardProfile>(defaultProfile);
 
 export const useCardProfile = () => {
+	
 	if (typeof window === 'undefined') {
 		return {
-			currentProfile: computed(() => defaultProfile),
+			currentProfile: computed(() => globalCardProfile.value),
 			getCardProfile: () => undefined,
-			setCardProfile: () => undefined,
+			setCardProfile: (_profile: ICardProfile) => {},
 			addCard: () => undefined,
 			removeCard: () => undefined,
 			getStandardCards: () => [],
@@ -33,26 +22,33 @@ export const useCardProfile = () => {
 	}
 
 	const getCardProfile = (suit: CardSuit, number: CardNumber): IBaseCard | undefined => {
+		if (!globalCardProfile.value) return undefined;
 		return globalCardProfile.value.cards.find(
-			card => isStandardCard(card) && card.suit === suit && card.number === number
+			card => card.suit === suit && card.number === number
 		) as IBaseCard | undefined;
 	}
 
-	const setCardProfile = (profile: ICardProfile) => {
-		globalCardProfile.value = profile
+	const setCardProfile = (profileData: ICardProfile | null) => {
+		console.log('setCardProfile', profileData);
+		if (profileData) {
+			globalCardProfile.value = CardProfileFactory.createCardProfile(profileData);
+		}
 	}
 
 	const addCard = (card: BaseCard) => {
+		if (!globalCardProfile.value) globalCardProfile.value = CardProfileFactory.createInitialCardProfile() as CardProfile;
 		globalCardProfile.value.cards.push(card)
 		sortCards()
 	}
 
 	const removeCard = (cardId: string) => {
+		if (!globalCardProfile.value) return;
 		globalCardProfile.value.cards = globalCardProfile.value.cards
-			.filter(card => card.cardId !== cardId)
+			.filter(card => card.id !== cardId)
 	}
 
 	const sortCards = () => {
+		if (!globalCardProfile.value) return;
 		globalCardProfile.value.cards.sort((a, b) => a.compareTo(b))
 	}
 

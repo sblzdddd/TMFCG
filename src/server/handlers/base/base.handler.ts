@@ -25,6 +25,10 @@ export abstract class BaseHandler implements IBaseHandler {
 		this.socket.emit(event, data);
 	}
 
+	protected emitTo<T>(socketId: string, event: string, data: T): void {
+		this.socket.to(socketId).emit(event, data);
+	}
+
 
 	protected broadcast<T>(event: string, data: T): void {
 		this.socket.broadcast.emit(event, data);

@@ -7,7 +7,7 @@ import type { ICardProfile } from "~/lib/CardProfile/CardProfile";
 import { CardCharacterFactory } from "~/lib/CardCharacter/CardCharacterFactory";
 import type { ICardCharacter } from "~/lib/CardCharacter/CardCharacter";
 interface CardInfoModel {
-	cardId: string,
+	id: string,
 	suit: CardSuit,
 	number: CardNumber,
 	description: string,
@@ -15,7 +15,7 @@ interface CardInfoModel {
 }
 
 const cardInfoModel = reactive<CardInfoModel>({
-	cardId: '',
+	id: '',
 	suit: CardSuit.CLUBS,
 	number: CardNumber.ACE,
 	description: '',

@@ -5,15 +5,25 @@
 <script lang="ts" setup>
 import { Pane } from 'tweakpane';
 
+defineExpose({
+  refresh: () => pane.value?.refresh(),
+  toggleCollapse: (isCollapsed: boolean) => {
+    if (pane.value) {
+      pane.value.expanded = !isCollapsed;
+    }
+  },
+});
+
 const {
-  deckCards,
-  drawCard,
-} = useGameTable();
+  deckCardsCount,
+  requestDrawCard,
+} = await useGameTable();
 
 const container = ref<HTMLElement | null>(null);
 const pane = ref<Pane | null>(null);
 
 const numOfDrawCards = ref(1);
+const drawTarget = ref(1);
 
 onMounted(() => {
   if (!container.value) return;
@@ -24,7 +34,7 @@ onMounted(() => {
   });
 
   const cardsInDeck = computed(() => {
-    return deckCards.value.length;
+    return deckCardsCount.value;
   });
 
   pane.value.addBinding(cardsInDeck, 'value', {
@@ -47,26 +57,31 @@ onMounted(() => {
     label: 'Count',
     step: 1,
     min: 1,
-    max: 7,
+    max: 10,
+  });
+
+  f1.addBinding(drawTarget, 'value', {
+    label: 'Target',
+    step: 1,
+    min: 0,
+    max: 3,
   });
 
   f1.addButton({
     title: 'Draw Card',
   }).on('click', async () => {
-    await drawCard(numOfDrawCards.value);
-  });
-
-  watch(() => deckCards.value.length, () => {
-    f1.refresh();
-  });
-});
-
-defineExpose({
-  refresh: () => pane.value?.refresh(),
-  toggleCollapse: (isCollapsed: boolean) => {
-    if (pane.value) {
-      pane.value.expanded = !isCollapsed;
+    if (drawTarget.value === 0) {
+      await requestDrawCard(numOfDrawCards.value);
+    } else {
+      // await requestDrawCard(drawTarget.value - 1, numOfDrawCards.value);
     }
-  },
+  });
+
+  f1.addButton({
+    title: 'Draw Cards to All Players',
+  }).on('click', async () => {
+    await requestDrawCard(numOfDrawCards.value);
+  });
 });
+
 </script> 
