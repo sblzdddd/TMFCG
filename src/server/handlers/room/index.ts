@@ -7,6 +7,7 @@ import {GetCurrentRoomHandler} from './get_current.handler';
 import {ListRoomsHandler} from './list.handler';
 import {GetChatsHandler} from './get_chats.handler';
 import {ChatHandler} from './chat.handler';
+import { GameHandler } from './game.handler';
 
 export class RoomHandler extends BaseHandler {
 	public initialize() {
@@ -18,5 +19,6 @@ export class RoomHandler extends BaseHandler {
 		new ListRoomsHandler(this.socket);
 		new GetChatsHandler(this.socket);
 		new ChatHandler(this.socket);
+		new GameHandler(this.socket);
 	}
 }

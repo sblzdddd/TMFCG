@@ -9,9 +9,10 @@
   </Card-RenderedBase>
 </template>
 <script lang="ts" setup>
-import { CardCharacter } from "~/lib/CardCharacter/CardCharacter";
+import type { CardCharacter } from "~/lib/CardCharacter";
+import { CardCharacterFactory } from "~/lib/CardCharacter/CardCharacterFactory";
 
-const character = ref<CardCharacter>(new CardCharacter("【无角色】", "0", 0, 0));
+const character = ref<CardCharacter>(CardCharacterFactory.createDefaultCardCharacter());
 
 const props = defineProps({
   suit: {
@@ -24,9 +25,16 @@ const props = defineProps({
   },
 });
 
-const {getCardProfile} = useCardProfile();
+const {getCardProfile, currentProfile} = useCardProfile();
 
 watch(props, () => {
+  const profile = getCardProfile(props.suit, props.number);
+  if (profile) {
+    character.value = profile.character;
+  }
+}, {immediate: true});
+
+watch(currentProfile, () => {
   const profile = getCardProfile(props.suit, props.number);
   if (profile) {
     character.value = profile.character;

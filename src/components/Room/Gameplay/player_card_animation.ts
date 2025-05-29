@@ -12,7 +12,7 @@ const calculateCardPositions = (numOfCards: number) => {
 	const gap = Math.min(
 								cardWidth * CARD_CONST.maxGap,
 								windowWidth * 0.08 / numOfCards * 11,
-								(windowWidth - cardWidth) / Math.max(numOfCards - 1, 1) // cards fill the screen
+								(windowWidth - cardWidth) / Math.max(numOfCards - 1, 1)
 							);
 
 	const totalCardsWidth = cardWidth + (numOfCards - 1) * gap;
@@ -32,6 +32,11 @@ export const animateCardDraw = (
 	onComplete: () => void,
 	isResizing: boolean = false,
 ) => {
+
+	if(cardElements.length === 0) {
+		onComplete();
+		return;
+	}
 
 	let lastCard = cardElements[cardElements.length - 1];
 
@@ -102,6 +107,7 @@ export const animateCardDraw = (
 		spring.damping = 20;
 	}
 
+	// animate old cards in player's hand
 	debug(`cardElements.length=${cardElements.length} targetIndexes.length=${targetIndexes.length}`);
 	const oldCardTime = Math.min(300, 500 / (Math.abs(cardElements.length - targetIndexes.length + 1)));
 	debug(`old card time=${oldCardTime}`);
@@ -129,6 +135,7 @@ export const animateCardDraw = (
 		}, Math.abs(closestTargetIndex - i) * oldCardTime * (isResizing ? 0.1 : 1))
 	}
 
+	// animate new cards from card deck
 	const newCardTime = Math.min(600, 1000 / drawCardElements.length);
 	debug(`new card time=${newCardTime}`);
 	drawCardElements.reverse().forEach((element, index) => {

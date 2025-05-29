@@ -8,6 +8,7 @@ export interface ICardProfile {
   apiVersion: string;
   description: string;
   cards: IBaseCard[];
+	getCardById(id: string): IBaseCard | undefined;
 }
 
 export class CardProfile implements ICardProfile {
@@ -19,6 +20,10 @@ export class CardProfile implements ICardProfile {
 		public description: string,
 		public cards: IBaseCard[]
 	) {
+	}
+
+	public getCardById(id: string): IBaseCard | undefined {
+		return this.cards.find(card => card.id === id);
 	}
 }
 

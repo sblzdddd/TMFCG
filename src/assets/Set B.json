@@ -6,6 +6,7 @@
   "description": "官方B卡组的默认玩法",
   "cards": [
     {
+      "id": "01",
       "suit": 0,
       "number": 1,
       "character": {
@@ -16,6 +17,7 @@
       }
     },
     {
+      "id": "02",
       "suit": 0,
       "number": 2,
       "character": {
@@ -26,6 +28,7 @@
       }
     },
     {
+      "id": "03",
       "suit": 0,
       "number": 3,
       "character": {
@@ -36,6 +39,7 @@
       }
     },
     {
+      "id": "04",
       "suit": 0,
       "number": 4,
       "character": {
@@ -46,6 +50,7 @@
       }
     },
     {
+      "id": "05",
       "suit": 0,
       "number": 5,
       "character": {
@@ -56,6 +61,7 @@
       }
     },
     {
+      "id": "06",
       "suit": 0,
       "number": 6,
       "character": {
@@ -66,6 +72,7 @@
       }
     },
     {
+      "id": "07",
       "suit": 0,
       "number": 7,
       "character": {
@@ -76,6 +83,7 @@
       }
     },
     {
+      "id": "08",
       "suit": 0,
       "number": 8,
       "character": {
@@ -86,6 +94,7 @@
       }
     },
     {
+      "id": "09",
       "suit": 0,
       "number": 9,
       "character": {
@@ -96,6 +105,7 @@
       }
     },
     {
+      "id": "010",
       "suit": 0,
       "number": 10,
       "character": {
@@ -106,6 +116,7 @@
       }
     },
     {
+      "id": "011",
       "suit": 0,
       "number": 11,
       "character": {
@@ -116,6 +127,7 @@
       }
     },
     {
+      "id": "012",
       "suit": 0,
       "number": 12,
       "character": {
@@ -126,6 +138,7 @@
       }
     },
     {
+      "id": "013",
       "suit": 0,
       "number": 13,
       "character": {
@@ -136,6 +149,7 @@
       }
     },
     {
+      "id": "11",
       "suit": 1,
       "number": 1,
       "character": {
@@ -146,6 +160,7 @@
       }
     },
     {
+      "id": "12",
       "suit": 1,
       "number": 2,
       "character": {
@@ -156,6 +171,7 @@
       }
     },
     {
+      "id": "13",
       "suit": 1,
       "number": 3,
       "character": {
@@ -166,6 +182,7 @@
       }
     },
     {
+      "id": "14",
       "suit": 1,
       "number": 4,
       "character": {
@@ -176,6 +193,7 @@
       }
     },
     {
+      "id": "15",
       "suit": 1,
       "number": 5,
       "character": {
@@ -186,6 +204,7 @@
       }
     },
     {
+      "id": "16",
       "suit": 1,
       "number": 6,
       "character": {
@@ -196,6 +215,7 @@
       }
     },
     {
+      "id": "17",
       "suit": 1,
       "number": 7,
       "character": {
@@ -206,6 +226,7 @@
       }
     },
     {
+      "id": "18",
       "suit": 1,
       "number": 8,
       "character": {
@@ -216,6 +237,7 @@
       }
     },
     {
+      "id": "19",
       "suit": 1,
       "number": 9,
       "character": {
@@ -226,6 +248,7 @@
       }
     },
     {
+      "id": "110",
       "suit": 1,
       "number": 10,
       "character": {
@@ -236,6 +259,7 @@
       }
     },
     {
+      "id": "111",
       "suit": 1,
       "number": 11,
       "character": {
@@ -246,6 +270,7 @@
       }
     },
     {
+      "id": "112",
       "suit": 1,
       "number": 12,
       "character": {
@@ -256,6 +281,7 @@
       }
     },
     {
+      "id": "113",
       "suit": 1,
       "number": 13,
       "character": {
@@ -266,6 +292,7 @@
       }
     },
     {
+      "id": "21",
       "suit": 2,
       "number": 1,
       "character": {
@@ -276,6 +303,7 @@
       }
     },
     {
+      "id": "22",
       "suit": 2,
       "number": 2,
       "character": {
@@ -286,6 +314,7 @@
       }
     },
     {
+      "id": "23",
       "suit": 2,
       "number": 3,
       "character": {
@@ -296,6 +325,7 @@
       }
     },
     {
+      "id": "24",
       "suit": 2,
       "number": 4,
       "character": {
@@ -306,6 +336,7 @@
       }
     },
     {
+      "id": "25",
       "suit": 2,
       "number": 5,
       "character": {
@@ -316,6 +347,7 @@
       }
     },
     {
+      "id": "26",
       "suit": 2,
       "number": 6,
       "character": {
@@ -326,6 +358,7 @@
       }
     },
     {
+      "id": "27",
       "suit": 2,
       "number": 7,
       "character": {
@@ -336,6 +369,7 @@
       }
     },
     {
+      "id": "28",
       "suit": 2,
       "number": 8,
       "character": {
@@ -346,6 +380,7 @@
       }
     },
     {
+      "id": "29",
       "suit": 2,
       "number": 9,
       "character": {
@@ -356,6 +391,7 @@
       }
     },
     {
+      "id": "210",
       "suit": 2,
       "number": 10,
       "character": {
@@ -366,6 +402,7 @@
       }
     },
     {
+      "id": "211",
       "suit": 2,
       "number": 11,
       "character": {
@@ -376,6 +413,7 @@
       }
     },
     {
+      "id": "212",
       "suit": 2,
       "number": 12,
       "character": {
@@ -386,6 +424,7 @@
       }
     },
     {
+      "id": "213",
       "suit": 2,
       "number": 13,
       "character": {
@@ -396,6 +435,7 @@
       }
     },
     {
+      "id": "31",
       "suit": 3,
       "number": 1,
       "character": {
@@ -406,6 +446,7 @@
       }
     },
     {
+      "id": "32",
       "suit": 3,
       "number": 2,
       "character": {
@@ -416,6 +457,7 @@
       }
     },
     {
+      "id": "33",
       "suit": 3,
       "number": 3,
       "character": {
@@ -426,6 +468,7 @@
       }
     },
     {
+      "id": "34",
       "suit": 3,
       "number": 4,
       "character": {
@@ -436,6 +479,7 @@
       }
     },
     {
+      "id": "35",
       "suit": 3,
       "number": 5,
       "character": {
@@ -446,6 +490,7 @@
       }
     },
     {
+      "id": "36",
       "suit": 3,
       "number": 6,
       "character": {
@@ -456,6 +501,7 @@
       }
     },
     {
+      "id": "37",
       "suit": 3,
       "number": 7,
       "character": {
@@ -466,6 +512,7 @@
       }
     },
     {
+      "id": "38",
       "suit": 3,
       "number": 8,
       "character": {
@@ -476,6 +523,7 @@
       }
     },
     {
+      "id": "39",
       "suit": 3,
       "number": 9,
       "character": {
@@ -486,6 +534,7 @@
       }
     },
     {
+      "id": "310",
       "suit": 3,
       "number": 10,
       "character": {
@@ -496,6 +545,7 @@
       }
     },
     {
+      "id": "311",
       "suit": 3,
       "number": 11,
       "character": {
@@ -506,6 +556,7 @@
       }
     },
     {
+      "id": "312",
       "suit": 3,
       "number": 12,
       "character": {
@@ -516,6 +567,7 @@
       }
     },
     {
+      "id": "313",
       "suit": 3,
       "number": 13,
       "character": {

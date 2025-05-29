@@ -44,6 +44,7 @@ export const CardProfileFactory = {
       apiVersion: "1.0.0",
       description: "Default Card Profile",
       cards: cards,
+      getCardById: () => undefined,
     };
     return this.createCardProfile(initialProfile);
   }

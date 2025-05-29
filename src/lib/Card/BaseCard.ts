@@ -2,7 +2,7 @@ import type {ICardCharacter} from "../CardCharacter/CardCharacter";
 import {CardNumber, CardSuit, CardType} from "~/types/Card";
 
 interface CardInfoModel {
-	cardId: string,
+	id: string,
 	suit: CardSuit,
 	number: CardNumber,
 	description: string,
@@ -15,7 +15,7 @@ interface CardInfoModel {
 }
 
 export interface IBaseCard {
-  cardId: string;
+  id: string;
   suit: CardSuit;
   number: CardNumber;
 	name: string;
@@ -33,7 +33,7 @@ export interface IBaseCard {
 export abstract class BaseCard implements IBaseCard {
 
 	constructor(
-		public cardId: string,
+		public id: string,
 		public suit: CardSuit,
 		public number: CardNumber,
 		public name: string,
@@ -70,7 +70,7 @@ export abstract class BaseCard implements IBaseCard {
 	}
 
 	public setInfo(info: CardInfoModel) {
-		this.cardId = info.cardId;
+		this.id = info.id;
 		this.suit = info.suit;
 		this.number = info.number;
 		this.description = info.description;
