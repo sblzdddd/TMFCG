@@ -77,6 +77,7 @@ export const RoomManager = {
 			cardProfile: cardProfileData,
 			playerHands: {},
 			playHistory: [],
+			lastPlayedCards: {},
 		};
 
 		rooms.set(roomCode, newRoom);

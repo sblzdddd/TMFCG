@@ -8,17 +8,31 @@ interface DrawCardRequest {
 }
 
 interface CardDrawnPayload {
-  receiver: number;
   count: number;
   cards?: string[];
   drawerId: string;
+  source: string;
+  sourceId?: string;
 }
 
 interface PlayCardRequest {
-  cardId: string;
+  cardIds: string[];
 }
 
 interface CardPlayedPayload {
+  userId: string;
+  cardIds: string[];
+}
+
+interface OpponentCardCountsPayload {
+  [userId: string]: number;
+}
+
+interface LastPlayedCardsPayload {
+  [userId: string]: string[];
+}
+
+interface RequestDrawFromPlayedCardRequest {
   userId: string;
   cardId: string;
 }
@@ -31,6 +45,9 @@ export class GameHandler extends BaseHandler implements IBaseHandler {
     this.on("playCard", (data: PlayCardRequest) => this.handlePlayCard(data));
     this.on("getPlayingHistory", () => this.handleGetPlayingHistory());
     this.on("getDeckCount", () => this.handleGetDeckCount());
+    this.on("getOpponentCardCounts", () => this.handleGetOpponentCardCounts());
+    this.on("getLastPlayedCards", () => this.handleGetLastPlayedCards());
+    this.on("requestDrawFromPlayedCard", (data: RequestDrawFromPlayedCardRequest) => this.handleRequestDrawFromPlayedCard(data));
   }
 
   private handleGetRoomCardProfile(): void {
@@ -85,18 +102,18 @@ export class GameHandler extends BaseHandler implements IBaseHandler {
     
     // Send event to the drawer with card information
     const drawerPayload: CardDrawnPayload = {
-      receiver: 0,
       count: drawnCards.length,
       cards: drawnCardIds,
       drawerId: user.id,
+      source: 'deck',
     };
     this.emit("cardDrawn", drawerPayload);
 
     // Send event to other players without card information
     const othersPayload: CardDrawnPayload = {
-      receiver: 1,
       count: drawnCards.length,
       drawerId: user.id,
+      source: 'deck',
     };
     this.emitToRoom(room.code, "cardDrawn", othersPayload);
   }
@@ -147,21 +164,27 @@ export class GameHandler extends BaseHandler implements IBaseHandler {
       return;
     }
 
-    const { cardId } = data;
+    const { cardIds } = data;
     const playerHand = room.playerHands[user.id];
-    if (!playerHand || !playerHand.includes(cardId)) {
+    if (!playerHand || !cardIds.every(id => playerHand.includes(id))) {
       this.emit("error", { message: "Card not in hand or invalid card" });
       return;
     }
 
     // Remove card from hand
-    room.playerHands[user.id] = playerHand.filter((id: string) => id !== cardId);
+    room.playerHands[user.id] = playerHand.filter((id: string) => !cardIds.includes(id));
+
+    // Update last played cards
+    if (!room.lastPlayedCards) {
+      room.lastPlayedCards = {};
+    }
+    room.lastPlayedCards[user.id] = cardIds;
 
     // Add to play history
-    room.playHistory.push({ userId: user.id, cards: [cardId] });
+    room.playHistory.push({ userId: user.id, cards: cardIds });
 
     // Notify all players in the room
-    const payload: CardPlayedPayload = { userId: user.id, cardId };
+    const payload: CardPlayedPayload = { userId: user.id, cardIds };
     this.emitToAllInRoom(room.code, "cardPlayed", payload);
   }
 
@@ -179,5 +202,84 @@ export class GameHandler extends BaseHandler implements IBaseHandler {
     }
 
     this.emit("playingHistory", room.playHistory);
+  }
+
+  private handleGetOpponentCardCounts(): void {
+    const user = UserManager.getUser(this.socket);
+    if (!user || !user.currentRoomCode) {
+      this.emit("error", { message: "User or room not found" });
+      return;
+    }
+
+    const room = RoomManager.getRoom(user.currentRoomCode);
+    if (!room) {
+      this.emit("error", { message: "Room not found" });
+      return;
+    }
+
+    const opponentCounts: OpponentCardCountsPayload = {};
+    for (const memberId in room.playerHands) {
+      if (memberId !== user.id) {
+        opponentCounts[memberId] = room.playerHands[memberId]?.length || 0;
+      }
+    }
+    this.emit("opponentCardCounts", opponentCounts);
+  }
+
+  private handleGetLastPlayedCards(): void {
+    const user = UserManager.getUser(this.socket);
+    if (!user || !user.currentRoomCode) {
+      this.emit("error", { message: "User or room not found" });
+      return;
+    }
+
+    const room = RoomManager.getRoom(user.currentRoomCode);
+    if (!room) {
+      this.emit("error", { message: "Room not found" });
+      return;
+    }
+
+    const lastPlayedCards: LastPlayedCardsPayload = room.lastPlayedCards || {};
+    this.emit("lastPlayedCards", lastPlayedCards);
+  }
+
+  
+
+  private handleRequestDrawFromPlayedCard(data: RequestDrawFromPlayedCardRequest): void {
+    console.log('handleRequestDrawFromPlayedCard', data);
+    const user = UserManager.getUser(this.socket);
+    if (!user || !user.currentRoomCode) {
+      this.emit("error", { message: "User or room not found" });
+      return;
+    }
+
+    const room = RoomManager.getRoom(user.currentRoomCode);
+    if (!room) {
+      this.emit("error", { message: "Room not found" });
+      return;
+    }
+    
+    const { userId, cardId } = data;
+    const playedCard = room.lastPlayedCards[userId]?.find(id => id === cardId);
+    if (!playedCard) {
+      this.emit("error", { message: "Played card not found" });
+      return;
+    }
+
+    // Remove card from played cards
+    room.lastPlayedCards[userId] = room.lastPlayedCards[userId]?.filter(id => id !== cardId) || [];
+
+    // Add to player hand
+    room.playerHands[user.id].push(cardId);
+
+    // Notify all players in the room
+    const payload: CardDrawnPayload = {
+      count: 1,
+      cards: [cardId],
+      drawerId: user.id,
+      source: 'playedCard',
+      sourceId: userId,
+    };
+    this.emitToAllInRoom(room.code, "cardDrawn", payload);
   }
 }

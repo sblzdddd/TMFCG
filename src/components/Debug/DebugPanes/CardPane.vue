@@ -47,10 +47,5 @@ watch(() => currentProfile.value, () => {
 
 defineExpose({
   refresh: () => pane.value?.refresh(),
-  toggleCollapse: (isCollapsed: boolean) => {
-    if (pane.value) {
-      pane.value.expanded = !isCollapsed;
-    }
-  },
 });
 </script> 

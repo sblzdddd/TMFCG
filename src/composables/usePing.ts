@@ -13,7 +13,7 @@ const ping = () => {
 }
 
 socket.on("connect", () => {
-	pingInterval.value = setInterval(ping, 1000);
+	// pingInterval.value = setInterval(ping, 1000);
 });
 
 socket.on("disconnect", () => {

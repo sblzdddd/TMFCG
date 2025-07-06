@@ -10,6 +10,7 @@ import type {
 } from "~/types/DTO/room.dto";
 import type {Room} from "~/types/room";
 import {useLogger} from "@/composables/useLogger";
+import type { RoomMember } from "~/types/user";
 
 const {debug, error} = useLogger('room');
 
@@ -40,13 +41,20 @@ export const useRoom = () => {
 			joinRoom: async () => ({success: false} as JoinRoomResponse),
 			getCurrentRoom: async () => ({success: false, room: null} as unknown as RoomInfoResponse),
 			listRooms: async () => ({success: false, rooms: []} as ListRoomsResponse),
+			updateRoomMembers: () => {},
 		};
+	}
+
+	const updateRoomMembers = (members: RoomMember[]) => {
+		if (globalRoomState.current) {
+			globalRoomState.current.members = members;
+		}
 	}
 
 
 	const setCurrentRoom = (room: Room | null) => {
 		debug(`setting current room ${globalRoomState.current?.code}`)
-		console.log('room data: ', globalRoomState.current)
+		console.log('room data: ', room)
 		globalRoomState.current = room;
 		debug(`setting current room profile...`)
 		const { setCardProfile } = useCardProfile();
@@ -110,6 +118,7 @@ export const useRoom = () => {
 			socket.once('room_left', (data) => {
 				clearTimeout(timeout);
 				if (data.success) {
+					console.log('left room')
 					setCurrentRoom(null);
 					resolve(data);
 				} else {
@@ -168,5 +177,6 @@ export const useRoom = () => {
 		joinRoom,
 		getCurrentRoom,
 		listRooms,
+		updateRoomMembers,
 	};
 };

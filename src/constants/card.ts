@@ -1,8 +1,12 @@
 export const CARD_CONST = {
   cardRatio: 756 / 1051,
   playerCard: {
-    height: 0.3,
-    bottom: 10,
+    height: 0.25,
+    bottom: 3,
+  },
+  playedCard: {
+    height: 0.19,
+    maxGap: 0.7,
   },
   opponentCard: {
     height: 0.15,

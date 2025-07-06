@@ -30,6 +30,8 @@ export class JoinRoomHandler extends BaseHandler {
 				members: RoomManager.getMembersFromRoom(room)
 			} as RoomMembersUpdateResponse);
 
+			room.lastPlayedCards[user.id] = [];
+
 			// Confirm join to the user
 			this.emit('room_joined', {
 				success: true,

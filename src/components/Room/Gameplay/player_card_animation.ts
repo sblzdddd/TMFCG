@@ -1,9 +1,9 @@
-import {createSpring, createTimeline} from 'animejs';
+import {createSpring, createTimeline, animate} from 'animejs';
 import { CARD_CONST } from '~/constants/card';
 
 const {windowWidth: width, windowHeight: height} = useViewport();
 
-const {debug} = useLogger('animation:card');
+const {debug, info} = useLogger('animation:card');
 
 const calculateCardPositions = (numOfCards: number) => {
 	const {windowWidth, windowHeight} = {windowWidth: width.value, windowHeight: height.value};
@@ -25,13 +25,15 @@ const calculateCardPositions = (numOfCards: number) => {
 	return {startX, targetY, cardWidth, cardHeight, gap};
 }
 
-export const animateCardDraw = (
-	cardsInDeck: HTMLElement[],
-	cardElements: HTMLElement[],
-	targetIndexes: number[],
-	onComplete: () => void,
-	isResizing: boolean = false,
+export const animatePlayerCardDraw = (
+	targetIndexes: number[] = [],
+	onComplete: () => void = () => {},
+	targetElement?: string,
 ) => {
+	const isResizing = (targetIndexes.length <= 0);
+	
+	const cardsInDeck = Array.from(document.querySelectorAll(targetElement || '.card-in-deck')) as HTMLElement[];
+	const cardElements = Array.from(document.querySelectorAll('.player-card')) as HTMLElement[];
 
 	if(cardElements.length === 0) {
 		onComplete();
@@ -44,7 +46,24 @@ export const animateCardDraw = (
 		lastCard = cardsInDeck[cardsInDeck.length - 1];
 	}
 
-	const lastCardRect = lastCard.getBoundingClientRect();
+	info(`start animatePlayerCardDraw`)
+	console.log('targetIndexes', targetIndexes);
+
+	let lastCardRect = lastCard.getBoundingClientRect();
+	
+	if(targetElement) {
+		lastCardRect = {
+			top: parseInt(lastCard.style.top.replace('px', '')),
+			left: parseInt(lastCard.style.left.replace('px', '')),
+			width: parseInt(lastCard.style.width.replace('px', '')),
+			height: parseInt(lastCard.style.height.replace('px', '')),
+			x: 0,
+			y: 0,
+			bottom: 0,
+			right: 0,
+			toJSON: () => '',
+		}
+	}
 
 	const drawCardElements = cardElements.filter((element, index) => targetIndexes.includes(index));
 
@@ -97,6 +116,7 @@ export const animateCardDraw = (
 				element.style.width = `${cardWidth}px`;
 				element.style.height = `${cardHeight}px`;
 			});
+			info(`animatePlayerCardDraw complete`)
 			onComplete();
 		},
 	});
@@ -161,4 +181,20 @@ export const animateCardDraw = (
 				ease: spring,
 			}, (index * newCardTime))
 	});
-}; 
+};
+
+export const animateCardSelection = (
+	element: HTMLElement,
+	isSelected: boolean,
+) => {
+	animate(element, {
+		translateY: isSelected ? '-25px' : '0px',
+		ease: "outCubic",
+		duration: 200,
+	});
+	animate(element.querySelector('.card-darken') as HTMLElement, {
+		opacity: isSelected ? 0.3 : 0,
+		ease: "outCubic",
+		duration: 200,
+	});
+};

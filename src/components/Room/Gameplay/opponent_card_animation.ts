@@ -3,7 +3,7 @@ import { CARD_CONST } from '~/constants/card';
 
 const {windowWidth: width, windowHeight: height} = useViewport();
 
-const {debug} = useLogger('animation:card');
+const {debug, info} = useLogger('animation:card');
 
 const calculateOpponentCardPositions = (opponentIndex: number, numOfCards: number) => {
 	const {windowWidth, windowHeight} = {windowWidth: width.value, windowHeight: height.value};
@@ -11,7 +11,8 @@ const calculateOpponentCardPositions = (opponentIndex: number, numOfCards: numbe
 	const cardWidth = cardHeight * CARD_CONST.cardRatio;
 	const gap = Math.min(
 		cardWidth * CARD_CONST.maxGap,
-		(opponentIndex > 0) ? windowWidth * 0.08 / numOfCards * 2 : windowWidth * 0.08 / numOfCards * 11,
+		// wtf is this???
+		(opponentIndex > 0) ? windowWidth * 0.08 / numOfCards * 2 : windowWidth * 0.08 / numOfCards * 4,
 		(windowWidth - cardWidth) / Math.max(numOfCards - 1, 1)
 	);
 
@@ -25,7 +26,7 @@ const calculateOpponentCardPositions = (opponentIndex: number, numOfCards: numbe
 		case 0: // Top opponent
 			startX = (windowWidth - totalCardsWidth) / 2;
 			targetY = CARD_CONST.opponentCard.top;
-			rotation = 180;
+			rotation = 0;
 			break;
 		case 1: // Left opponent
 			startX = CARD_CONST.opponentCard.side;
@@ -46,14 +47,37 @@ const calculateOpponentCardPositions = (opponentIndex: number, numOfCards: numbe
 
 export const animateOpponentCardDraw = (
 	opponentIndex: number,
-	cardsInDeck: HTMLElement[],
-	cardElements: HTMLElement[],
-	numOfNewCards: number,
-	onComplete: () => void,
-	isResizing: boolean = false,
+	numOfNewCards: number = 0,
+	onComplete: () => void = () => {},
+	element?: string
 ) => {
+	info(`start animateOpponentCardDraw`)
+	console.log(11111111	)
+
+	const isResizing = (numOfNewCards <= 0);
+
+	const cardElements = Array.from(document.querySelectorAll(`.opponent-${opponentIndex}-card`)) as HTMLElement[];
+	const cardsInDeck = Array.from(document.querySelectorAll(element || '.card-in-deck')) as HTMLElement[];
 
 	if(cardElements.length === 0) {
+		cardElements.forEach((element, index) => {
+			element.style.position = 'absolute';
+			element.style.zIndex = `${52 + index}`;
+			if (opponentIndex === 0) {
+				element.style.top = `${targetY}px`;
+				element.style.left = `${startX + index * gap}px`;
+			} else if (opponentIndex === 1) {
+				element.style.top = `${targetY + index * gap}px`;
+				element.style.left = `${startX}px`;
+			} else {
+				element.style.top = `${targetY + index * gap}px`;
+				element.style.left = `${startX}px`;
+			}
+			element.style.width = `${cardWidth}px`;
+			element.style.height = `${cardHeight}px`;
+			element.style.transform = `rotate(${rotation}deg)`;
+		});
+		info(`animateOpponentCardDraw complete`)
 		onComplete();
 		return;
 	}
@@ -66,10 +90,7 @@ export const animateOpponentCardDraw = (
 
 	const lastCardRect = lastCard.getBoundingClientRect();
 
-	if (cardElements.length === 0) {
-		onComplete();
-		return;
-	}
+	console.log('lastCardRect', lastCardRect);
 
 	const {
 		startX,
@@ -119,6 +140,7 @@ export const animateOpponentCardDraw = (
 				element.style.height = `${cardHeight}px`;
 				element.style.transform = `rotate(${rotation}deg)`;
 			});
+			info(`animateOpponentCardDraw complete`)
 			onComplete();
 		},
 	});
@@ -130,7 +152,6 @@ export const animateOpponentCardDraw = (
 	}
 
 	const oldCardTime = Math.min(300, 500 / (Math.abs(cardElements.length - numOfNewCards + 1)));
-	console.log('oldCardTime', oldCardTime);
 	for (let i = 0; i < cardElements.length - numOfNewCards; i++) {
 		const position = {
 			ease: spring,

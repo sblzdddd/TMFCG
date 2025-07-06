@@ -5,6 +5,7 @@
   >
     <template #front>
       <Card-Addons-CardCharacter :character="character" />
+      <div class="card-darken" style="opacity: 0;" />
     </template>
   </Card-RenderedBase>
 </template>
@@ -42,5 +43,10 @@ watch(currentProfile, () => {
 }, {immediate: true});
 
 </script>
+<style lang="postcss" scoped>
+.card-darken {
+  @apply bg-black/50 absolute top-0 left-0 w-full h-full z-10;
+}
+</style>
 
 

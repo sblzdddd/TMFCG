@@ -7,11 +7,6 @@ import { Pane } from 'tweakpane';
 
 defineExpose({
   refresh: () => pane.value?.refresh(),
-  toggleCollapse: (isCollapsed: boolean) => {
-    if (pane.value) {
-      pane.value.expanded = !isCollapsed;
-    }
-  },
 });
 
 const {

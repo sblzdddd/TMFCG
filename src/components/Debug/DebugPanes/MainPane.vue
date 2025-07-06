@@ -9,7 +9,6 @@ import { useLogger } from '@/composables/useLogger';
 
 const props = defineProps<{
   onTogglePanes: () => void;
-  onToggleCollapse: () => void;
   onRefreshAll: () => void;
 }>();
 
@@ -40,13 +39,6 @@ onMounted(() => {
   }).on('click', () => {
     debug('Hiding all panes');
     props.onTogglePanes();
-  });
-
-  pane.value.addButton({
-    title: 'Toggle Collapse',
-  }).on('click', () => {
-    info('Toggling collapse state');
-    props.onToggleCollapse();
   });
 
   pane.value.addButton({

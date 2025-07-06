@@ -3,7 +3,6 @@
     <MainPane 
       ref="mainPaneRef"
       :on-toggle-panes="togglePanes"
-      :on-toggle-collapse="toggleCollapse"
       :on-refresh-all="refreshAll"
     />
     <SocketPane ref="socketPaneRef" />
@@ -29,7 +28,6 @@ const panes = [socketPaneRef, cardPaneRef, deckPaneRef];
 
 
 const isHidden = ref(true);
-const isCollapsed = ref(false);
 
 const togglePanes = () => {
   if (isHidden.value) {
@@ -42,7 +40,6 @@ const togglePanes = () => {
 const showPanes = () => {
   console.log("Show Panes")
   isHidden.value = false;
-  if(isCollapsed.value) toggleCollapse();
   document.querySelectorAll('.pane-container').forEach((pane) => {
     (pane as HTMLElement).style.display = "block";
   });
@@ -60,11 +57,6 @@ const handleKeyPress = (e: KeyboardEvent) => {
   if (e.key.toLowerCase() === 'p') {
     togglePanes();
   }
-};
-
-const toggleCollapse = () => {
-  isCollapsed.value = !isCollapsed.value;
-  panes.forEach((pane) => pane.value?.toggleCollapse(isCollapsed.value));
 };
 
 const refreshAll = () => {

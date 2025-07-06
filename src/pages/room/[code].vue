@@ -16,12 +16,14 @@ definePageMeta({
 const route = useRoute()
 const router = useRouter()
 const roomCode = computed(() => String(route.params.code))
-const {currentRoom, joinRoom} = useRoom()
+const {currentRoom, joinRoom, updateRoomMembers} = useRoom()
 const {user} = useUser()
 const {isConnected} = useSocket()
 
-const updateRoomMembers = (members: RoomMember[]) => {
+const updateMembers = (members: RoomMember[]) => {
+  console.log('updateRoomMembers', members)
   user.value.isRoomOwner = members.find(m => m.id === user.value.id)?.isRoomOwner || false
+  updateRoomMembers(members)
 }
 
 const {debug, info, error} = useLogger('room')
@@ -44,8 +46,11 @@ onMounted(async () => {
   } else {
     info('not in any room')
     const response = await joinRoom(roomCode.value)
-    if (response.room) {
-      updateRoomMembers(response.room.members)
+    if (!response.room) {
+      error('room not found')
+      alert('房间不存在或已关闭')
+      await router.push('/')
+      return
     }
   }
   if (!currentRoom.value) {
@@ -54,19 +59,23 @@ onMounted(async () => {
     await router.push('/')
     return
   }
-  updateRoomMembers(currentRoom.value.members)
+  updateMembers(currentRoom.value.members)
   socket.on('user_joined', (message) => {
     const response = message as RoomMembersUpdateResponse
-    updateRoomMembers(response.members)
+    console.log('user_joined', response)
+    updateMembers(response.members)
   })
   socket.on('user_left', (message) => {
     const response = message as RoomMembersUpdateResponse
-    updateRoomMembers(response.members)
+    console.log('user_left', response)
+    updateMembers(response.members)
   })
   socket.on('room_member_update', (message) => {
     const response = message as RoomMembersUpdateResponse
-    updateRoomMembers(response.members)
+    console.log('room_member_update', response)
+    updateMembers(response.members)
   })
+  console.log(111)
   LoadingState.isLoading = false;
 })
 </script>

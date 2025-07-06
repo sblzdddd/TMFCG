@@ -2,15 +2,16 @@ import type { ICardProfile } from '~/lib/CardProfile';
 
 // Event Payloads (mirroring backend and useGameTable)
 export interface CardDrawnPayload {
-  receiver: number; 
   count: number;
   cards?: string[];
   drawerId: string;
+  source: string;
+  sourceId?: string;
 }
 
 export interface CardPlayedPayload {
   userId: string;
-  cardId: string;
+  cardIds: string[];
 }
 
 export interface PlayHistoryEntry {

@@ -1,5 +1,5 @@
 import type {ChatMessage} from "./chat";
-import type {User} from "./user";
+import type {RoomMember} from "./user";
 import type { IBaseCard } from "~/lib/Card/BaseCard";
 import type { ICardProfile } from "~/lib/CardProfile/CardProfile";
 
@@ -13,12 +13,13 @@ export interface Room {
 	owner: string;
 	isPrivate: boolean;
 	memberIds: string[];
-	members: User[];
+	members: RoomMember[];
 	messages: ChatMessage[];
   deck: IBaseCard[];
   cardProfile: ICardProfile | null;
   playerHands: Record<string, string[]>; // userId: cardIds
   playHistory: PlayHistoryEntry[];
+  lastPlayedCards: Record<string, string[]>; // userId: cardIds of last played cards
 }
 
 export type PublicRoomInfo = {
